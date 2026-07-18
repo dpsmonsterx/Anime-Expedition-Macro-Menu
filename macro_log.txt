@@ -1,0 +1,4 @@
+2026-07-19 01:35:24 - Availability Check settings applied to all 3 options.
+2026-07-19 01:35:26 - Configuration saved.
+2026-07-19 01:35:27 - Configuration saved.
+2026-07-19 01:35:27 - Configuration saved.
