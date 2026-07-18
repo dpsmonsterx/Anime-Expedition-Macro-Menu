@@ -369,7 +369,7 @@ dragMsEdit := EditGui.AddEdit("x520 y462 w60", "500")
 ; --- Logic steps only: test OCR against the region/text entered above ---
 stepOcrTestBtn := EditGui.AddButton("x40 y500 w110", "Test OCR")
 stepOcrTestBtn.OnEvent("Click", (*) => StepTestOcrClick())
-stepOcrResultText := EditGui.AddText("x160 y504 w590 h20", "OCR result will appear here.")
+stepOcrResultText := EditGui.AddEdit("x160 y502 w590 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
 
 ; --- Where to jump when this step finishes: Logic steps get two branches (true/false, based on
 ; the OCR result); Mechanic steps get a single unconditional jump (reuses the same "On True"
@@ -553,7 +553,7 @@ AddHelpIcon(OptionAvailGui, 505, 153, "Leave Expected Text empty to skip the det
 
 optAvailTestBtn := OptionAvailGui.AddButton("x20 y185 w110", "Test OCR")
 optAvailTestBtn.OnEvent("Click", (*) => OptAvailTestOcrClick())
-optAvailResultText := OptionAvailGui.AddText("x140 y189 w370 h20", "OCR result will appear here.")
+optAvailResultText := OptionAvailGui.AddEdit("x140 y187 w370 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
 
 ; Convenience for the common case where every option shows the same "no attempts left" indicator
 ; in the same spot regardless of which one was clicked - no need to set up the same region/text
@@ -1580,10 +1580,18 @@ CreateOverlay() {
     panelW := rightW - sideGap * 2
     if (rightW > 2 * sideGap + 80 && panelW > 80) {
         margin := 10
+        btnH := 22
         LogGui := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x08000000")
         LogGui.BackColor := "000000"
         LogGui.SetFont("s9 cWhite", "Consolas")
-        LogEdit := LogGui.AddEdit("x" margin " y" margin " w" (panelW - margin * 2) " h" (hole.h - margin * 2)
+        ; This panel's window is WS_EX_NOACTIVATE so clicking it never steals keyboard focus from
+        ; the game while the macro runs - which also means the Edit control below can't reliably
+        ; be click-selected or Ctrl+C'd (no keyboard focus = no caret/copy). A "Copy" button works
+        ; fine even without window activation (button clicks don't require focus), so that's the
+        ; way to get the log text onto the clipboard here.
+        logCopyBtn := LogGui.AddButton("x" (panelW - margin - 70) " y" margin " w70 h" btnH, "Copy")
+        logCopyBtn.OnEvent("Click", (*) => CopyLogClick())
+        LogEdit := LogGui.AddEdit("x" margin " y" (margin + btnH + 4) " w" (panelW - margin * 2) " h" (hole.h - margin * 2 - btnH - 4)
             . " ReadOnly VScroll Background000000 cWhite")
         LogGui.Show("x" panelX " y" hole.y " w" panelW " h" hole.h " NoActivate")
         ; Seed the panel with whatever's already in the log so far, instead of starting blank.
@@ -1612,7 +1620,10 @@ CreateOverlay() {
         StatsGui.BackColor := "000000"
 
         StatsGui.SetFont("s13 cWhite Bold", "Segoe UI")
-        StatsGui.AddText("x" statsMargin " y" statsMargin " w" (statsW - statsMargin * 2) " h26", "Application Stats")
+        StatsGui.AddText("x" statsMargin " y" statsMargin " w" (statsW - statsMargin * 2 - 80) " h26", "Application Stats")
+        StatsGui.SetFont("s9 cBlack Norm", "Segoe UI")
+        statsCopyBtn := StatsGui.AddButton("x" (statsW - statsMargin - 70) " y" statsMargin " w70 h22", "Copy")
+        statsCopyBtn.OnEvent("Click", (*) => CopyStatsClick())
 
         ; Four evenly spaced columns across the full width - label on top, big value underneath.
         colW := Integer((statsW - statsMargin * 2) / 4)
@@ -1879,6 +1890,31 @@ RenderLogPanel() {
         ; scroll to bottom (WM_VSCROLL / SB_BOTTOM)
         PostMessage 0x0115, 7, 0, , "ahk_id " LogEdit.Hwnd
     }
+}
+
+; Puts the full visible log text on the clipboard. The log panel's own Edit control can't be
+; relied on for click-to-select + Ctrl+C, since its owner window is WS_EX_NOACTIVATE (see
+; CreateOverlay) - this button is the actual way to get log text out of it.
+CopyLogClick(*) {
+    global LogLines
+    display := ""
+    for l in LogLines
+        display .= l "`n"
+    A_Clipboard := display
+    ToolTip("Log copied to clipboard.")
+    SetTimer((*) => ToolTip(), -1500)
+}
+
+; Same idea as CopyLogClick(), for the Application Stats panel's current values.
+CopyStatsClick(*) {
+    global CurrentCycleCount, LastDetectedMap, RunningScreenName, RunningStepDescription
+    text := "Cycle Count: " CurrentCycleCount "`n"
+        . "Current Map: " (LastDetectedMap != "" ? LastDetectedMap : "(none)") "`n"
+        . "Current Screen: " (RunningScreenName != "" ? RunningScreenName : "-") "`n"
+        . "Current Step: " (RunningStepDescription != "" ? RunningStepDescription : "-")
+    A_Clipboard := text
+    ToolTip("Stats copied to clipboard.")
+    SetTimer((*) => ToolTip(), -1500)
 }
 
 ; Refreshes the "Application Stats" panel below the log with the current run's live state.
