@@ -194,6 +194,10 @@ MapAdvStepsDoneThisCycle := false ; the map's Drag/Zoom Out actions run at most 
 UsageNameTexts := []          ; Preset Settings tab: option name labels (mirror OptData's NameEdit)
 UsageUsedEdits := []          ; Preset Settings tab: editable "used today" count per option
 UsageMaxEdits := []           ; Preset Settings tab: editable daily limit per option (mirrors/writes OptData's MaxEdit)
+DisconnectRestartPending := false ; set by CheckDisconnectTick when a disconnect was found; StartMacro loops back
+                                   ; to the beginning of the current preset (once MainLoop returns) when this is true
+DisconnectCheckBusy := false      ; guards against an overlapping disconnect OCR scan if one ever takes longer than the timer period
+DisconnectLastCheckTick := 0      ; A_TickCount of the last disconnect OCR scan, used to honor the configurable check interval
 
 ; ============================================================
 ; BUILD GUI
@@ -348,6 +352,40 @@ holeWEdit := MyGui.AddEdit("x220 y487 w60", Cfg("General", "HoleW", "1248"))
 holeHEdit := MyGui.AddEdit("x285 y487 w60", Cfg("General", "HoleH", "702"))
 AddHelpIcon(MyGui, 360, 487, "A gray fullscreen overlay opens with this rectangular opening cut out; the game window is moved into it.")
 
+MyGui.AddGroupBox("x30 y545 w750 h165", "Disconnect Detection (Auto-Reconnect)")
+disconnectEnabledChk := MyGui.AddCheckBox("x50 y570 w500", "Enable: auto-click Reconnect and restart the macro on disconnect")
+disconnectEnabledChk.Value := Integer(Cfg("General", "DisconnectEnabled", "0"))
+AddHelpIcon(MyGui, 758, 547, "Periodically scans the region below for the given text (e.g. a 'Reconnect' popup). When found, clicks the Reconnect Button position and restarts the currently selected preset from the beginning - as if F10 had been pressed again.")
+
+MyGui.AddText("x50 y600", "Region1 X:")
+disconnectX1Edit := MyGui.AddEdit("x125 y597 w55", Cfg("General", "DisconnectX1", "0"))
+MyGui.AddText("x190 y600", "Y:")
+disconnectY1Edit := MyGui.AddEdit("x210 y597 w55", Cfg("General", "DisconnectY1", "0"))
+disconnectPos1Btn := MyGui.AddButton("x275 y596 w100", "Set Position")
+disconnectPos1Btn.OnEvent("Click", StartCapture.Bind(disconnectX1Edit, disconnectY1Edit))
+MyGui.AddText("x480 y600", "Expected Text:")
+disconnectTextEdit := MyGui.AddEdit("x570 y597 w190", Cfg("General", "DisconnectText", ""))
+
+MyGui.AddText("x50 y630", "Region2 X:")
+disconnectX2Edit := MyGui.AddEdit("x125 y627 w55", Cfg("General", "DisconnectX2", "0"))
+MyGui.AddText("x190 y630", "Y:")
+disconnectY2Edit := MyGui.AddEdit("x210 y627 w55", Cfg("General", "DisconnectY2", "0"))
+disconnectPos2Btn := MyGui.AddButton("x275 y626 w100", "Set Position")
+disconnectPos2Btn.OnEvent("Click", StartCapture.Bind(disconnectX2Edit, disconnectY2Edit))
+
+MyGui.AddText("x50 y660", "Reconnect X:")
+disconnectReconnectXEdit := MyGui.AddEdit("x135 y657 w55", Cfg("General", "DisconnectReconnectX", "0"))
+MyGui.AddText("x200 y660", "Y:")
+disconnectReconnectYEdit := MyGui.AddEdit("x220 y657 w55", Cfg("General", "DisconnectReconnectY", "0"))
+disconnectReconnectPosBtn := MyGui.AddButton("x285 y656 w100", "Set Position")
+disconnectReconnectPosBtn.OnEvent("Click", StartCapture.Bind(disconnectReconnectXEdit, disconnectReconnectYEdit))
+MyGui.AddText("x480 y660", "Check every (sec):")
+disconnectIntervalEdit := MyGui.AddEdit("x610 y657 w50", Cfg("General", "DisconnectIntervalSec", "5"))
+
+disconnectTestBtn := MyGui.AddButton("x50 y689 w100", "Test OCR")
+disconnectTestBtn.OnEvent("Click", (*) => DisconnectTestOcrClick())
+disconnectOcrResultText := MyGui.AddEdit("x160 y691 w600 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
+
 tab.UseTab()
 
 ; ---------------- STATUS & CONTROLS (always visible) ----------------
@@ -470,7 +508,7 @@ stepOnTrueLbl := EditGui.AddText("x40 y538", "On True ->")
 stepOnTrueDdl := EditGui.AddDropDownList("x120 y535 w190")
 stepOnFalseLbl := EditGui.AddText("x330 y538", "On False ->")
 stepOnFalseDdl := EditGui.AddDropDownList("x415 y535 w190")
-AddHelpIcon(EditGui, 615, 537, "Jump to another screen when this step finishes. Logic steps (Detect Map, Round End/Ingame/Custom Detection) can jump differently depending on whether the OCR text matched. Other steps just jump unconditionally using the 'On True' field - leave it on '(continue)' to keep running the rest of this screen normally.")
+AddHelpIcon(EditGui, 615, 537, "Jump to another screen when this step finishes. Logic steps (Detect Map, Round End/Ingame/Custom Detection) can jump differently depending on whether the OCR text matched. Other steps just jump unconditionally using the 'On True' field - leave it on '(continue)' to keep running the rest of this screen normally. Pick '(Repeat)' to re-run this exact step again instead - waits for this step's own 'Wait After (s)' between attempts, so e.g. a detection step can keep rechecking itself until it matches.")
 
 ; --- once-per-cycle flag, applies to every step type ---
 oncePerCycleChk := EditGui.AddCheckBox("x40 y570 w650", "Once per cycle (run only once, skip until the next Detect Map / new round)")
@@ -1093,9 +1131,12 @@ RectFromStep(step) {
 
 ; Captures the given screen region and runs it through Windows' built-in OCR engine
 ; via a small PowerShell helper script. Returns the recognized text (may be empty).
-RunOcrOnRegion(x, y, w, h) {
+; outFileName defaults to the shared result file used by step/option OCR calls; pass a distinct
+; name (as the disconnect-detection timer does) so a scan running on its own timer never races
+; with an OCR call already in progress on the main thread over the same file.
+RunOcrOnRegion(x, y, w, h, outFileName := "ocr_result.txt") {
     scriptPath := A_ScriptDir "\ocr_region.ps1"
-    outFile := A_ScriptDir "\ocr_result.txt"
+    outFile := A_ScriptDir "\" outFileName
     try FileDelete outFile
 
     cmd := 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' scriptPath '" -X ' x ' -Y ' y ' -Width ' w ' -Height ' h ' > "' outFile '" 2>&1'
@@ -1205,6 +1246,31 @@ DetectMapProfileInRegion(rect, timeoutSec := 5) {
             return ""
         Sleep 300
     }
+}
+
+; Runs the General tab's own "Test OCR" button - tests whatever region/expected-text is currently
+; entered for Disconnect Detection (not necessarily saved yet).
+DisconnectTestOcrClick(*) {
+    global disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit, disconnectTextEdit, disconnectOcrResultText
+    rect := {x: Min(SafeInt(disconnectX1Edit.Value), SafeInt(disconnectX2Edit.Value)),
+        y: Min(SafeInt(disconnectY1Edit.Value), SafeInt(disconnectY2Edit.Value)),
+        w: Abs(SafeInt(disconnectX2Edit.Value) - SafeInt(disconnectX1Edit.Value)),
+        h: Abs(SafeInt(disconnectY2Edit.Value) - SafeInt(disconnectY1Edit.Value))}
+    if (rect.w <= 0 || rect.h <= 0) {
+        MsgBox "Set both Region1 and Region2 positions first."
+        return
+    }
+    disconnectOcrResultText.Text := "Reading..."
+    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h, "ocr_result_disconnect.txt")
+    if (text = "") {
+        disconnectOcrResultText.Text := "(no text recognized)"
+        LogMsg("Disconnect detection OCR test: (no text recognized)")
+        return
+    }
+    expected := disconnectTextEdit.Value
+    isMatch := (expected != "") && (InStr(text, expected) || TextContainsPartialMatch(text, expected, 6))
+    disconnectOcrResultText.Text := "Recognized: '" text "' -> " (isMatch ? "MATCH" : "no match")
+    LogMsg("Disconnect detection OCR test result: '" text "'")
 }
 
 ; One OCR scan of `rect`, compared against `expected` using the same exact-then-fuzzy match as
@@ -1849,6 +1915,54 @@ ReactivateGameWindow() {
         WinActivate winCrit
 }
 
+; ============================================================
+; DISCONNECT DETECTION (AUTO-RECONNECT)
+; ============================================================
+; Runs on its own timer the whole time the macro is running, independently of whatever step is
+; currently executing. Once every configured interval, scans the configured region for the
+; configured "disconnected" text; if found, clicks the Reconnect Button position and asks
+; StartMacro() to restart the current preset from the beginning (via DisconnectRestartPending) -
+; the same way Escape already stops the run asynchronously mid-step, just auto-resuming afterward
+; instead of staying stopped. Uses its own OCR output file (ocr_result_disconnect.txt) so a scan
+; firing here never races with a step's own OCR call (e.g. Round End Detection) that might be in
+; progress on the main thread at the same moment.
+CheckDisconnectTick() {
+    global Running, disconnectEnabledChk, disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit
+    global disconnectTextEdit, disconnectReconnectXEdit, disconnectReconnectYEdit, disconnectIntervalEdit
+    global DisconnectCheckBusy, DisconnectLastCheckTick, DisconnectRestartPending
+
+    if (!Running || DisconnectCheckBusy || !disconnectEnabledChk.Value)
+        return
+
+    intervalMs := Max(1000, SafeInt(disconnectIntervalEdit.Value, 5) * 1000)
+    if (A_TickCount - DisconnectLastCheckTick < intervalMs)
+        return
+    DisconnectLastCheckTick := A_TickCount
+
+    expected := disconnectTextEdit.Value
+    rect := {x: Min(SafeInt(disconnectX1Edit.Value), SafeInt(disconnectX2Edit.Value)),
+        y: Min(SafeInt(disconnectY1Edit.Value), SafeInt(disconnectY2Edit.Value)),
+        w: Abs(SafeInt(disconnectX2Edit.Value) - SafeInt(disconnectX1Edit.Value)),
+        h: Abs(SafeInt(disconnectY2Edit.Value) - SafeInt(disconnectY1Edit.Value))}
+    if (expected = "" || rect.w <= 0 || rect.h <= 0)
+        return
+
+    DisconnectCheckBusy := true
+    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h, "ocr_result_disconnect.txt")
+    if (text = "" || !(InStr(text, expected) || TextContainsPartialMatch(text, expected, 6))) {
+        DisconnectCheckBusy := false
+        return
+    }
+
+    ReactivateGameWindow()
+    LogMsg("Disconnect detected ('" text "') - clicking Reconnect and restarting the macro from the beginning.")
+    Click SafeInt(disconnectReconnectXEdit.Value), SafeInt(disconnectReconnectYEdit.Value)
+    Running := false
+    DisconnectRestartPending := true
+    DisconnectCheckBusy := false
+}
+SetTimer(CheckDisconnectTick, 500)
+
 ; Ensures the overlay is showing, then moves the game window into the opening
 ; and locks it there so it can't be dragged or resized out of place by accident.
 ForceGameWindow() {
@@ -2020,6 +2134,8 @@ SaveConfig(*) {
     global markerSizeEdit
     global numPlaceDdl, GeneralSlotDdls
     global afterPlaceClickChk, afterPlaceXEdit, afterPlaceYEdit
+    global disconnectEnabledChk, disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit
+    global disconnectTextEdit, disconnectReconnectXEdit, disconnectReconnectYEdit, disconnectIntervalEdit
 
     IniWrite roundWaitEdit.Value, ConfigFile, "General", "RoundWaitSeconds"
     IniWrite clickDelayEdit.Value, ConfigFile, "General", "ClickDelayMs"
@@ -2037,6 +2153,16 @@ SaveConfig(*) {
     IniWrite holeYEdit.Value, ConfigFile, "General", "HoleY"
     IniWrite holeWEdit.Value, ConfigFile, "General", "HoleW"
     IniWrite holeHEdit.Value, ConfigFile, "General", "HoleH"
+
+    IniWrite disconnectEnabledChk.Value, ConfigFile, "General", "DisconnectEnabled"
+    IniWrite disconnectX1Edit.Value, ConfigFile, "General", "DisconnectX1"
+    IniWrite disconnectY1Edit.Value, ConfigFile, "General", "DisconnectY1"
+    IniWrite disconnectX2Edit.Value, ConfigFile, "General", "DisconnectX2"
+    IniWrite disconnectY2Edit.Value, ConfigFile, "General", "DisconnectY2"
+    IniWrite disconnectTextEdit.Value, ConfigFile, "General", "DisconnectText"
+    IniWrite disconnectReconnectXEdit.Value, ConfigFile, "General", "DisconnectReconnectX"
+    IniWrite disconnectReconnectYEdit.Value, ConfigFile, "General", "DisconnectReconnectY"
+    IniWrite disconnectIntervalEdit.Value, ConfigFile, "General", "DisconnectIntervalSec"
 
     ; Challenge options and the default-map fallback are saved per-preset inside
     ; SavePresetToIni() below (they live in [Preset_<name>], not [General]).
@@ -2193,7 +2319,10 @@ SaveScreenToIni(name, screenName) {
 ; and every time the visible screen switches, so it must NOT clobber a not-yet-saved selection.
 RefreshJumpTargetDdls(name) {
     global stepOnTrueDdl, stepOnFalseDdl, fallbackScreenDdl
-    items := ["(continue)"]
+    ; "(Repeat)" is a pseudo-screen, not an actual one - handled specially in RunSteps instead of
+    ; being resolved as a screen jump: it re-runs this exact step again (honoring its own "Wait
+    ; After" as the pause between attempts) instead of moving to the next step or another screen.
+    items := ["(continue)", "(Repeat)"]
     for n in GetPresetScreenNames(name)
         items.Push(n)
     curTrue := stepOnTrueDdl.Text
@@ -3093,50 +3222,70 @@ BuildAllScreensFromIni(name) {
 ; F10/Start-button run.
 StartMacro(startScreen := "", startStep := 0) {
     global Running, CurrentPresetName, PresetScreens, MapAdvStepsDoneThisCycle, RunningPresetName
+    global DisconnectRestartPending, DisconnectLastCheckTick
     if Running {
         LogMsg("Already running.")
         return
     }
     ClearLog()
-    SaveConfig()
-    MapAdvStepsDoneThisCycle := false
 
-    if !ForceGameWindow() {
-        MsgBox "Could not find/position the game window. Check the selected process in the Timing tab, or click Refresh."
-        return
-    }
+    ; Loops back to the top when Disconnect Detection (General tab) fired during the previous
+    ; pass - restarting the current preset from its normal start point, same as pressing F10
+    ; again, but automatic. A plain run (no disconnect) just executes this loop body once.
+    curStartScreen := startScreen
+    curStartStep := startStep
+    isAutoRestart := false
+    Loop {
+        SaveConfig()
+        MapAdvStepsDoneThisCycle := false
 
-    ; Read every screen straight from ini (not from whichever screen happens to be displayed in
-    ; the editor right now) - SaveConfig() above just flushed the visible one, so this is current.
-    PresetScreens := BuildAllScreensFromIni(CurrentPresetName)
-    RunningPresetName := CurrentPresetName
-
-    totalSteps := 0
-    for scr in PresetScreens
-        totalSteps += scr.Steps.Length
-    if (PresetScreens.Length = 0 || totalSteps = 0) {
-        MsgBox "The active preset has no steps in any screen. Add steps in Preset Settings > Edit first."
-        return
-    }
-
-    startScreenIdx := 0
-    if (startScreen != "") {
-        for i, scr in PresetScreens {
-            if (scr.Name = startScreen) {
-                startScreenIdx := i
-                break
-            }
+        if !ForceGameWindow() {
+            MsgBox "Could not find/position the game window. Check the selected process in the Timing tab, or click Refresh."
+            return
         }
-        if !startScreenIdx
-            LogMsg("WARNING: could not find screen '" startScreen "' to start from - using the normal start screen instead.")
-    }
 
-    Running := true
-    if startScreenIdx
-        LogMsg("Macro started using preset '" CurrentPresetName "', beginning at screen '" startScreen "' step " startStep ".")
-    else
-        LogMsg("Macro started using preset '" CurrentPresetName "'.")
-    MainLoop(startScreenIdx, startScreenIdx ? Max(1, startStep) : 1)
+        ; Read every screen straight from ini (not from whichever screen happens to be displayed in
+        ; the editor right now) - SaveConfig() above just flushed the visible one, so this is current.
+        PresetScreens := BuildAllScreensFromIni(CurrentPresetName)
+        RunningPresetName := CurrentPresetName
+
+        totalSteps := 0
+        for scr in PresetScreens
+            totalSteps += scr.Steps.Length
+        if (PresetScreens.Length = 0 || totalSteps = 0) {
+            MsgBox "The active preset has no steps in any screen. Add steps in Preset Settings > Edit first."
+            return
+        }
+
+        startScreenIdx := 0
+        if (curStartScreen != "") {
+            for i, scr in PresetScreens {
+                if (scr.Name = curStartScreen) {
+                    startScreenIdx := i
+                    break
+                }
+            }
+            if !startScreenIdx
+                LogMsg("WARNING: could not find screen '" curStartScreen "' to start from - using the normal start screen instead.")
+        }
+
+        Running := true
+        DisconnectLastCheckTick := A_TickCount
+        if isAutoRestart
+            LogMsg("Auto-reconnect: macro restarted from the beginning using preset '" CurrentPresetName "'.")
+        else if startScreenIdx
+            LogMsg("Macro started using preset '" CurrentPresetName "', beginning at screen '" curStartScreen "' step " curStartStep ".")
+        else
+            LogMsg("Macro started using preset '" CurrentPresetName "'.")
+        MainLoop(startScreenIdx, startScreenIdx ? Max(1, curStartStep) : 1)
+
+        if !DisconnectRestartPending
+            break
+        DisconnectRestartPending := false
+        curStartScreen := ""
+        curStartStep := 0
+        isAutoRestart := true
+    }
 }
 
 ; ============================================================
@@ -3340,9 +3489,16 @@ RunSteps(steps, startAt := 1) {
     clickDelay := SafeInt(clickDelayEdit.Value)
     placeTowerDelay := SafeInt(placeTowerDelayEdit.Value)
 
-    for stepIdx, step in steps {
-        if (stepIdx < startAt)
+    ; Index-based (rather than a plain for-in) so a step whose On True/On False resolves to
+    ; "(Repeat)" can redo itself by simply not advancing stepIdx, instead of moving on to the
+    ; next step - see the "(Repeat)" handling near the bottom of this loop.
+    stepIdx := 1
+    while (stepIdx <= steps.Length) {
+        step := steps[stepIdx]
+        if (stepIdx < startAt) {
+            stepIdx += 1
             continue
+        }
         if !Running
             return ""
         while Paused {
@@ -3352,6 +3508,7 @@ RunSteps(steps, startAt := 1) {
         }
 
         if (step.OncePerCycle && step.AlreadyDone) {
+            stepIdx += 1
             continue
         }
 
@@ -3576,8 +3733,15 @@ RunSteps(steps, startAt := 1) {
             LogMsg("Waited " extraWait "s after '" step.Type "'.")
         }
 
+        ; "(Repeat)" re-runs this exact step again - stepIdx is deliberately left unchanged - rather
+        ; than being returned up to MainLoop as if it were a real screen name to jump to.
+        if (stepJumpTarget = "(Repeat)")
+            continue
+
         if (stepJumpTarget != "" && Running)
             return stepJumpTarget
+
+        stepIdx += 1
     }
     return ""
 }
