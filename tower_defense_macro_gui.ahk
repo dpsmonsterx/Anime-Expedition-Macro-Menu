@@ -242,10 +242,10 @@ StepRepeatCount := 0          ; how many times any step's On True/On False resol
 StartRepeatCount := 0         ; lifetime count of screen-repetitions across the whole session (does NOT
                                ; reset on restart/auto-reconnect) - same event as ScreenRepeatCount, just
                                ; never reset, so it keeps counting across auto-reconnect restarts
-VictoryCount := 0             ; lifetime count of detections whose matched text was literally "Victory"
-DefeatCount := 0              ; lifetime count of detections whose matched text was literally "Defeat" -
-                               ; both come from any Round End/Ingame/Custom Detection step (including
-                               ; Advanced Detection's named outcomes) - see TrackVictoryDefeat()
+VictoryCount := 0             ; lifetime count of OCR scans whose RECOGNIZED text contained "Victory"
+DefeatCount := 0              ; lifetime count of OCR scans whose RECOGNIZED text contained "Defeat" -
+                               ; both come from any Round End/Ingame/Custom Detection step's scan
+                               ; (matched or not) - see TrackVictoryDefeat()
 RunningStepDescription := ""  ; "Type (Label)" of the step currently executing, for the stats panel
 HoverTooltipMap := Map()      ; Hwnd -> tooltip text, for "?" help icons
 LastHoverHwnd := 0            ; Hwnd currently showing its tooltip (0 = none)
@@ -1664,11 +1664,15 @@ DisconnectTestOcrClick(*) {
 }
 
 ; One OCR scan of `rect`, compared against `expected` using the same exact-then-fuzzy match as
-; map detection. Returns false if the region or expected text isn't configured.
-IsTextDetectedInRegion(rect, expected) {
+; map detection. Returns false if the region or expected text isn't configured. `&recognizedText`
+; (optional) receives whatever the OCR actually read, regardless of match result - callers that
+; want to react to the raw text itself (e.g. TrackVictoryDefeat) can pass a variable for it.
+IsTextDetectedInRegion(rect, expected, &recognizedText := "") {
+    recognizedText := ""
     if (expected = "" || rect.w <= 0 || rect.h <= 0)
         return false
     text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h)
+    recognizedText := text
     if (text = "")
         return false
     return InStr(text, expected) || TextContainsPartialMatch(text, expected, 6)
@@ -4076,18 +4080,21 @@ LogicJumpTarget(step, result) {
     return (target = "" || target = "(continue)") ? "" : target
 }
 
-; Tallies the session-lifetime Victory/Defeat counters (Application Stats overlay) whenever a
-; detection's matched text is literally "Victory" or "Defeat" (case-insensitive, whitespace
-; trimmed) - works both for a plain Round End/Ingame/Custom Detection step's Label (used standalone
-; for a win-only/loss-only check) and for each named outcome of an Advanced Detection step (the
-; intended way to track both from a single step - see the "Round End/Ingame/Custom Detection" case
-; in RunSteps).
-TrackVictoryDefeat(name) {
+; Tallies the session-lifetime Victory/Defeat counters (Application Stats overlay) whenever the
+; text an OCR scan actually recognized on screen CONTAINS "victory" or "defeat" (case-insensitive)
+; - deliberately looks at the raw recognized text rather than the step's own configured expected
+; text/outcome name, since a single detection step often can't tell the two outcomes apart itself
+; (e.g. one combined "Round End" check whose Label is just used to detect that the round ended at
+; all, while the banner it reads happens to say "Victory" or "Defeat"). Called from the "Round
+; End/Ingame/Custom Detection" case in RunSteps for every OCR scan, matched or not.
+TrackVictoryDefeat(recognizedText) {
     global VictoryCount, DefeatCount
-    n := StrLower(Trim(name))
-    if (n = "victory")
+    if (recognizedText = "")
+        return
+    t := StrLower(recognizedText)
+    if InStr(t, "victory")
         VictoryCount += 1
-    else if (n = "defeat")
+    else if InStr(t, "defeat")
         DefeatCount += 1
     else
         return
@@ -4329,9 +4336,9 @@ RunSteps(steps, startAt := 1) {
                             }
                         }
                     }
+                    TrackVictoryDefeat(text)
                     if (matched != "") {
                         LogMsg("Advanced Detection: matched outcome '" matched.Name "' (recognized: '" text "').")
-                        TrackVictoryDefeat(matched.Name)
                         if (matched.Screen = "(Stop Macro)") {
                             LogMsg("Advanced Detection: 'Stop Macro' outcome matched - stopping the macro.")
                             Running := false
@@ -4344,13 +4351,17 @@ RunSteps(steps, startAt := 1) {
                 } else {
                     what := (step.Type = "Round End Detection") ? "round end" : (step.Type = "Ingame Detection") ? "ingame state" : "'" step.Label "'"
                     LogMsg("Checking for " what "...")
-                    detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label)
+                    detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label, &recognizedText)
                     ReactivateGameWindow()
-                    if detectResult {
+                    if detectResult
                         LogMsg(step.Type ": text matched.")
-                        TrackVictoryDefeat(step.Label)
-                    } else
+                    else
                         LogMsg(step.Type ": text not matched.")
+                    ; Victory/Defeat tracking looks at what the OCR actually saw on screen, not at
+                    ; this step's own configured expected text - so it still works even when a
+                    ; single step (like a combined "Victory Defeat" round-end check) can't itself
+                    ; tell the two outcomes apart.
+                    TrackVictoryDefeat(recognizedText)
                     stepJumpTarget := LogicJumpTarget(step, detectResult)
                 }
 
