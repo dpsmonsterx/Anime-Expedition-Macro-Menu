@@ -55,6 +55,20 @@ JoinList(arr) {
     return s
 }
 
+; Sets a DropDownList's selection to `value`, falling back to `fallback` (or, failing that too,
+; leaving whatever was already selected) instead of throwing "Invalid value" - which AHK raises
+; whenever the assigned text doesn't exactly match one of the control's current items. This can
+; happen with perfectly valid saved data whenever the control's item list hasn't caught up yet
+; (e.g. a step imported from another preset whose On True/On False points at a screen name that
+; doesn't exist here) - a hard crash on stale/foreign data is worse than silently falling back.
+SetDdlTextSafe(ddl, value, fallback := "(continue)") {
+    try {
+        ddl.Text := value
+        return
+    }
+    try ddl.Text := fallback
+}
+
 ; ============================================================
 ; ADVANCED DETECTION OUTCOMES (serialization helpers)
 ; ============================================================
@@ -208,12 +222,30 @@ LastDetectedMap := ""       ; map name found by the most recent "Detect Map" ste
 LogGui := ""                 ; log panel window shown in the gray area right of the game window
 LogEdit := ""                 ; the read-only multi-line Edit control inside LogGui
 LogLines := []                ; recent log lines (capped), mirrored into LogEdit when it exists
+ScreenCountGui := ""           ; "Screen Run Counts" panel shown below LogGui, in the same gray column
+ScreenCountEdit := ""          ; the read-only multi-line Edit control inside ScreenCountGui
+ScreenRunCounts := Map()       ; screen name -> how many times it's been run so far THIS run - resets
+                               ; every MainLoop() call, same scope as ScreenRepeatCount/StepRepeatCount
 StatsGui := ""                ; "Application Stats" panel shown below LogGui in the same gray area
 StatsCycleText := ""           ; text controls inside StatsGui, one per stat row (see RenderStatsPanel)
 StatsMapText := ""
 StatsScreenText := ""
 StatsStepText := ""
-CurrentCycleCount := 0        ; cycles completed so far this run (mirrors MainLoop's local counter)
+StatsStepRepeatText := ""
+StatsStartRepeatText := ""
+StatsVictoryText := ""
+StatsDefeatText := ""
+ScreenRepeatCount := 0        ; screen-repetitions (returns to the Start screen) so far THIS run -
+                               ; resets every MainLoop() call; was called "Cycle Count"
+StepRepeatCount := 0          ; how many times any step's On True/On False resolved to "(Repeat)"
+                               ; so far THIS run - resets every MainLoop() call, same scope as ScreenRepeatCount
+StartRepeatCount := 0         ; lifetime count of screen-repetitions across the whole session (does NOT
+                               ; reset on restart/auto-reconnect) - same event as ScreenRepeatCount, just
+                               ; never reset, so it keeps counting across auto-reconnect restarts
+VictoryCount := 0             ; lifetime count of detections whose matched text was literally "Victory"
+DefeatCount := 0              ; lifetime count of detections whose matched text was literally "Defeat" -
+                               ; both come from any Round End/Ingame/Custom Detection step (including
+                               ; Advanced Detection's named outcomes) - see TrackVictoryDefeat()
 RunningStepDescription := ""  ; "Type (Label)" of the step currently executing, for the stats panel
 HoverTooltipMap := Map()      ; Hwnd -> tooltip text, for "?" help icons
 LastHoverHwnd := 0            ; Hwnd currently showing its tooltip (0 = none)
@@ -299,7 +331,14 @@ Loop 10 {
     customSlotDdls.Push(ddl)
 }
 
-AddHelpIcon(MyGui, 30, 172, "When unchecked, the default slot sequence from the General tab is used for every map.")
+; Only shown/used while "Use custom tower slots for this map" is checked - lets this map place a
+; different NUMBER of towers than the shared default (General tab), not just different slots.
+mapNumPlaceLbl := MyGui.AddText("x30 y198", "Number of placements for this map:")
+mapNumPlaceDdl := MyGui.AddDropDownList("x260 y195 w60", ["1","2","3","4","5","6","7","8","9","10"])
+mapNumPlaceDdl.Text := "4"
+mapNumPlaceDdl.OnEvent("Change", (*) => UpdatePlacementVisibility())
+
+AddHelpIcon(MyGui, 30, 172, "When unchecked, this map uses the shared default slot sequence AND placement count from the General tab. When checked, you can also override how many placements this map uses (below), independent of the shared default.")
 
 MyGui.AddText("x30 y225", "Coordinates for this map's tower placements:")
 
@@ -1058,7 +1097,7 @@ AdvDetLoadEditorFromSelection(*) {
     if !row
         return
     advDetNameEdit.Value := advDetLV.GetText(row, 2)
-    advDetScreenDdl.Text := advDetLV.GetText(row, 3)
+    SetDdlTextSafe(advDetScreenDdl, advDetLV.GetText(row, 3), "(continue)")
 }
 
 AdvDetAddClick(*) {
@@ -1163,9 +1202,11 @@ OptAvailApplyToAllClick(*) {
 ; PLACEMENT ROW VISIBILITY
 ; ============================================================
 UpdatePlacementVisibility(*) {
-    global numPlaceDdl, PlaceData, mapCustomTowersChk
-    n := Integer(numPlaceDdl.Text)
+    global numPlaceDdl, PlaceData, mapCustomTowersChk, mapNumPlaceLbl, mapNumPlaceDdl
     customOn := mapCustomTowersChk.Value
+    n := customOn ? Integer(mapNumPlaceDdl.Text) : Integer(numPlaceDdl.Text)
+    mapNumPlaceLbl.Visible := customOn
+    mapNumPlaceDdl.Visible := customOn
     for i, row in PlaceData {
         vis := (i <= n)
         row.Label.Visible := vis
@@ -1286,10 +1327,11 @@ LoadGeneralSlots() {
 }
 
 LoadMapProfile(name) {
-    global PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk
+    global PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk, mapNumPlaceDdl
     section := "MapProfile_" name
     mapExpectedTextEdit.Value := Cfg(section, "ExpectedText", "")
     mapCustomTowersChk.Value := Integer(Cfg(section, "CustomTowers", "0"))
+    mapNumPlaceDdl.Text := Cfg(section, "CustomNumPlacements", "4")
     Loop 10 {
         i := A_Index
         row := PlaceData[i]
@@ -1319,10 +1361,11 @@ OnMapCustomCameraToggled(*) {
 }
 
 SaveMapProfileToIni(name) {
-    global PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk, ConfigFile
+    global PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk, mapNumPlaceDdl, ConfigFile
     section := "MapProfile_" name
     IniWrite mapExpectedTextEdit.Value, ConfigFile, section, "ExpectedText"
     IniWrite mapCustomTowersChk.Value, ConfigFile, section, "CustomTowers"
+    IniWrite mapNumPlaceDdl.Text, ConfigFile, section, "CustomNumPlacements"
     Loop 10 {
         i := A_Index
         row := PlaceData[i]
@@ -1353,7 +1396,7 @@ MapProfileChanged(*) {
 }
 
 NewMapProfileClick(*) {
-    global CurrentMapProfileName, mapProfileDdl, MapProfileNames, ConfigFile, PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk
+    global CurrentMapProfileName, mapProfileDdl, MapProfileNames, ConfigFile, PlaceData, mapExpectedTextEdit, mapCustomTowersChk, mapCustomCameraChk, mapNumPlaceDdl
     ib := InputBox("Enter a name for the new map profile (e.g. the map name):", "New Map Profile")
     if (ib.Result != "OK" || Trim(ib.Value) = "")
         return
@@ -1372,6 +1415,7 @@ NewMapProfileClick(*) {
     CurrentMapProfileName := name
     mapExpectedTextEdit.Value := name
     mapCustomTowersChk.Value := 0
+    mapNumPlaceDdl.Text := "4"
     for row in PlaceData {
         row.CustomSlotDdl.Text := "1"
         row.XEdit.Value := "0"
@@ -1630,11 +1674,12 @@ IsTextDetectedInRegion(rect, expected) {
     return InStr(text, expected) || TextContainsPartialMatch(text, expected, 6)
 }
 
-; Reads a map profile's placement rows directly from the ini file (for use at runtime).
+; Reads a map profile's placement rows directly from the ini file (for use at runtime). A map with
+; "custom tower slots" enabled also uses its own placement COUNT instead of the shared default.
 GetMapProfilePlacements(name) {
     section := "MapProfile_" name
-    n := Integer(Cfg("General", "NumPlacements", "4"))
     customTowers := Integer(Cfg(section, "CustomTowers", "0"))
+    n := customTowers ? Integer(Cfg(section, "CustomNumPlacements", "4")) : Integer(Cfg("General", "NumPlacements", "4"))
     rows := []
     Loop n {
         i := A_Index
@@ -2088,6 +2133,8 @@ GetHoleRect() {
 CreateOverlay() {
     global OverlayGuis, OverlayVisible, LogGui, LogEdit, LogLines, StatsGui
     global StatsCycleText, StatsMapText, StatsScreenText, StatsStepText
+    global StatsStepRepeatText, StatsStartRepeatText, StatsVictoryText, StatsDefeatText
+    global ScreenCountGui, ScreenCountEdit
     if OverlayVisible
         return
     hole := GetHoleRect()
@@ -2110,41 +2157,66 @@ CreateOverlay() {
         OverlayGuis.Push(g)
     }
 
-    ; Log panel: a black console filling the gray area to the right of the game window, if there's
-    ; enough room there - inset 50px from the hole's right edge AND the screen's right edge, so the
-    ; gray margin on the right matches the gray margin already visible on the left.
+    ; Log panel + Screen Run Counts panel: together fill a column to the right of the game window,
+    ; from the top of the opening down to bottomMargin px above the screen's bottom edge - i.e. as
+    ; tall as the Stats bar below is, not just as tall as the game window/opening itself. Inset
+    ; panelGap from the hole's right edge (the same gap used below the game window before the Stats
+    ; panel, so the two match visually) and rightMargin from the screen's own right edge (matching
+    ; the gray margin already visible on the left, hole.x).
+    panelGap := 20
+    rightMargin := 50
+    bottomMargin := 50
     rightW := screenW - (hole.x + hole.w)
-    sideGap := 50
-    panelX := hole.x + hole.w + sideGap
-    panelW := rightW - sideGap * 2
-    if (rightW > 2 * sideGap + 80 && panelW > 80) {
+    panelX := hole.x + hole.w + panelGap
+    panelW := rightW - panelGap - rightMargin
+    columnH := screenH - hole.y - bottomMargin
+    if (rightW > panelGap + rightMargin + 80 && panelW > 80 && columnH > 150) {
         margin := 10
+        screenCountH := 320
+        screenCountGap := 10
+        showScreenCounts := (columnH - screenCountH - screenCountGap) >= 150
+        logH := showScreenCounts ? (columnH - screenCountH - screenCountGap) : columnH
+
         LogGui := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x08000000")
         LogGui.BackColor := "000000"
         LogGui.SetFont("s9 cWhite", "Consolas")
-        LogEdit := LogGui.AddEdit("x" margin " y" margin " w" (panelW - margin * 2) " h" (hole.h - margin * 2)
+        LogEdit := LogGui.AddEdit("x" margin " y" margin " w" (panelW - margin * 2) " h" (logH - margin * 2)
             . " ReadOnly VScroll Background000000 cWhite")
-        LogGui.Show("x" panelX " y" hole.y " w" panelW " h" hole.h " NoActivate")
+        LogGui.Show("x" panelX " y" hole.y " w" panelW " h" logH " NoActivate")
         ; Seed the panel with whatever's already in the log so far, instead of starting blank.
         RenderLogPanel()
+
+        if showScreenCounts {
+            ScreenCountGui := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x08000000")
+            ScreenCountGui.BackColor := "000000"
+            ScreenCountGui.SetFont("s9 cWhite", "Consolas")
+            ScreenCountEdit := ScreenCountGui.AddEdit("x" margin " y" margin " w" (panelW - margin * 2) " h" (screenCountH - margin * 2)
+                . " ReadOnly VScroll Background000000 cWhite")
+            ScreenCountGui.Show("x" panelX " y" (hole.y + logH + screenCountGap) " w" panelW " h" screenCountH " NoActivate")
+            RenderScreenCountPanel()
+        } else {
+            ScreenCountGui := ""
+            ScreenCountEdit := ""
+        }
     } else {
         LogGui := ""
         LogEdit := ""
-        panelX := hole.x + hole.w
-        panelW := 0
+        ScreenCountGui := ""
+        ScreenCountEdit := ""
     }
 
-    ; Application Stats panel: a wide black bar BELOW the game window and log panel, spanning from
-    ; the game window's left edge to the log panel's right edge, placed in the bottom gray bar.
+    ; Application Stats panel: a black bar BELOW the game window, spanning just its width (the
+    ; Log/Screen Run Counts column to the right now runs down alongside it instead of sharing this
+    ; row), placed in the bottom gray bar.
     statsAreaY := hole.y + hole.h
     statsAreaH := screenH - statsAreaY
-    if (statsAreaH > 80) {
+    if (statsAreaH > 140) {
         statsMargin := 10
-        statsGapTop := 20
-        statsGapBottom := 50   ; distance from the panel's bottom edge to the screen's bottom edge
+        statsGapTop := panelGap      ; same gap as the log/screen-count column's top-side inset
+        statsGapBottom := bottomMargin   ; same bottom margin the log/screen-count column ends at
         statsX := hole.x
-        statsW := (panelX + panelW) - hole.x
-        statsH := Max(80, statsAreaH - statsGapTop - statsGapBottom)
+        statsW := hole.w
+        statsH := Max(140, statsAreaH - statsGapTop - statsGapBottom)
         statsY := statsAreaY + statsGapTop
 
         StatsGui := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x08000000")
@@ -2156,23 +2228,36 @@ CreateOverlay() {
         statsCopyBtn := StatsGui.AddButton("x" (statsW - statsMargin - 70) " y" statsMargin " w70 h22", "Copy")
         statsCopyBtn.OnEvent("Click", (*) => CopyStatsClick())
 
-        ; Four evenly spaced columns across the full width - label on top, big value underneath.
+        ; Two rows of 4 evenly spaced columns across the full width - label on top, big value
+        ; underneath. Row 1 is this run's live state; Row 2 is the counters (Step/Screen Repeat
+        ; reset every run, Start Repeat/Victory/Defeat are lifetime counts for the whole session).
         colW := Integer((statsW - statsMargin * 2) / 4)
-        labels := ["Cycle Count", "Current Map", "Current Screen", "Current Step"]
-        colTexts := []
-        rowY := statsMargin + 44
+        row1Labels := ["Screen Repetition Count", "Current Map", "Current Screen", "Current Step"]
+        row2Labels := ["Step Repetition Count", "Start Repetition Count", "Victory Count", "Defeat Count"]
+        rowY1 := statsMargin + 44
+        rowY2 := rowY1 + 54
+        row1Texts := []
+        row2Texts := []
         loop 4 {
             colX := statsMargin + (A_Index - 1) * colW
             StatsGui.SetFont("s9 cWhite Norm", "Segoe UI")
-            StatsGui.AddText("x" colX " y" rowY " w" (colW - 10) " h16", labels[A_Index])
+            StatsGui.AddText("x" colX " y" rowY1 " w" (colW - 10) " h16", row1Labels[A_Index])
             StatsGui.SetFont("s14 cWhite Bold", "Segoe UI")
-            valTxt := StatsGui.AddText("x" colX " y" (rowY + 20) " w" (colW - 10) " h26", "-")
-            colTexts.Push(valTxt)
+            row1Texts.Push(StatsGui.AddText("x" colX " y" (rowY1 + 20) " w" (colW - 10) " h26", "-"))
+
+            StatsGui.SetFont("s9 cWhite Norm", "Segoe UI")
+            StatsGui.AddText("x" colX " y" rowY2 " w" (colW - 10) " h16", row2Labels[A_Index])
+            StatsGui.SetFont("s14 cWhite Bold", "Segoe UI")
+            row2Texts.Push(StatsGui.AddText("x" colX " y" (rowY2 + 20) " w" (colW - 10) " h26", "-"))
         }
-        StatsCycleText := colTexts[1]
-        StatsMapText := colTexts[2]
-        StatsScreenText := colTexts[3]
-        StatsStepText := colTexts[4]
+        StatsCycleText := row1Texts[1]
+        StatsMapText := row1Texts[2]
+        StatsScreenText := row1Texts[3]
+        StatsStepText := row1Texts[4]
+        StatsStepRepeatText := row2Texts[1]
+        StatsStartRepeatText := row2Texts[2]
+        StatsVictoryText := row2Texts[3]
+        StatsDefeatText := row2Texts[4]
 
         StatsGui.Show("x" statsX " y" statsY " w" statsW " h" statsH " NoActivate")
         RenderStatsPanel()
@@ -2182,6 +2267,10 @@ CreateOverlay() {
         StatsMapText := ""
         StatsScreenText := ""
         StatsStepText := ""
+        StatsStepRepeatText := ""
+        StatsStartRepeatText := ""
+        StatsVictoryText := ""
+        StatsDefeatText := ""
     }
 
     OverlayVisible := true
@@ -2191,6 +2280,8 @@ CreateOverlay() {
 CloseOverlay(*) {
     global OverlayGuis, OverlayVisible, LockedProcess, LogGui, LogEdit, StatsGui
     global StatsCycleText, StatsMapText, StatsScreenText, StatsStepText
+    global StatsStepRepeatText, StatsStartRepeatText, StatsVictoryText, StatsDefeatText
+    global ScreenCountGui, ScreenCountEdit
     SetTimer EnforceWindowLock, 0
     LockedProcess := ""
     for g in OverlayGuis {
@@ -2202,6 +2293,11 @@ CloseOverlay(*) {
     }
     LogGui := ""
     LogEdit := ""
+    if (ScreenCountGui != "") {
+        try ScreenCountGui.Destroy()
+    }
+    ScreenCountGui := ""
+    ScreenCountEdit := ""
     if (StatsGui != "") {
         try StatsGui.Destroy()
     }
@@ -2210,6 +2306,10 @@ CloseOverlay(*) {
     StatsMapText := ""
     StatsScreenText := ""
     StatsStepText := ""
+    StatsStepRepeatText := ""
+    StatsStartRepeatText := ""
+    StatsVictoryText := ""
+    StatsDefeatText := ""
     OverlayVisible := false
     LogMsg("Overlay closed. Window lock released.")
 }
@@ -2471,15 +2571,36 @@ RenderLogPanel() {
     }
 }
 
+; Refreshes the "Screen Run Counts" panel - one line per screen in the currently running preset,
+; in preset order, showing how many times each has run so far THIS run (see ScreenRunCounts;
+; resets every MainLoop() call, same scope as ScreenRepeatCount/StepRepeatCount). Safe to call even
+; when the overlay/panel doesn't exist, or before PresetScreens has been built yet.
+RenderScreenCountPanel() {
+    global ScreenCountEdit, PresetScreens, ScreenRunCounts
+    if (ScreenCountEdit = "")
+        return
+    try {
+        display := ""
+        for scr in PresetScreens
+            display .= scr.Name ": " (ScreenRunCounts.Has(scr.Name) ? ScreenRunCounts[scr.Name] : 0) "`n"
+        ScreenCountEdit.Value := display
+    }
+}
+
 ; Puts the Application Stats panel's current values on the clipboard - same rationale as needed
 ; anywhere in this NOACTIVATE overlay (see CreateOverlay): its controls can't get real keyboard
 ; focus, so click-to-select + Ctrl+C doesn't work reliably; a button click does.
 CopyStatsClick(*) {
-    global CurrentCycleCount, LastDetectedMap, RunningScreenName, RunningStepDescription
-    text := "Cycle Count: " CurrentCycleCount "`n"
+    global ScreenRepeatCount, LastDetectedMap, RunningScreenName, RunningStepDescription
+    global StepRepeatCount, StartRepeatCount, VictoryCount, DefeatCount
+    text := "Screen Repetition Count: " ScreenRepeatCount "`n"
         . "Current Map: " (LastDetectedMap != "" ? LastDetectedMap : "(none)") "`n"
         . "Current Screen: " (RunningScreenName != "" ? RunningScreenName : "-") "`n"
-        . "Current Step: " (RunningStepDescription != "" ? RunningStepDescription : "-")
+        . "Current Step: " (RunningStepDescription != "" ? RunningStepDescription : "-") "`n"
+        . "Step Repetition Count: " StepRepeatCount "`n"
+        . "Start Repetition Count: " StartRepeatCount "`n"
+        . "Victory Count: " VictoryCount "`n"
+        . "Defeat Count: " DefeatCount
     A_Clipboard := text
     ToolTip("Stats copied to clipboard.")
     SetTimer((*) => ToolTip(), -1500)
@@ -2489,13 +2610,19 @@ CopyStatsClick(*) {
 ; Safe to call even when the overlay/panel doesn't exist (e.g. before the macro is started).
 RenderStatsPanel() {
     global StatsCycleText, StatsMapText, StatsScreenText, StatsStepText
-    global CurrentCycleCount, LastDetectedMap, RunningScreenName, RunningStepDescription
+    global StatsStepRepeatText, StatsStartRepeatText, StatsVictoryText, StatsDefeatText
+    global ScreenRepeatCount, LastDetectedMap, RunningScreenName, RunningStepDescription
+    global StepRepeatCount, StartRepeatCount, VictoryCount, DefeatCount
     if (StatsCycleText = "")
         return
-    try StatsCycleText.Text := CurrentCycleCount
+    try StatsCycleText.Text := ScreenRepeatCount
     try StatsMapText.Text := (LastDetectedMap != "" ? LastDetectedMap : "(none)")
     try StatsScreenText.Text := (RunningScreenName != "" ? RunningScreenName : "-")
     try StatsStepText.Text := (RunningStepDescription != "" ? RunningStepDescription : "-")
+    try StatsStepRepeatText.Text := StepRepeatCount
+    try StatsStartRepeatText.Text := StartRepeatCount
+    try StatsVictoryText.Text := VictoryCount
+    try StatsDefeatText.Text := DefeatCount
 }
 
 ; ============================================================
@@ -3354,12 +3481,12 @@ LoadPreset(name) {
         opt.DetText := Cfg(section, "Option" i "DetText", "")
         opt.DetInvert := Integer(Cfg(section, "Option" i "DetInvert", "0"))
     }
-    defaultMapDdl.Text := Cfg(section, "DefaultMap", "(none)")
+    SetDdlTextSafe(defaultMapDdl, Cfg(section, "DefaultMap", "(none)"), "(none)")
     backXEdit.Value := Cfg(section, "BackX", "0")
     backYEdit.Value := Cfg(section, "BackY", "0")
     ; This preset's screen list was just (re)loaded above via LoadPresetScreens, so
     ; fallbackScreenDdl's items already match - just set the selection to what was saved.
-    fallbackScreenDdl.Text := Cfg(section, "FallbackScreen", "(none)")
+    SetDdlTextSafe(fallbackScreenDdl, Cfg(section, "FallbackScreen", "(none)"), "(none)")
     LoadUsageFields(name)
 }
 
@@ -3541,7 +3668,7 @@ LoadEditorFromSelection(*) {
     row := stepsLV.GetNext(0, "Focused")
     if !row
         return
-    stepTypeDdl.Text := stepsLV.GetText(row, 2)
+    SetDdlTextSafe(stepTypeDdl, stepsLV.GetText(row, 2), "Button Click")
     stepLabelEdit.Value := stepsLV.GetText(row, 3)
     stepXEdit.Value := stepsLV.GetText(row, 4)
     stepYEdit.Value := stepsLV.GetText(row, 5)
@@ -3549,12 +3676,12 @@ LoadEditorFromSelection(*) {
     dragEndYEdit.Value := stepsLV.GetText(row, 7)
     dragMsEdit.Value := stepsLV.GetText(row, 8)
     oncePerCycleChk.Value := (stepsLV.GetText(row, 9) = "Yes") ? 1 : 0
-    stepOnTrueDdl.Text := stepsLV.GetText(row, 10)
-    stepOnFalseDdl.Text := stepsLV.GetText(row, 11)
+    SetDdlTextSafe(stepOnTrueDdl, stepsLV.GetText(row, 10), "(continue)")
+    SetDdlTextSafe(stepOnFalseDdl, stepsLV.GetText(row, 11), "(continue)")
     stepSecEdit.Value := stepsLV.GetText(row, 12)
     stepFallbackChk.Value := (stepsLV.GetText(row, 13) = "Yes") ? 1 : 0
     stepFallbackMaxEdit.Value := stepsLV.GetText(row, 14)
-    stepFallbackScreenDdl.Text := stepsLV.GetText(row, 15)
+    SetDdlTextSafe(stepFallbackScreenDdl, stepsLV.GetText(row, 15), "(none)")
     stepAdvancedChk.Value := (stepsLV.GetText(row, 16) = "Yes") ? 1 : 0
     EditingOutcomes := ParseOutcomes(stepsLV.GetText(row, 17))
     UpdateStepEditorLabels()
@@ -3779,12 +3906,20 @@ FindStartScreenIndex(screens) {
 ; ad-hoc start doesn't disturb normal max-rounds/cycle-wait behavior once the macro catches up to
 ; the normal flow.
 MainLoop(startScreenIdx := 0, startStepIdx := 1) {
-    global Running, Paused, PresetScreens, roundWaitEdit, maxRoundsEdit, RunningScreenName, CurrentCycleCount
+    global Running, Paused, PresetScreens, roundWaitEdit, maxRoundsEdit, RunningScreenName
+    global ScreenRepeatCount, StepRepeatCount, StartRepeatCount, ScreenRunCounts, LastDetectedMap
 
     trueStartIdx := FindStartScreenIndex(PresetScreens)
     screenIdx := startScreenIdx ? startScreenIdx : trueStartIdx
     cycleCount := 0
-    CurrentCycleCount := 0
+    ScreenRepeatCount := 0
+    StepRepeatCount := 0
+    ScreenRunCounts := Map()
+    ; A leftover detected map from an earlier run/cycle must not keep overriding the configured
+    ; Default Map forever - ResolveMapName() only falls back to Default Map when this is empty, so
+    ; it needs clearing at the start of every fresh cycle (see the trueStartIdx block below), not
+    ; just once here at the very start of the run.
+    LastDetectedMap := ""
     firstIteration := true
     while Running {
         if Paused {
@@ -3794,6 +3929,8 @@ MainLoop(startScreenIdx := 0, startStepIdx := 1) {
 
         scr := PresetScreens[screenIdx]
         RunningScreenName := scr.Name
+        ScreenRunCounts[scr.Name] := (ScreenRunCounts.Has(scr.Name) ? ScreenRunCounts[scr.Name] : 0) + 1
+        RenderScreenCountPanel()
         stepStart := firstIteration ? startStepIdx : 1
         firstIteration := false
         jumpTarget := RunSteps(scr.Steps, stepStart)
@@ -3821,9 +3958,14 @@ MainLoop(startScreenIdx := 0, startStepIdx := 1) {
 
         if (screenIdx = trueStartIdx) {
             cycleCount += 1
-            CurrentCycleCount := cycleCount
+            ScreenRepeatCount := cycleCount
+            StartRepeatCount += 1
+            ; A new cycle starting means whatever map was detected last cycle no longer applies -
+            ; clear it so ResolveMapName() falls back to the configured Default Map (if any) until
+            ; a fresh "Detect Map" step (if this cycle has one) finds something again.
+            LastDetectedMap := ""
             RenderStatsPanel()
-            LogMsg("--- Cycle " cycleCount " complete ---")
+            LogMsg("--- Screen repetition " cycleCount " complete - back at Start (lifetime: " StartRepeatCount ") ---")
 
             extraWait := SafeNum(roundWaitEdit.Value)
             if (extraWait > 0) {
@@ -3934,6 +4076,24 @@ LogicJumpTarget(step, result) {
     return (target = "" || target = "(continue)") ? "" : target
 }
 
+; Tallies the session-lifetime Victory/Defeat counters (Application Stats overlay) whenever a
+; detection's matched text is literally "Victory" or "Defeat" (case-insensitive, whitespace
+; trimmed) - works both for a plain Round End/Ingame/Custom Detection step's Label (used standalone
+; for a win-only/loss-only check) and for each named outcome of an Advanced Detection step (the
+; intended way to track both from a single step - see the "Round End/Ingame/Custom Detection" case
+; in RunSteps).
+TrackVictoryDefeat(name) {
+    global VictoryCount, DefeatCount
+    n := StrLower(Trim(name))
+    if (n = "victory")
+        VictoryCount += 1
+    else if (n = "defeat")
+        DefeatCount += 1
+    else
+        return
+    RenderStatsPanel()
+}
+
 ; Runs one screen's steps in order. Returns the name of the screen to jump to next (set by a
 ; Logic step's On True/On False result), or "" if the screen ran to the end without any jump
 ; firing - meaning the caller should fall through to the next screen in list order.
@@ -3946,6 +4106,7 @@ RunSteps(steps, startAt := 1) {
     global backXEdit, backYEdit, fallbackScreenDdl
     global RunningStepDescription
     global UsageUsedEdits
+    global StepRepeatCount, VictoryCount, DefeatCount
     clickDelay := SafeInt(clickDelayEdit.Value)
     placeTowerDelay := SafeInt(placeTowerDelayEdit.Value)
 
@@ -4170,6 +4331,7 @@ RunSteps(steps, startAt := 1) {
                     }
                     if (matched != "") {
                         LogMsg("Advanced Detection: matched outcome '" matched.Name "' (recognized: '" text "').")
+                        TrackVictoryDefeat(matched.Name)
                         if (matched.Screen = "(Stop Macro)") {
                             LogMsg("Advanced Detection: 'Stop Macro' outcome matched - stopping the macro.")
                             Running := false
@@ -4184,9 +4346,10 @@ RunSteps(steps, startAt := 1) {
                     LogMsg("Checking for " what "...")
                     detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label)
                     ReactivateGameWindow()
-                    if detectResult
+                    if detectResult {
                         LogMsg(step.Type ": text matched.")
-                    else
+                        TrackVictoryDefeat(step.Label)
+                    } else
                         LogMsg(step.Type ": text not matched.")
                     stepJumpTarget := LogicJumpTarget(step, detectResult)
                 }
@@ -4261,8 +4424,11 @@ RunSteps(steps, startAt := 1) {
 
         ; "(Repeat)" re-runs this exact step again - stepIdx is deliberately left unchanged - rather
         ; than being returned up to MainLoop as if it were a real screen name to jump to.
-        if (stepJumpTarget = "(Repeat)")
+        if (stepJumpTarget = "(Repeat)") {
+            StepRepeatCount += 1
+            RenderStatsPanel()
             continue
+        }
 
         if (stepJumpTarget != "" && Running)
             return stepJumpTarget

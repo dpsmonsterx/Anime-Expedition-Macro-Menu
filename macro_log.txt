@@ -368,3 +368,2772 @@
 2026-07-19 16:17:13 - Configuration saved.
 2026-07-19 16:17:13 - Configuration saved.
 2026-07-19 16:17:13 - Configuration saved.
+2026-07-19 17:14:58 - Overlay opened.
+2026-07-19 17:14:58 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:14:59 - Macro started using preset 'Challenges'.
+2026-07-19 17:14:59 - Checking for 'Store Units Items Quests Summon Areas Play Events'...
+2026-07-19 17:15:00 - Custom Detection: text matched.
+2026-07-19 17:15:00 - Waited 0.29999999999999999s after 'Custom Detection'.
+2026-07-19 17:15:01 - Clicked 'Click Play' at (162, 508)
+2026-07-19 17:15:01 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:15:01 - Screen 'Lobby' -> jumping to 'Play'.
+2026-07-19 17:15:01 - Checking for 'Progressive'...
+2026-07-19 17:15:02 - Custom Detection: text matched.
+2026-07-19 17:15:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 17:15:03 - Clicked 'Click Challenges' at (794, 387)
+2026-07-19 17:15:04 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:15:04 - Screen 'Play' -> jumping to 'Challenges'.
+2026-07-19 17:15:04 - Checking for 'Challenges'...
+2026-07-19 17:15:05 - Custom Detection: text matched.
+2026-07-19 17:15:06 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 17:15:06 - Option 3 (Option 3) clicked, checking availability...
+2026-07-19 17:15:07 - Option 3 (Option 3) available - playing. (2/unlimited today)
+2026-07-19 17:15:08 - Waited 0.5s after 'Option Select'.
+2026-07-19 17:15:09 - Clicked 'Click Challenges' at (710, 620)
+2026-07-19 17:15:09 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:15:09 - Screen 'Challenges' -> jumping to 'Map Detection'.
+2026-07-19 17:15:09 - Detecting map...
+2026-07-19 17:15:10 - Map detected: Flower Forest
+2026-07-19 17:15:10 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:15:11 - Clicked 'Challenges' at (838, 555)
+2026-07-19 17:15:12 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:15:12 - Checking for ingame state...
+2026-07-19 17:15:12 - Ingame Detection: text not matched.
+2026-07-19 17:15:13 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:13 - Checking for ingame state...
+2026-07-19 17:15:13 - Ingame Detection: text not matched.
+2026-07-19 17:15:13 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:13 - Checking for ingame state...
+2026-07-19 17:15:14 - Ingame Detection: text not matched.
+2026-07-19 17:15:14 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:14 - Checking for ingame state...
+2026-07-19 17:15:15 - Ingame Detection: text not matched.
+2026-07-19 17:15:15 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:15 - Checking for ingame state...
+2026-07-19 17:15:16 - Ingame Detection: text not matched.
+2026-07-19 17:15:17 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:17 - Checking for ingame state...
+2026-07-19 17:15:18 - Ingame Detection: text not matched.
+2026-07-19 17:15:18 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:18 - Checking for ingame state...
+2026-07-19 17:15:18 - Ingame Detection: text not matched.
+2026-07-19 17:15:19 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:19 - Checking for ingame state...
+2026-07-19 17:15:19 - Ingame Detection: text not matched.
+2026-07-19 17:15:19 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:19 - Checking for ingame state...
+2026-07-19 17:15:20 - Ingame Detection: text not matched.
+2026-07-19 17:15:20 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:20 - Checking for ingame state...
+2026-07-19 17:15:21 - Ingame Detection: text not matched.
+2026-07-19 17:15:21 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:21 - Checking for ingame state...
+2026-07-19 17:15:22 - Ingame Detection: text not matched.
+2026-07-19 17:15:23 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:23 - Checking for ingame state...
+2026-07-19 17:15:23 - Ingame Detection: text matched.
+2026-07-19 17:15:24 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:15:24 - Screen 'Map Detection' -> jumping to 'Ingame'.
+2026-07-19 17:15:24 - Camera Setup step running (last detected map: 'Flower Forest')...
+2026-07-19 17:15:24 - Camera setup for 'Flower Forest': using its own custom actions (3 configured).
+2026-07-19 17:15:25 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 17:15:25 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 17:15:26 - Map action: dragged (900, 200) -> (850, 200) over 100ms.
+2026-07-19 17:15:27 - Waited 0.20000000000000001s after 'Camera Setup'.
+2026-07-19 17:15:27 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:15:27 - Placing towers for map: Flower Forest
+2026-07-19 17:15:27 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:15:28 - After-place click at (450, 290)
+2026-07-19 17:15:28 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:15:28 - After-place click at (450, 290)
+2026-07-19 17:15:29 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:15:29 - After-place click at (450, 290)
+2026-07-19 17:15:30 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:15:30 - After-place click at (450, 290)
+2026-07-19 17:15:30 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:15:31 - After-place click at (450, 290)
+2026-07-19 17:15:31 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:15:31 - Clicked '' at (608, 578)
+2026-07-19 17:15:32 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:32 - Clicked '' at (608, 578)
+2026-07-19 17:15:32 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:33 - Clicked '' at (608, 578)
+2026-07-19 17:15:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:33 - Clicked '' at (608, 578)
+2026-07-19 17:15:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:34 - Clicked '' at (608, 578)
+2026-07-19 17:15:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:34 - Clicked '' at (608, 578)
+2026-07-19 17:15:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:35 - Clicked '' at (608, 578)
+2026-07-19 17:15:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:36 - Clicked '' at (608, 578)
+2026-07-19 17:15:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:36 - Clicked '' at (608, 578)
+2026-07-19 17:15:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:37 - Clicked '' at (608, 578)
+2026-07-19 17:15:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:37 - Clicked '' at (608, 578)
+2026-07-19 17:15:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:38 - Clicked '' at (608, 578)
+2026-07-19 17:15:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:38 - Checking for 'Victory Defeat'...
+2026-07-19 17:15:39 - Custom Detection: text not matched.
+2026-07-19 17:15:39 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:15:39 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:15:39 - Placing towers for map: Flower Forest
+2026-07-19 17:15:40 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:15:40 - After-place click at (450, 290)
+2026-07-19 17:15:41 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:15:41 - After-place click at (450, 290)
+2026-07-19 17:15:41 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:15:42 - After-place click at (450, 290)
+2026-07-19 17:15:42 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:15:42 - After-place click at (450, 290)
+2026-07-19 17:15:43 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:15:43 - After-place click at (450, 290)
+2026-07-19 17:15:43 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:15:44 - Clicked '' at (608, 578)
+2026-07-19 17:15:44 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:44 - Clicked '' at (608, 578)
+2026-07-19 17:15:45 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:45 - Clicked '' at (608, 578)
+2026-07-19 17:15:45 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:46 - Clicked '' at (608, 578)
+2026-07-19 17:15:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:46 - Clicked '' at (608, 578)
+2026-07-19 17:15:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:47 - Clicked '' at (608, 578)
+2026-07-19 17:15:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:47 - Clicked '' at (608, 578)
+2026-07-19 17:15:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:48 - Clicked '' at (608, 578)
+2026-07-19 17:15:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:49 - Clicked '' at (608, 578)
+2026-07-19 17:15:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:49 - Clicked '' at (608, 578)
+2026-07-19 17:15:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:50 - Clicked '' at (608, 578)
+2026-07-19 17:15:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:50 - Clicked '' at (608, 578)
+2026-07-19 17:15:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:50 - Checking for 'Victory Defeat'...
+2026-07-19 17:15:51 - Custom Detection: text not matched.
+2026-07-19 17:15:51 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:15:51 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:15:51 - Placing towers for map: Flower Forest
+2026-07-19 17:15:52 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:15:52 - After-place click at (450, 290)
+2026-07-19 17:15:52 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:15:53 - After-place click at (450, 290)
+2026-07-19 17:15:53 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:15:54 - After-place click at (450, 290)
+2026-07-19 17:15:54 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:15:54 - After-place click at (450, 290)
+2026-07-19 17:15:55 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:15:55 - After-place click at (450, 290)
+2026-07-19 17:15:56 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:15:56 - Clicked '' at (608, 578)
+2026-07-19 17:15:56 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:57 - Clicked '' at (608, 578)
+2026-07-19 17:15:57 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:57 - Clicked '' at (608, 578)
+2026-07-19 17:15:57 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:58 - Clicked '' at (608, 578)
+2026-07-19 17:15:58 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:58 - Clicked '' at (608, 578)
+2026-07-19 17:15:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:15:59 - Clicked '' at (608, 578)
+2026-07-19 17:15:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:00 - Clicked '' at (608, 578)
+2026-07-19 17:16:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:00 - Clicked '' at (608, 578)
+2026-07-19 17:16:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:01 - Clicked '' at (608, 578)
+2026-07-19 17:16:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:01 - Clicked '' at (608, 578)
+2026-07-19 17:16:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:02 - Clicked '' at (608, 578)
+2026-07-19 17:16:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:03 - Clicked '' at (608, 578)
+2026-07-19 17:16:03 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:03 - Checking for 'Victory Defeat'...
+2026-07-19 17:16:04 - Custom Detection: text not matched.
+2026-07-19 17:16:04 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:16:04 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:16:04 - Placing towers for map: Flower Forest
+2026-07-19 17:16:04 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:16:05 - After-place click at (450, 290)
+2026-07-19 17:16:05 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:16:05 - After-place click at (450, 290)
+2026-07-19 17:16:06 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:16:06 - After-place click at (450, 290)
+2026-07-19 17:16:07 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:16:07 - After-place click at (450, 290)
+2026-07-19 17:16:07 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:16:08 - After-place click at (450, 290)
+2026-07-19 17:16:08 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:16:09 - Clicked '' at (608, 578)
+2026-07-19 17:16:09 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:09 - Clicked '' at (608, 578)
+2026-07-19 17:16:09 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:10 - Clicked '' at (608, 578)
+2026-07-19 17:16:10 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:10 - Clicked '' at (608, 578)
+2026-07-19 17:16:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:11 - Clicked '' at (608, 578)
+2026-07-19 17:16:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:12 - Clicked '' at (608, 578)
+2026-07-19 17:16:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:12 - Clicked '' at (608, 578)
+2026-07-19 17:16:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:13 - Clicked '' at (608, 578)
+2026-07-19 17:16:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:13 - Clicked '' at (608, 578)
+2026-07-19 17:16:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:14 - Clicked '' at (608, 578)
+2026-07-19 17:16:14 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:14 - Clicked '' at (608, 578)
+2026-07-19 17:16:15 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:15 - Clicked '' at (608, 578)
+2026-07-19 17:16:15 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:15 - Checking for 'Victory Defeat'...
+2026-07-19 17:16:16 - Custom Detection: text not matched.
+2026-07-19 17:16:16 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:16:16 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:16:16 - Placing towers for map: Flower Forest
+2026-07-19 17:16:16 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:16:17 - After-place click at (450, 290)
+2026-07-19 17:16:17 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:16:18 - After-place click at (450, 290)
+2026-07-19 17:16:18 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:16:18 - After-place click at (450, 290)
+2026-07-19 17:16:19 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:16:19 - After-place click at (450, 290)
+2026-07-19 17:16:19 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:16:20 - After-place click at (450, 290)
+2026-07-19 17:16:20 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:16:21 - Clicked '' at (608, 578)
+2026-07-19 17:16:21 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:21 - Clicked '' at (608, 578)
+2026-07-19 17:16:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:22 - Clicked '' at (608, 578)
+2026-07-19 17:16:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:23 - Clicked '' at (608, 578)
+2026-07-19 17:16:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:23 - Clicked '' at (608, 578)
+2026-07-19 17:16:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:24 - Clicked '' at (608, 578)
+2026-07-19 17:16:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:24 - Clicked '' at (608, 578)
+2026-07-19 17:16:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:25 - Clicked '' at (608, 578)
+2026-07-19 17:16:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:26 - Clicked '' at (608, 578)
+2026-07-19 17:16:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:26 - Clicked '' at (608, 578)
+2026-07-19 17:16:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:27 - Clicked '' at (608, 578)
+2026-07-19 17:16:27 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:27 - Clicked '' at (608, 578)
+2026-07-19 17:16:28 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:28 - Checking for 'Victory Defeat'...
+2026-07-19 17:16:28 - Custom Detection: text not matched.
+2026-07-19 17:16:28 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:16:28 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:16:28 - Placing towers for map: Flower Forest
+2026-07-19 17:16:29 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:16:29 - After-place click at (450, 290)
+2026-07-19 17:16:30 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:16:30 - After-place click at (450, 290)
+2026-07-19 17:16:31 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:16:31 - After-place click at (450, 290)
+2026-07-19 17:16:31 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:16:32 - After-place click at (450, 290)
+2026-07-19 17:16:32 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:16:32 - After-place click at (450, 290)
+2026-07-19 17:16:33 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:16:33 - Clicked '' at (608, 578)
+2026-07-19 17:16:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:34 - Clicked '' at (608, 578)
+2026-07-19 17:16:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:34 - Clicked '' at (608, 578)
+2026-07-19 17:16:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:35 - Clicked '' at (608, 578)
+2026-07-19 17:16:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:35 - Clicked '' at (608, 578)
+2026-07-19 17:16:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:36 - Clicked '' at (608, 578)
+2026-07-19 17:16:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:37 - Clicked '' at (608, 578)
+2026-07-19 17:16:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:37 - Clicked '' at (608, 578)
+2026-07-19 17:16:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:38 - Clicked '' at (608, 578)
+2026-07-19 17:16:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:39 - Clicked '' at (608, 578)
+2026-07-19 17:16:39 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:39 - Clicked '' at (608, 578)
+2026-07-19 17:16:39 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:40 - Clicked '' at (608, 578)
+2026-07-19 17:16:40 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:40 - Checking for 'Victory Defeat'...
+2026-07-19 17:16:41 - Custom Detection: text not matched.
+2026-07-19 17:16:41 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:16:41 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:16:41 - Placing towers for map: Flower Forest
+2026-07-19 17:16:41 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:16:42 - After-place click at (450, 290)
+2026-07-19 17:16:42 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:16:42 - After-place click at (450, 290)
+2026-07-19 17:16:43 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:16:43 - After-place click at (450, 290)
+2026-07-19 17:16:44 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:16:44 - After-place click at (450, 290)
+2026-07-19 17:16:44 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:16:45 - After-place click at (450, 290)
+2026-07-19 17:16:45 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:16:46 - Clicked '' at (608, 578)
+2026-07-19 17:16:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:46 - Clicked '' at (608, 578)
+2026-07-19 17:16:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:47 - Clicked '' at (608, 578)
+2026-07-19 17:16:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:47 - Clicked '' at (608, 578)
+2026-07-19 17:16:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:48 - Clicked '' at (608, 578)
+2026-07-19 17:16:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:48 - Clicked '' at (608, 578)
+2026-07-19 17:16:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:49 - Clicked '' at (608, 578)
+2026-07-19 17:16:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:50 - Clicked '' at (608, 578)
+2026-07-19 17:16:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:50 - Clicked '' at (608, 578)
+2026-07-19 17:16:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:51 - Clicked '' at (608, 578)
+2026-07-19 17:16:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:52 - Clicked '' at (608, 578)
+2026-07-19 17:16:52 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:52 - Clicked '' at (608, 578)
+2026-07-19 17:16:52 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:52 - Checking for 'Victory Defeat'...
+2026-07-19 17:16:53 - Custom Detection: text not matched.
+2026-07-19 17:16:53 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:16:53 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:16:53 - Placing towers for map: Flower Forest
+2026-07-19 17:16:54 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:16:54 - After-place click at (450, 290)
+2026-07-19 17:16:55 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:16:55 - After-place click at (450, 290)
+2026-07-19 17:16:55 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:16:56 - After-place click at (450, 290)
+2026-07-19 17:16:56 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:16:56 - After-place click at (450, 290)
+2026-07-19 17:16:57 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:16:57 - After-place click at (450, 290)
+2026-07-19 17:16:58 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:16:58 - Clicked '' at (608, 578)
+2026-07-19 17:16:58 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:59 - Clicked '' at (608, 578)
+2026-07-19 17:16:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:16:59 - Clicked '' at (608, 578)
+2026-07-19 17:16:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:00 - Clicked '' at (608, 578)
+2026-07-19 17:17:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:00 - Clicked '' at (608, 578)
+2026-07-19 17:17:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:01 - Clicked '' at (608, 578)
+2026-07-19 17:17:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:01 - Clicked '' at (608, 578)
+2026-07-19 17:17:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:02 - Clicked '' at (608, 578)
+2026-07-19 17:17:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:03 - Clicked '' at (608, 578)
+2026-07-19 17:17:03 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:03 - Clicked '' at (608, 578)
+2026-07-19 17:17:03 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:04 - Clicked '' at (608, 578)
+2026-07-19 17:17:04 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:04 - Clicked '' at (608, 578)
+2026-07-19 17:17:04 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:04 - Checking for 'Victory Defeat'...
+2026-07-19 17:17:05 - Custom Detection: text not matched.
+2026-07-19 17:17:05 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:17:05 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:17:05 - Placing towers for map: Flower Forest
+2026-07-19 17:17:06 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:17:06 - After-place click at (450, 290)
+2026-07-19 17:17:07 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:17:07 - After-place click at (450, 290)
+2026-07-19 17:17:07 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:17:08 - After-place click at (450, 290)
+2026-07-19 17:17:08 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:17:08 - After-place click at (450, 290)
+2026-07-19 17:17:09 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:17:09 - After-place click at (450, 290)
+2026-07-19 17:17:10 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:17:10 - Clicked '' at (608, 578)
+2026-07-19 17:17:10 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:11 - Clicked '' at (608, 578)
+2026-07-19 17:17:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:11 - Clicked '' at (608, 578)
+2026-07-19 17:17:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:12 - Clicked '' at (608, 578)
+2026-07-19 17:17:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:12 - Clicked '' at (608, 578)
+2026-07-19 17:17:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:13 - Clicked '' at (608, 578)
+2026-07-19 17:17:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:14 - Clicked '' at (608, 578)
+2026-07-19 17:17:14 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:14 - Clicked '' at (608, 578)
+2026-07-19 17:17:14 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:15 - Clicked '' at (608, 578)
+2026-07-19 17:17:15 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:15 - Clicked '' at (608, 578)
+2026-07-19 17:17:15 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:16 - Clicked '' at (608, 578)
+2026-07-19 17:17:16 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:16 - Clicked '' at (608, 578)
+2026-07-19 17:17:17 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:17 - Checking for 'Victory Defeat'...
+2026-07-19 17:17:17 - Custom Detection: text not matched.
+2026-07-19 17:17:17 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:17:17 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:17:17 - Placing towers for map: Flower Forest
+2026-07-19 17:17:18 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:17:18 - After-place click at (450, 290)
+2026-07-19 17:17:19 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:17:19 - After-place click at (450, 290)
+2026-07-19 17:17:19 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:17:20 - After-place click at (450, 290)
+2026-07-19 17:17:20 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:17:20 - After-place click at (450, 290)
+2026-07-19 17:17:21 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:17:21 - After-place click at (450, 290)
+2026-07-19 17:17:22 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:17:22 - Clicked '' at (608, 578)
+2026-07-19 17:17:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:23 - Clicked '' at (608, 578)
+2026-07-19 17:17:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:23 - Clicked '' at (608, 578)
+2026-07-19 17:17:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:24 - Clicked '' at (608, 578)
+2026-07-19 17:17:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:24 - Clicked '' at (608, 578)
+2026-07-19 17:17:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:25 - Clicked '' at (608, 578)
+2026-07-19 17:17:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:25 - Clicked '' at (608, 578)
+2026-07-19 17:17:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:26 - Clicked '' at (608, 578)
+2026-07-19 17:17:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:27 - Clicked '' at (608, 578)
+2026-07-19 17:17:27 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:27 - Clicked '' at (608, 578)
+2026-07-19 17:17:27 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:28 - Clicked '' at (608, 578)
+2026-07-19 17:17:28 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:28 - Clicked '' at (608, 578)
+2026-07-19 17:17:29 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:29 - Checking for 'Victory Defeat'...
+2026-07-19 17:17:29 - Custom Detection: text not matched.
+2026-07-19 17:17:29 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:17:29 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:17:29 - Placing towers for map: Flower Forest
+2026-07-19 17:17:30 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:17:30 - After-place click at (450, 290)
+2026-07-19 17:17:31 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:17:31 - After-place click at (450, 290)
+2026-07-19 17:17:31 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:17:32 - After-place click at (450, 290)
+2026-07-19 17:17:32 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:17:33 - After-place click at (450, 290)
+2026-07-19 17:17:33 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:17:33 - After-place click at (450, 290)
+2026-07-19 17:17:34 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:17:34 - Clicked '' at (608, 578)
+2026-07-19 17:17:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:35 - Clicked '' at (608, 578)
+2026-07-19 17:17:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:35 - Clicked '' at (608, 578)
+2026-07-19 17:17:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:36 - Clicked '' at (608, 578)
+2026-07-19 17:17:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:36 - Clicked '' at (608, 578)
+2026-07-19 17:17:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:37 - Clicked '' at (608, 578)
+2026-07-19 17:17:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:37 - Clicked '' at (608, 578)
+2026-07-19 17:17:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:38 - Clicked '' at (608, 578)
+2026-07-19 17:17:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:39 - Clicked '' at (608, 578)
+2026-07-19 17:17:39 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:39 - Clicked '' at (608, 578)
+2026-07-19 17:17:40 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:40 - Clicked '' at (608, 578)
+2026-07-19 17:17:40 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:41 - Clicked '' at (608, 578)
+2026-07-19 17:17:41 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:41 - Checking for 'Victory Defeat'...
+2026-07-19 17:17:42 - Custom Detection: text not matched.
+2026-07-19 17:17:42 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:17:42 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:17:42 - Placing towers for map: Flower Forest
+2026-07-19 17:17:42 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:17:43 - After-place click at (450, 290)
+2026-07-19 17:17:43 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:17:43 - After-place click at (450, 290)
+2026-07-19 17:17:44 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:17:44 - After-place click at (450, 290)
+2026-07-19 17:17:45 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:17:45 - After-place click at (450, 290)
+2026-07-19 17:17:45 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:17:46 - After-place click at (450, 290)
+2026-07-19 17:17:46 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:17:47 - Clicked '' at (608, 578)
+2026-07-19 17:17:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:47 - Clicked '' at (608, 578)
+2026-07-19 17:17:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:48 - Clicked '' at (608, 578)
+2026-07-19 17:17:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:48 - Clicked '' at (608, 578)
+2026-07-19 17:17:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:49 - Clicked '' at (608, 578)
+2026-07-19 17:17:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:49 - Clicked '' at (608, 578)
+2026-07-19 17:17:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:50 - Clicked '' at (608, 578)
+2026-07-19 17:17:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:51 - Clicked '' at (608, 578)
+2026-07-19 17:17:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:51 - Clicked '' at (608, 578)
+2026-07-19 17:17:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:52 - Clicked '' at (608, 578)
+2026-07-19 17:17:52 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:52 - Clicked '' at (608, 578)
+2026-07-19 17:17:53 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:53 - Clicked '' at (608, 578)
+2026-07-19 17:17:53 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:53 - Checking for 'Victory Defeat'...
+2026-07-19 17:17:54 - Custom Detection: text not matched.
+2026-07-19 17:17:54 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:17:54 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:17:54 - Placing towers for map: Flower Forest
+2026-07-19 17:17:55 - Slot 5 placed at (723, 404) [Flower Forest]
+2026-07-19 17:17:55 - After-place click at (450, 290)
+2026-07-19 17:17:55 - Slot 5 placed at (697, 422) [Flower Forest]
+2026-07-19 17:17:56 - After-place click at (450, 290)
+2026-07-19 17:17:56 - Slot 5 placed at (155, 494) [Flower Forest]
+2026-07-19 17:17:56 - After-place click at (450, 290)
+2026-07-19 17:17:57 - Slot 4 placed at (122, 450) [Flower Forest]
+2026-07-19 17:17:57 - After-place click at (450, 290)
+2026-07-19 17:17:58 - Slot 1 placed at (224, 392) [Flower Forest]
+2026-07-19 17:17:58 - After-place click at (450, 290)
+2026-07-19 17:17:58 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:17:59 - Clicked '' at (608, 578)
+2026-07-19 17:17:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:17:59 - Clicked '' at (608, 578)
+2026-07-19 17:18:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:00 - Clicked '' at (608, 578)
+2026-07-19 17:18:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:00 - Clicked '' at (608, 578)
+2026-07-19 17:18:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:01 - Clicked '' at (608, 578)
+2026-07-19 17:18:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:02 - Clicked '' at (608, 578)
+2026-07-19 17:18:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:02 - Clicked '' at (608, 578)
+2026-07-19 17:18:02 - Overlay closed. Window lock released.
+2026-07-19 17:18:02 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:18:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:18:02 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:18:06 - Overlay opened.
+2026-07-19 17:18:07 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:18:07 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 17:18:08 - Overlay closed. Window lock released.
+2026-07-19 17:18:38 - Overlay opened.
+2026-07-19 17:18:38 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:18:38 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 17:19:36 - Overlay closed. Window lock released.
+2026-07-19 17:25:06 - Overlay opened.
+2026-07-19 17:25:06 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:25:07 - Macro started using preset 'Challenges'.
+2026-07-19 17:25:07 - Checking for 'Store Units Items Quests Summon Areas Play Events'...
+2026-07-19 17:25:08 - Custom Detection: text not matched.
+2026-07-19 17:25:08 - Overlay closed. Window lock released.
+2026-07-19 17:25:08 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:25:08 - Waited 0.29999999999999999s after 'Custom Detection'.
+2026-07-19 17:25:08 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:25:09 - Overlay opened.
+2026-07-19 17:25:10 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:25:10 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 17:26:08 - Overlay closed. Window lock released.
+2026-07-19 17:35:46 - Overlay opened.
+2026-07-19 17:35:47 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:35:47 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 17:35:53 - Overlay closed. Window lock released.
+2026-07-19 17:36:25 - Preset 'Raid' created.
+2026-07-19 17:36:40 - Map profile 'Spirit City' created.
+2026-07-19 17:38:30 - Screen 'Screen 1' renamed to 'Ingame'.
+2026-07-19 17:38:51 - Screen 'Ingame' overwritten with 'Challenges' > 'Ingame' (15 step(s)).
+2026-07-19 17:39:35 - Added new screen 'Map Detection' imported from 'Challenges' > 'Map Detection' (3 step(s)).
+2026-07-19 17:40:00 - Added new screen 'Roblox' imported from 'Challenges' > 'Roblox' (4 step(s)).
+2026-07-19 17:40:06 - Added new screen 'Exit Roblox' imported from 'Challenges' > 'Exit Roblox' (5 step(s)).
+2026-07-19 17:40:59 - Screen deleted.
+2026-07-19 17:41:02 - Screen deleted.
+2026-07-19 17:41:23 - Added new screen 'Round End' imported from 'Challenges' > 'Round End' (2 step(s)).
+2026-07-19 17:41:46 - Screen 'Round End' overwritten with 'Mastery' > 'Round End' (1 step(s)).
+2026-07-19 17:42:08 - Configuration saved.
+2026-07-19 17:42:08 - Configuration saved.
+2026-07-19 17:42:08 - Configuration saved.
+2026-07-19 17:42:08 - Configuration saved.
+2026-07-19 17:43:08 - Step OCR test result: '
+'
+2026-07-19 17:43:12 - Step OCR test result: '
+'
+2026-07-19 17:43:21 - Step OCR test result: 'Raid Spirit City - Act 1 M Ode
+'
+2026-07-19 17:43:44 - Overlay opened.
+2026-07-19 17:43:44 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:43:44 - Macro started using preset 'Mastery'.
+2026-07-19 17:43:44 - Detecting map...
+2026-07-19 17:43:45 - Map detected: Spirit City
+2026-07-19 17:43:45 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:43:46 - Clicked 'Start-Button' at (733, 555)
+2026-07-19 17:43:48 - Waited 1s after 'Press Start Button'.
+2026-07-19 17:43:48 - Screen 'Before Map Detection' -> jumping to 'Ingame'.
+2026-07-19 17:43:48 - Checking for ingame state...
+2026-07-19 17:43:48 - Overlay closed. Window lock released.
+2026-07-19 17:43:48 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:43:48 - Ingame Detection: text not matched.
+2026-07-19 17:43:48 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:43:48 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:44:00 - Configuration saved.
+2026-07-19 17:44:00 - Configuration saved.
+2026-07-19 17:44:00 - Configuration saved.
+2026-07-19 17:44:00 - Configuration saved.
+2026-07-19 17:44:01 - Overlay opened.
+2026-07-19 17:44:02 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:44:02 - Macro started using preset 'Mastery'.
+2026-07-19 17:44:02 - Detecting map...
+2026-07-19 17:44:03 - Map detected: Spirit City
+2026-07-19 17:44:03 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:44:03 - Clicked 'Start-Button' at (787, 589)
+2026-07-19 17:44:05 - Waited 1s after 'Press Start Button'.
+2026-07-19 17:44:05 - Screen 'Before Map Detection' -> jumping to 'Ingame'.
+2026-07-19 17:44:05 - Checking for ingame state...
+2026-07-19 17:44:06 - Ingame Detection: text not matched.
+2026-07-19 17:44:06 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:06 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:06 - Checking for ingame state...
+2026-07-19 17:44:07 - Ingame Detection: text not matched.
+2026-07-19 17:44:07 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:07 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:07 - Checking for ingame state...
+2026-07-19 17:44:08 - Ingame Detection: text not matched.
+2026-07-19 17:44:08 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:08 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:08 - Checking for ingame state...
+2026-07-19 17:44:08 - Ingame Detection: text not matched.
+2026-07-19 17:44:09 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:09 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:09 - Checking for ingame state...
+2026-07-19 17:44:09 - Ingame Detection: text not matched.
+2026-07-19 17:44:09 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:09 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:09 - Checking for ingame state...
+2026-07-19 17:44:11 - Ingame Detection: text not matched.
+2026-07-19 17:44:11 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:11 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:11 - Checking for ingame state...
+2026-07-19 17:44:12 - Ingame Detection: text not matched.
+2026-07-19 17:44:12 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:12 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:12 - Checking for ingame state...
+2026-07-19 17:44:12 - Ingame Detection: text not matched.
+2026-07-19 17:44:13 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:13 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:13 - Checking for ingame state...
+2026-07-19 17:44:13 - Ingame Detection: text not matched.
+2026-07-19 17:44:14 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:14 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:14 - Checking for ingame state...
+2026-07-19 17:44:14 - Ingame Detection: text not matched.
+2026-07-19 17:44:14 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:14 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:14 - Checking for ingame state...
+2026-07-19 17:44:15 - Ingame Detection: text not matched.
+2026-07-19 17:44:15 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:15 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:15 - Checking for ingame state...
+2026-07-19 17:44:16 - Ingame Detection: text not matched.
+2026-07-19 17:44:16 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:16 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:16 - Checking for ingame state...
+2026-07-19 17:44:17 - Ingame Detection: text not matched.
+2026-07-19 17:44:17 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:17 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:44:17 - Checking for ingame state...
+2026-07-19 17:44:18 - Ingame Detection: text matched.
+2026-07-19 17:44:18 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:44:18 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 17:44:18 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 17:44:19 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 17:44:21 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 17:44:21 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 17:44:22 - Waited 0.20000000000000001s after 'Camera Setup'.
+2026-07-19 17:44:22 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:44:22 - Placing towers for map: Spirit City
+2026-07-19 17:44:23 - Slot 5 placed at (0, 0) [Spirit City]
+2026-07-19 17:44:23 - After-place click at (450, 290)
+2026-07-19 17:44:24 - Slot 5 placed at (0, 0) [Spirit City]
+2026-07-19 17:44:24 - After-place click at (450, 290)
+2026-07-19 17:44:24 - Overlay closed. Window lock released.
+2026-07-19 17:44:24 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:44:24 - Slot 5 placed at (0, 0) [Spirit City]
+2026-07-19 17:44:25 - After-place click at (450, 290)
+2026-07-19 17:44:25 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:44:28 - Overlay opened.
+2026-07-19 17:44:29 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:44:29 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 17:44:42 - Configuration saved.
+2026-07-19 17:44:42 - Configuration saved.
+2026-07-19 17:44:42 - Configuration saved.
+2026-07-19 17:44:42 - Configuration saved.
+2026-07-19 17:44:43 - Configuration saved.
+2026-07-19 17:45:18 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:45:18 - Macro started using preset 'Raid'.
+2026-07-19 17:45:18 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 17:45:18 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 17:45:19 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 17:45:21 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 17:45:21 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 17:45:22 - Waited 0.20000000000000001s after 'Camera Setup'.
+2026-07-19 17:45:22 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:45:22 - Placing towers for map: Spirit City
+2026-07-19 17:45:22 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:45:22 - Overlay closed. Window lock released.
+2026-07-19 17:45:22 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:45:22 - After-place click at (450, 290)
+2026-07-19 17:45:22 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:45:47 - Overlay opened.
+2026-07-19 17:45:48 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:45:48 - Macro started using preset 'Raid'.
+2026-07-19 17:45:48 - Screen 'Map Detection' -> jumping to 'Ingame'.
+2026-07-19 17:45:48 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 17:45:48 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 17:45:49 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 17:45:50 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 17:45:51 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 17:45:51 - Waited 0.20000000000000001s after 'Camera Setup'.
+2026-07-19 17:45:51 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:45:51 - Placing towers for map: Spirit City
+2026-07-19 17:45:52 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:45:52 - After-place click at (450, 290)
+2026-07-19 17:45:52 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:45:53 - After-place click at (450, 290)
+2026-07-19 17:45:53 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:45:54 - After-place click at (450, 290)
+2026-07-19 17:45:54 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:45:54 - After-place click at (450, 290)
+2026-07-19 17:45:55 - Overlay closed. Window lock released.
+2026-07-19 17:45:55 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:45:55 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:45:55 - After-place click at (450, 290)
+2026-07-19 17:45:55 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:45:55 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:46:18 - Configuration saved.
+2026-07-19 17:46:19 - Configuration saved.
+2026-07-19 17:46:19 - Configuration saved.
+2026-07-19 17:46:20 - Overlay opened.
+2026-07-19 17:46:20 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:46:20 - Macro started using preset 'Raid'.
+2026-07-19 17:46:20 - Detecting map...
+2026-07-19 17:46:26 - WARNING: no map detected (OCR text did not match any map profile).
+2026-07-19 17:46:27 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:46:27 - Detecting map...
+2026-07-19 17:46:32 - WARNING: no map detected (OCR text did not match any map profile).
+2026-07-19 17:46:33 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:46:33 - Detecting map...
+2026-07-19 17:46:38 - WARNING: no map detected (OCR text did not match any map profile).
+2026-07-19 17:46:38 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:46:39 - Detecting map...
+2026-07-19 17:46:42 - Overlay closed. Window lock released.
+2026-07-19 17:46:42 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:46:44 - WARNING: no map detected (OCR text did not match any map profile).
+2026-07-19 17:46:44 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:46:44 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:46:52 - Step OCR test result: '
+'
+2026-07-19 17:47:01 - Step OCR test result: 'Raid Spirit City - Act 1 M Ode
+'
+2026-07-19 17:47:05 - Configuration saved.
+2026-07-19 17:47:05 - Configuration saved.
+2026-07-19 17:47:06 - Configuration saved.
+2026-07-19 17:47:19 - Step OCR test result: 'Raid Spirit City - Act 1
+'
+2026-07-19 17:47:22 - Configuration saved.
+2026-07-19 17:47:23 - Configuration saved.
+2026-07-19 17:47:23 - Configuration saved.
+2026-07-19 17:47:24 - Overlay opened.
+2026-07-19 17:47:25 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:47:25 - Macro started using preset 'Raid'.
+2026-07-19 17:47:25 - Detecting map...
+2026-07-19 17:47:26 - Map detected: Spirit City
+2026-07-19 17:47:26 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:47:26 - Clicked 'Challenges' at (838, 555)
+2026-07-19 17:47:27 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:47:27 - Checking for ingame state...
+2026-07-19 17:47:28 - Ingame Detection: text not matched.
+2026-07-19 17:47:28 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:47:28 - Checking for ingame state...
+2026-07-19 17:47:29 - Ingame Detection: text not matched.
+2026-07-19 17:47:29 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:47:29 - Checking for ingame state...
+2026-07-19 17:47:30 - Ingame Detection: text not matched.
+2026-07-19 17:47:30 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:47:30 - Checking for ingame state...
+2026-07-19 17:47:30 - Overlay closed. Window lock released.
+2026-07-19 17:47:30 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:47:31 - Ingame Detection: text not matched.
+2026-07-19 17:47:31 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:47:31 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:47:53 - Configuration saved.
+2026-07-19 17:47:53 - Configuration saved.
+2026-07-19 17:47:53 - Configuration saved.
+2026-07-19 17:47:53 - Configuration saved.
+2026-07-19 17:47:55 - Overlay opened.
+2026-07-19 17:47:56 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 17:47:56 - Macro started using preset 'Raid'.
+2026-07-19 17:47:56 - Detecting map...
+2026-07-19 17:47:57 - Map detected: Spirit City
+2026-07-19 17:47:57 - Waited 0.10000000000000001s after 'Detect Map'.
+2026-07-19 17:47:58 - Clicked '' at (784, 591)
+2026-07-19 17:47:59 - Waited 0.5s after 'Button Click'.
+2026-07-19 17:47:59 - Checking for ingame state...
+2026-07-19 17:47:59 - Ingame Detection: text not matched.
+2026-07-19 17:48:00 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:00 - Checking for ingame state...
+2026-07-19 17:48:00 - Ingame Detection: text not matched.
+2026-07-19 17:48:01 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:01 - Checking for ingame state...
+2026-07-19 17:48:01 - Ingame Detection: text not matched.
+2026-07-19 17:48:02 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:02 - Checking for ingame state...
+2026-07-19 17:48:02 - Ingame Detection: text not matched.
+2026-07-19 17:48:02 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:02 - Checking for ingame state...
+2026-07-19 17:48:03 - Ingame Detection: text not matched.
+2026-07-19 17:48:03 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:03 - Checking for ingame state...
+2026-07-19 17:48:05 - Ingame Detection: text not matched.
+2026-07-19 17:48:05 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:05 - Checking for ingame state...
+2026-07-19 17:48:05 - Ingame Detection: text not matched.
+2026-07-19 17:48:06 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:06 - Checking for ingame state...
+2026-07-19 17:48:06 - Ingame Detection: text not matched.
+2026-07-19 17:48:07 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:07 - Checking for ingame state...
+2026-07-19 17:48:07 - Ingame Detection: text not matched.
+2026-07-19 17:48:08 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:08 - Checking for ingame state...
+2026-07-19 17:48:08 - Ingame Detection: text not matched.
+2026-07-19 17:48:08 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:08 - Checking for ingame state...
+2026-07-19 17:48:09 - Ingame Detection: text not matched.
+2026-07-19 17:48:09 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:09 - Checking for ingame state...
+2026-07-19 17:48:10 - Ingame Detection: text not matched.
+2026-07-19 17:48:10 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:10 - Checking for ingame state...
+2026-07-19 17:48:11 - Ingame Detection: text not matched.
+2026-07-19 17:48:11 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:11 - Checking for ingame state...
+2026-07-19 17:48:12 - Ingame Detection: text matched.
+2026-07-19 17:48:13 - Waited 0.10000000000000001s after 'Ingame Detection'.
+2026-07-19 17:48:13 - Screen 'Map Detection' -> jumping to 'Ingame'.
+2026-07-19 17:48:13 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 17:48:13 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 17:48:14 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 17:48:15 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 17:48:15 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 17:48:16 - Waited 0.20000000000000001s after 'Camera Setup'.
+2026-07-19 17:48:16 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:48:16 - Placing towers for map: Spirit City
+2026-07-19 17:48:17 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:48:17 - After-place click at (450, 290)
+2026-07-19 17:48:17 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:48:18 - After-place click at (450, 290)
+2026-07-19 17:48:18 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:48:18 - After-place click at (450, 290)
+2026-07-19 17:48:19 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:48:19 - After-place click at (450, 290)
+2026-07-19 17:48:20 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:48:20 - After-place click at (450, 290)
+2026-07-19 17:48:20 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:48:21 - Clicked '' at (608, 578)
+2026-07-19 17:48:21 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:22 - Clicked '' at (608, 578)
+2026-07-19 17:48:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:22 - Clicked '' at (608, 578)
+2026-07-19 17:48:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:23 - Clicked '' at (608, 578)
+2026-07-19 17:48:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:23 - Clicked '' at (608, 578)
+2026-07-19 17:48:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:24 - Clicked '' at (608, 578)
+2026-07-19 17:48:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:24 - Clicked '' at (608, 578)
+2026-07-19 17:48:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:25 - Clicked '' at (608, 578)
+2026-07-19 17:48:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:26 - Clicked '' at (608, 578)
+2026-07-19 17:48:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:26 - Clicked '' at (608, 578)
+2026-07-19 17:48:26 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:27 - Clicked '' at (608, 578)
+2026-07-19 17:48:27 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:27 - Clicked '' at (608, 578)
+2026-07-19 17:48:28 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:28 - Checking for 'Victory Defeat'...
+2026-07-19 17:48:28 - Custom Detection: text not matched.
+2026-07-19 17:48:28 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:48:28 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:48:28 - Placing towers for map: Spirit City
+2026-07-19 17:48:29 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:48:29 - After-place click at (450, 290)
+2026-07-19 17:48:30 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:48:30 - After-place click at (450, 290)
+2026-07-19 17:48:30 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:48:31 - After-place click at (450, 290)
+2026-07-19 17:48:31 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:48:31 - After-place click at (450, 290)
+2026-07-19 17:48:32 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:48:32 - After-place click at (450, 290)
+2026-07-19 17:48:33 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:48:33 - Clicked '' at (608, 578)
+2026-07-19 17:48:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:34 - Clicked '' at (608, 578)
+2026-07-19 17:48:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:34 - Clicked '' at (608, 578)
+2026-07-19 17:48:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:35 - Clicked '' at (608, 578)
+2026-07-19 17:48:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:35 - Clicked '' at (608, 578)
+2026-07-19 17:48:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:36 - Clicked '' at (608, 578)
+2026-07-19 17:48:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:37 - Clicked '' at (608, 578)
+2026-07-19 17:48:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:37 - Clicked '' at (608, 578)
+2026-07-19 17:48:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:38 - Clicked '' at (608, 578)
+2026-07-19 17:48:38 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:38 - Clicked '' at (608, 578)
+2026-07-19 17:48:39 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:39 - Clicked '' at (608, 578)
+2026-07-19 17:48:39 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:40 - Clicked '' at (608, 578)
+2026-07-19 17:48:40 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:40 - Checking for 'Victory Defeat'...
+2026-07-19 17:48:41 - Custom Detection: text not matched.
+2026-07-19 17:48:41 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:48:41 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:48:41 - Placing towers for map: Spirit City
+2026-07-19 17:48:41 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:48:42 - After-place click at (450, 290)
+2026-07-19 17:48:42 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:48:42 - After-place click at (450, 290)
+2026-07-19 17:48:43 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:48:43 - After-place click at (450, 290)
+2026-07-19 17:48:44 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:48:44 - After-place click at (450, 290)
+2026-07-19 17:48:44 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:48:45 - After-place click at (450, 290)
+2026-07-19 17:48:45 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:48:46 - Clicked '' at (608, 578)
+2026-07-19 17:48:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:47 - Clicked '' at (608, 578)
+2026-07-19 17:48:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:47 - Clicked '' at (608, 578)
+2026-07-19 17:48:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:48 - Clicked '' at (608, 578)
+2026-07-19 17:48:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:48 - Clicked '' at (608, 578)
+2026-07-19 17:48:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:49 - Clicked '' at (608, 578)
+2026-07-19 17:48:49 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:49 - Clicked '' at (608, 578)
+2026-07-19 17:48:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:50 - Clicked '' at (608, 578)
+2026-07-19 17:48:50 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:51 - Clicked '' at (608, 578)
+2026-07-19 17:48:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:51 - Clicked '' at (608, 578)
+2026-07-19 17:48:51 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:52 - Clicked '' at (608, 578)
+2026-07-19 17:48:52 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:52 - Clicked '' at (608, 578)
+2026-07-19 17:48:52 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:52 - Checking for 'Victory Defeat'...
+2026-07-19 17:48:53 - Custom Detection: text not matched.
+2026-07-19 17:48:53 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:48:53 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:48:53 - Placing towers for map: Spirit City
+2026-07-19 17:48:54 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:48:54 - After-place click at (450, 290)
+2026-07-19 17:48:55 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:48:55 - After-place click at (450, 290)
+2026-07-19 17:48:55 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:48:56 - After-place click at (450, 290)
+2026-07-19 17:48:56 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:48:56 - After-place click at (450, 290)
+2026-07-19 17:48:57 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:48:57 - After-place click at (450, 290)
+2026-07-19 17:48:58 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:48:58 - Clicked '' at (608, 578)
+2026-07-19 17:48:58 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:59 - Clicked '' at (608, 578)
+2026-07-19 17:48:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:48:59 - Clicked '' at (608, 578)
+2026-07-19 17:48:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:00 - Clicked '' at (608, 578)
+2026-07-19 17:49:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:00 - Clicked '' at (608, 578)
+2026-07-19 17:49:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:01 - Clicked '' at (608, 578)
+2026-07-19 17:49:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:01 - Clicked '' at (608, 578)
+2026-07-19 17:49:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:02 - Clicked '' at (608, 578)
+2026-07-19 17:49:02 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:02 - Clicked '' at (608, 578)
+2026-07-19 17:49:03 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:03 - Clicked '' at (608, 578)
+2026-07-19 17:49:03 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:04 - Clicked '' at (608, 578)
+2026-07-19 17:49:04 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:04 - Clicked '' at (608, 578)
+2026-07-19 17:49:04 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:04 - Checking for 'Victory Defeat'...
+2026-07-19 17:49:05 - Custom Detection: text not matched.
+2026-07-19 17:49:05 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:49:05 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:49:05 - Placing towers for map: Spirit City
+2026-07-19 17:49:06 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:49:06 - After-place click at (450, 290)
+2026-07-19 17:49:06 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:49:07 - After-place click at (450, 290)
+2026-07-19 17:49:07 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:49:08 - After-place click at (450, 290)
+2026-07-19 17:49:08 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:49:08 - After-place click at (450, 290)
+2026-07-19 17:49:09 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:49:09 - After-place click at (450, 290)
+2026-07-19 17:49:09 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:49:10 - Clicked '' at (608, 578)
+2026-07-19 17:49:10 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:10 - Clicked '' at (608, 578)
+2026-07-19 17:49:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:11 - Clicked '' at (608, 578)
+2026-07-19 17:49:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:12 - Clicked '' at (608, 578)
+2026-07-19 17:49:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:12 - Clicked '' at (608, 578)
+2026-07-19 17:49:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:13 - Clicked '' at (608, 578)
+2026-07-19 17:49:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:13 - Clicked '' at (608, 578)
+2026-07-19 17:49:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:14 - Clicked '' at (608, 578)
+2026-07-19 17:49:14 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:14 - Clicked '' at (608, 578)
+2026-07-19 17:49:14 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:15 - Clicked '' at (608, 578)
+2026-07-19 17:49:15 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:15 - Clicked '' at (608, 578)
+2026-07-19 17:49:16 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:16 - Clicked '' at (608, 578)
+2026-07-19 17:49:16 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:16 - Checking for 'Victory Defeat'...
+2026-07-19 17:49:17 - Custom Detection: text matched.
+2026-07-19 17:49:17 - Screen 'Ingame' -> jumping to 'Round End'.
+2026-07-19 17:49:18 - Clicked 'Start-Button' at (400, 620)
+2026-07-19 17:49:25 - Waited 3s after 'Restart Stage Button'.
+2026-07-19 17:49:25 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 17:49:25 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:49:25 - Placing towers for map: Spirit City
+2026-07-19 17:49:25 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:49:26 - After-place click at (450, 290)
+2026-07-19 17:49:26 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:49:26 - After-place click at (450, 290)
+2026-07-19 17:49:27 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:49:27 - After-place click at (450, 290)
+2026-07-19 17:49:28 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:49:28 - After-place click at (450, 290)
+2026-07-19 17:49:28 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:49:29 - After-place click at (450, 290)
+2026-07-19 17:49:29 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:49:30 - Clicked '' at (608, 578)
+2026-07-19 17:49:30 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:30 - Clicked '' at (608, 578)
+2026-07-19 17:49:30 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:31 - Clicked '' at (608, 578)
+2026-07-19 17:49:31 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:31 - Clicked '' at (608, 578)
+2026-07-19 17:49:31 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:32 - Clicked '' at (608, 578)
+2026-07-19 17:49:32 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:32 - Clicked '' at (608, 578)
+2026-07-19 17:49:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:33 - Clicked '' at (608, 578)
+2026-07-19 17:49:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:34 - Clicked '' at (608, 578)
+2026-07-19 17:49:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:34 - Clicked '' at (608, 578)
+2026-07-19 17:49:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:35 - Clicked '' at (608, 578)
+2026-07-19 17:49:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:35 - Clicked '' at (608, 578)
+2026-07-19 17:49:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:36 - Clicked '' at (608, 578)
+2026-07-19 17:49:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:36 - Checking for 'Victory Defeat'...
+2026-07-19 17:49:37 - Custom Detection: text not matched.
+2026-07-19 17:49:37 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:49:37 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:49:37 - Placing towers for map: Spirit City
+2026-07-19 17:49:37 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:49:38 - After-place click at (450, 290)
+2026-07-19 17:49:38 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:49:39 - After-place click at (450, 290)
+2026-07-19 17:49:39 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:49:39 - After-place click at (450, 290)
+2026-07-19 17:49:40 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:49:40 - After-place click at (450, 290)
+2026-07-19 17:49:41 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:49:41 - After-place click at (450, 290)
+2026-07-19 17:49:41 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:49:42 - Clicked '' at (608, 578)
+2026-07-19 17:49:42 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:42 - Clicked '' at (608, 578)
+2026-07-19 17:49:43 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:43 - Clicked '' at (608, 578)
+2026-07-19 17:49:43 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:43 - Clicked '' at (608, 578)
+2026-07-19 17:49:44 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:44 - Clicked '' at (608, 578)
+2026-07-19 17:49:44 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:45 - Clicked '' at (608, 578)
+2026-07-19 17:49:45 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:45 - Clicked '' at (608, 578)
+2026-07-19 17:49:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:46 - Clicked '' at (608, 578)
+2026-07-19 17:49:46 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:47 - Clicked '' at (608, 578)
+2026-07-19 17:49:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:47 - Clicked '' at (608, 578)
+2026-07-19 17:49:47 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:48 - Clicked '' at (608, 578)
+2026-07-19 17:49:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:48 - Clicked '' at (608, 578)
+2026-07-19 17:49:48 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:48 - Checking for 'Victory Defeat'...
+2026-07-19 17:49:49 - Custom Detection: text not matched.
+2026-07-19 17:49:49 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:49:49 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:49:49 - Placing towers for map: Spirit City
+2026-07-19 17:49:50 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:49:50 - After-place click at (450, 290)
+2026-07-19 17:49:50 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:49:51 - After-place click at (450, 290)
+2026-07-19 17:49:51 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:49:51 - After-place click at (450, 290)
+2026-07-19 17:49:52 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:49:52 - After-place click at (450, 290)
+2026-07-19 17:49:53 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:49:53 - After-place click at (450, 290)
+2026-07-19 17:49:53 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:49:54 - Clicked '' at (608, 578)
+2026-07-19 17:49:54 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:55 - Clicked '' at (608, 578)
+2026-07-19 17:49:55 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:55 - Clicked '' at (608, 578)
+2026-07-19 17:49:55 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:56 - Clicked '' at (608, 578)
+2026-07-19 17:49:56 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:56 - Clicked '' at (608, 578)
+2026-07-19 17:49:57 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:57 - Clicked '' at (608, 578)
+2026-07-19 17:49:57 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:57 - Clicked '' at (608, 578)
+2026-07-19 17:49:58 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:58 - Clicked '' at (608, 578)
+2026-07-19 17:49:58 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:59 - Clicked '' at (608, 578)
+2026-07-19 17:49:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:49:59 - Clicked '' at (608, 578)
+2026-07-19 17:49:59 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:00 - Clicked '' at (608, 578)
+2026-07-19 17:50:00 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:00 - Clicked '' at (608, 578)
+2026-07-19 17:50:01 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:01 - Checking for 'Victory Defeat'...
+2026-07-19 17:50:01 - Custom Detection: text not matched.
+2026-07-19 17:50:01 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:50:01 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:50:01 - Placing towers for map: Spirit City
+2026-07-19 17:50:02 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:50:02 - After-place click at (450, 290)
+2026-07-19 17:50:03 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:50:03 - After-place click at (450, 290)
+2026-07-19 17:50:03 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:50:04 - After-place click at (450, 290)
+2026-07-19 17:50:04 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:50:05 - After-place click at (450, 290)
+2026-07-19 17:50:05 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:50:05 - After-place click at (450, 290)
+2026-07-19 17:50:06 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:50:06 - Clicked '' at (608, 578)
+2026-07-19 17:50:07 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:07 - Clicked '' at (608, 578)
+2026-07-19 17:50:07 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:07 - Clicked '' at (608, 578)
+2026-07-19 17:50:08 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:08 - Clicked '' at (608, 578)
+2026-07-19 17:50:08 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:09 - Clicked '' at (608, 578)
+2026-07-19 17:50:09 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:09 - Clicked '' at (608, 578)
+2026-07-19 17:50:09 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:10 - Clicked '' at (608, 578)
+2026-07-19 17:50:10 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:10 - Clicked '' at (608, 578)
+2026-07-19 17:50:10 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:11 - Clicked '' at (608, 578)
+2026-07-19 17:50:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:11 - Clicked '' at (608, 578)
+2026-07-19 17:50:11 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:12 - Clicked '' at (608, 578)
+2026-07-19 17:50:12 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:12 - Clicked '' at (608, 578)
+2026-07-19 17:50:13 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:13 - Checking for 'Victory Defeat'...
+2026-07-19 17:50:13 - Custom Detection: text not matched.
+2026-07-19 17:50:13 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:50:13 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:50:13 - Placing towers for map: Spirit City
+2026-07-19 17:50:14 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:50:14 - After-place click at (450, 290)
+2026-07-19 17:50:15 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:50:15 - After-place click at (450, 290)
+2026-07-19 17:50:15 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:50:16 - After-place click at (450, 290)
+2026-07-19 17:50:16 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:50:17 - After-place click at (450, 290)
+2026-07-19 17:50:17 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:50:17 - After-place click at (450, 290)
+2026-07-19 17:50:18 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:50:18 - Clicked '' at (608, 578)
+2026-07-19 17:50:19 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:19 - Clicked '' at (608, 578)
+2026-07-19 17:50:19 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:20 - Clicked '' at (608, 578)
+2026-07-19 17:50:20 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:20 - Clicked '' at (608, 578)
+2026-07-19 17:50:20 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:21 - Clicked '' at (608, 578)
+2026-07-19 17:50:21 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:21 - Clicked '' at (608, 578)
+2026-07-19 17:50:21 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:22 - Clicked '' at (608, 578)
+2026-07-19 17:50:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:22 - Clicked '' at (608, 578)
+2026-07-19 17:50:22 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:23 - Clicked '' at (608, 578)
+2026-07-19 17:50:23 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:23 - Clicked '' at (608, 578)
+2026-07-19 17:50:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:24 - Clicked '' at (608, 578)
+2026-07-19 17:50:24 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:25 - Clicked '' at (608, 578)
+2026-07-19 17:50:25 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:25 - Checking for 'Victory Defeat'...
+2026-07-19 17:50:26 - Custom Detection: text not matched.
+2026-07-19 17:50:26 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 17:50:26 - Camera setup: already done this cycle - skipping.
+2026-07-19 17:50:26 - Placing towers for map: Spirit City
+2026-07-19 17:50:26 - Slot 5 placed at (595, 461) [Spirit City]
+2026-07-19 17:50:27 - After-place click at (450, 290)
+2026-07-19 17:50:27 - Slot 5 placed at (540, 550) [Spirit City]
+2026-07-19 17:50:27 - After-place click at (450, 290)
+2026-07-19 17:50:28 - Slot 5 placed at (799, 400) [Spirit City]
+2026-07-19 17:50:28 - After-place click at (450, 290)
+2026-07-19 17:50:29 - Slot 4 placed at (1004, 579) [Spirit City]
+2026-07-19 17:50:29 - After-place click at (450, 290)
+2026-07-19 17:50:29 - Slot 1 placed at (1136, 584) [Spirit City]
+2026-07-19 17:50:30 - After-place click at (450, 290)
+2026-07-19 17:50:30 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 17:50:31 - Clicked '' at (608, 578)
+2026-07-19 17:50:31 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:31 - Clicked '' at (608, 578)
+2026-07-19 17:50:32 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:32 - Clicked '' at (608, 578)
+2026-07-19 17:50:32 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:33 - Clicked '' at (608, 578)
+2026-07-19 17:50:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:33 - Clicked '' at (608, 578)
+2026-07-19 17:50:33 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:34 - Clicked '' at (608, 578)
+2026-07-19 17:50:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:34 - Clicked '' at (608, 578)
+2026-07-19 17:50:34 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:35 - Clicked '' at (608, 578)
+2026-07-19 17:50:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:35 - Clicked '' at (608, 578)
+2026-07-19 17:50:35 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:36 - Clicked '' at (608, 578)
+2026-07-19 17:50:36 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:36 - Clicked '' at (608, 578)
+2026-07-19 17:50:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:37 - Clicked '' at (608, 578)
+2026-07-19 17:50:37 - Waited 0.10000000000000001s after 'Button Click'.
+2026-07-19 17:50:37 - Checking for 'Victory Defeat'...
+2026-07-19 17:50:38 - Custom Detection: text matched.
+2026-07-19 17:50:38 - Screen 'Ingame' -> jumping to 'Round End'.
+2026-07-19 17:50:38 - Clicked 'Start-Button' at (400, 620)
+2026-07-19 17:50:41 - Overlay closed. Window lock released.
+2026-07-19 17:50:41 - EMERGENCY STOP: macro stopped.
+2026-07-19 17:50:41 - Waited 3s after 'Restart Stage Button'.
+2026-07-19 17:50:41 - Macro stopped. Ready to restart with F10.
+2026-07-19 17:55:31 - Preset 'Expeditions' created.
+2026-07-19 17:56:21 - Screen 'Screen 1' renamed to 'Ingame'.
+2026-07-19 17:58:56 - Map profile 'Expeditions' created.
+2026-07-19 17:59:51 - Configuration saved.
+2026-07-19 17:59:51 - Configuration saved.
+2026-07-19 17:59:51 - Configuration saved.
+2026-07-19 17:59:51 - Configuration saved.
+2026-07-19 18:00:07 - Overlay opened.
+2026-07-19 18:00:08 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:00:08 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 1.
+2026-07-19 18:00:08 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 18:00:08 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 18:00:09 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:00:10 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 18:00:11 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:00:11 - Overlay closed. Window lock released.
+2026-07-19 18:00:11 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:00:11 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:00:11 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:00:22 - Configuration saved.
+2026-07-19 18:00:22 - Configuration saved.
+2026-07-19 18:00:22 - Configuration saved.
+2026-07-19 18:00:22 - Configuration saved.
+2026-07-19 18:00:22 - Configuration saved.
+2026-07-19 18:02:10 - Overlay opened.
+2026-07-19 18:02:11 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:02:11 - Macro started using preset 'Expeditions'.
+2026-07-19 18:02:11 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 18:02:11 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 18:02:12 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:02:13 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 18:02:13 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:02:14 - Overlay closed. Window lock released.
+2026-07-19 18:02:14 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:02:14 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:02:14 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:02:35 - Configuration saved.
+2026-07-19 18:02:36 - Configuration saved.
+2026-07-19 18:02:36 - Configuration saved.
+2026-07-19 18:02:40 - Overlay opened.
+2026-07-19 18:02:40 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:02:40 - Macro started using preset 'Expeditions'.
+2026-07-19 18:02:40 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 18:02:40 - Camera setup for 'Spirit City': using its own custom actions (3 configured).
+2026-07-19 18:02:42 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:02:43 - Map action: dragged (900, 200) -> (903, 200) over 500ms.
+2026-07-19 18:02:43 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:02:45 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:02:45 - --- Screen repetition 1 complete - back at Start (lifetime: 1) ---
+2026-07-19 18:02:45 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 18:02:45 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:02:46 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:02:46 - --- Screen repetition 2 complete - back at Start (lifetime: 2) ---
+2026-07-19 18:02:46 - Camera Setup step running (last detected map: 'Spirit City')...
+2026-07-19 18:02:46 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:02:46 - Overlay closed. Window lock released.
+2026-07-19 18:02:46 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:02:46 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:02:46 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:10:14 - Configuration saved.
+2026-07-19 18:10:14 - Configuration saved.
+2026-07-19 18:10:26 - Overlay opened.
+2026-07-19 18:10:27 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:10:27 - Macro started using preset 'Expeditions'.
+2026-07-19 18:10:27 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:10:27 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:10:27 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:10:28 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:10:28 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:10:29 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:10:29 - --- Screen repetition 1 complete - back at Start (lifetime: 1) ---
+2026-07-19 18:10:29 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:10:29 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:10:30 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:10:30 - Overlay closed. Window lock released.
+2026-07-19 18:10:30 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:10:30 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:10:30 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:11:08 - Overlay opened.
+2026-07-19 18:11:09 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:11:09 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 1.
+2026-07-19 18:11:09 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:11:09 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:11:09 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:11:10 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:11:10 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:11:12 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:11:12 - --- Screen repetition 1 complete - back at Start (lifetime: 2) ---
+2026-07-19 18:11:12 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:11:12 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:11:12 - Overlay closed. Window lock released.
+2026-07-19 18:11:12 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:11:12 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:11:12 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:11:12 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:13:19 - Step OCR test result: 'Continue
+'
+2026-07-19 18:13:23 - Overlay opened.
+2026-07-19 18:13:24 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:13:24 - Placement Mode: window positioned. Use the Set Position buttons to record coordinates.
+2026-07-19 18:13:26 - Step OCR test result: 'Continue
+'
+2026-07-19 18:17:02 - Step OCR test result: '
+'
+2026-07-19 18:17:16 - Step OCR test result: '
+'
+2026-07-19 18:17:18 - Step OCR test result: 'Def eat
+'
+2026-07-19 18:17:38 - Screen 'Round End' created.
+2026-07-19 18:18:16 - Position capture cancelled.
+2026-07-19 18:18:37 - Configuration saved.
+2026-07-19 18:18:37 - Configuration saved.
+2026-07-19 18:18:37 - Configuration saved.
+2026-07-19 18:18:37 - Configuration saved.
+2026-07-19 18:18:42 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:18:42 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 2.
+2026-07-19 18:18:42 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:18:42 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:18:43 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:18:43 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:18:44 - Placing towers for map: Expeditions
+2026-07-19 18:18:44 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:18:44 - After-place click at (450, 290)
+2026-07-19 18:18:45 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:18:45 - After-place click at (450, 290)
+2026-07-19 18:18:46 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:18:46 - After-place click at (450, 290)
+2026-07-19 18:18:46 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:18:47 - After-place click at (450, 290)
+2026-07-19 18:18:47 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:18:47 - After-place click at (450, 290)
+2026-07-19 18:18:48 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:18:48 - After-place click at (450, 290)
+2026-07-19 18:18:48 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:18:48 - Checking for 'Continue'...
+2026-07-19 18:18:49 - Custom Detection: text matched.
+2026-07-19 18:18:50 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:18:50 - Clicked 'Continue' at (671, 581)
+2026-07-19 18:18:51 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:18:51 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:18:52 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:18:52 - Checking for round end...
+2026-07-19 18:18:52 - Round End Detection: text not matched.
+2026-07-19 18:18:53 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:18:53 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:18:53 - --- Screen repetition 1 complete - back at Start (lifetime: 3) ---
+2026-07-19 18:18:53 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:18:53 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:18:53 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:18:54 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:18:54 - Checking for 'Continue'...
+2026-07-19 18:18:55 - Custom Detection: text not matched.
+2026-07-19 18:18:55 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:18:55 - Checking for 'Continue'...
+2026-07-19 18:18:56 - Custom Detection: text not matched.
+2026-07-19 18:18:57 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:18:57 - Checking for 'Continue'...
+2026-07-19 18:18:58 - Custom Detection: text not matched.
+2026-07-19 18:18:58 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:18:58 - Checking for 'Continue'...
+2026-07-19 18:18:59 - Custom Detection: text not matched.
+2026-07-19 18:19:00 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:00 - Checking for 'Continue'...
+2026-07-19 18:19:00 - Custom Detection: text not matched.
+2026-07-19 18:19:01 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:01 - Checking for 'Continue'...
+2026-07-19 18:19:02 - Custom Detection: text not matched.
+2026-07-19 18:19:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:03 - Checking for 'Continue'...
+2026-07-19 18:19:03 - Custom Detection: text not matched.
+2026-07-19 18:19:04 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:04 - Checking for 'Continue'...
+2026-07-19 18:19:05 - Custom Detection: text not matched.
+2026-07-19 18:19:05 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:05 - Checking for 'Continue'...
+2026-07-19 18:19:06 - Custom Detection: text not matched.
+2026-07-19 18:19:07 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:07 - Checking for 'Continue'...
+2026-07-19 18:19:08 - Custom Detection: text not matched.
+2026-07-19 18:19:08 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:08 - Checking for 'Continue'...
+2026-07-19 18:19:09 - Custom Detection: text not matched.
+2026-07-19 18:19:10 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:10 - Checking for 'Continue'...
+2026-07-19 18:19:11 - Custom Detection: text not matched.
+2026-07-19 18:19:11 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:11 - Checking for 'Continue'...
+2026-07-19 18:19:12 - Custom Detection: text not matched.
+2026-07-19 18:19:13 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:13 - Checking for 'Continue'...
+2026-07-19 18:19:13 - Custom Detection: text not matched.
+2026-07-19 18:19:14 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:14 - Checking for 'Continue'...
+2026-07-19 18:19:15 - Custom Detection: text not matched.
+2026-07-19 18:19:16 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:16 - Checking for 'Continue'...
+2026-07-19 18:19:16 - Custom Detection: text not matched.
+2026-07-19 18:19:17 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:17 - Checking for 'Continue'...
+2026-07-19 18:19:18 - Custom Detection: text not matched.
+2026-07-19 18:19:19 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:19 - Checking for 'Continue'...
+2026-07-19 18:19:19 - Custom Detection: text not matched.
+2026-07-19 18:19:20 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:20 - Checking for 'Continue'...
+2026-07-19 18:19:21 - Custom Detection: text not matched.
+2026-07-19 18:19:22 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:22 - Checking for 'Continue'...
+2026-07-19 18:19:22 - Custom Detection: text not matched.
+2026-07-19 18:19:23 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:23 - Checking for 'Continue'...
+2026-07-19 18:19:24 - Custom Detection: text not matched.
+2026-07-19 18:19:25 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:25 - Checking for 'Continue'...
+2026-07-19 18:19:26 - Custom Detection: text not matched.
+2026-07-19 18:19:26 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:26 - Checking for 'Continue'...
+2026-07-19 18:19:27 - Custom Detection: text not matched.
+2026-07-19 18:19:28 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:28 - Checking for 'Continue'...
+2026-07-19 18:19:29 - Custom Detection: text not matched.
+2026-07-19 18:19:30 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:30 - Checking for 'Continue'...
+2026-07-19 18:19:30 - Custom Detection: text not matched.
+2026-07-19 18:19:31 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:31 - Checking for 'Continue'...
+2026-07-19 18:19:32 - Custom Detection: text not matched.
+2026-07-19 18:19:33 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:33 - Checking for 'Continue'...
+2026-07-19 18:19:33 - Custom Detection: text not matched.
+2026-07-19 18:19:34 - Overlay closed. Window lock released.
+2026-07-19 18:19:34 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:19:34 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:19:34 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:19:50 - Overlay opened.
+2026-07-19 18:19:51 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:19:51 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 1.
+2026-07-19 18:19:51 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:19:51 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:19:51 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:19:52 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:19:52 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:19:53 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:19:53 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:19:53 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:19:53 - Placing towers for map: Expeditions
+2026-07-19 18:19:54 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:19:54 - After-place click at (450, 290)
+2026-07-19 18:19:54 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:19:55 - After-place click at (450, 290)
+2026-07-19 18:19:55 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:19:56 - After-place click at (450, 290)
+2026-07-19 18:19:56 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:19:56 - After-place click at (450, 290)
+2026-07-19 18:19:57 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:19:57 - After-place click at (450, 290)
+2026-07-19 18:19:57 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:19:58 - After-place click at (450, 290)
+2026-07-19 18:19:58 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:19:58 - Checking for 'Continue'...
+2026-07-19 18:19:59 - Custom Detection: text not matched.
+2026-07-19 18:20:00 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:00 - Checking for 'Continue'...
+2026-07-19 18:20:00 - Custom Detection: text not matched.
+2026-07-19 18:20:02 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:02 - Checking for 'Continue'...
+2026-07-19 18:20:02 - Custom Detection: text not matched.
+2026-07-19 18:20:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:03 - Checking for 'Continue'...
+2026-07-19 18:20:04 - Custom Detection: text not matched.
+2026-07-19 18:20:05 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:05 - Checking for 'Continue'...
+2026-07-19 18:20:05 - Custom Detection: text not matched.
+2026-07-19 18:20:06 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:06 - Checking for 'Continue'...
+2026-07-19 18:20:07 - Custom Detection: text not matched.
+2026-07-19 18:20:08 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:08 - Checking for 'Continue'...
+2026-07-19 18:20:08 - Custom Detection: text not matched.
+2026-07-19 18:20:09 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:09 - Checking for 'Continue'...
+2026-07-19 18:20:10 - Custom Detection: text not matched.
+2026-07-19 18:20:11 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:11 - Checking for 'Continue'...
+2026-07-19 18:20:12 - Custom Detection: text not matched.
+2026-07-19 18:20:13 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:13 - Checking for 'Continue'...
+2026-07-19 18:20:13 - Custom Detection: text not matched.
+2026-07-19 18:20:14 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:14 - Checking for 'Continue'...
+2026-07-19 18:20:15 - Custom Detection: text not matched.
+2026-07-19 18:20:16 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:16 - Checking for 'Continue'...
+2026-07-19 18:20:16 - Custom Detection: text not matched.
+2026-07-19 18:20:17 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:17 - Checking for 'Continue'...
+2026-07-19 18:20:18 - Custom Detection: text not matched.
+2026-07-19 18:20:19 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:19 - Checking for 'Continue'...
+2026-07-19 18:20:20 - Custom Detection: text not matched.
+2026-07-19 18:20:21 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:21 - Checking for 'Continue'...
+2026-07-19 18:20:21 - Custom Detection: text not matched.
+2026-07-19 18:20:22 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:22 - Checking for 'Continue'...
+2026-07-19 18:20:22 - Overlay closed. Window lock released.
+2026-07-19 18:20:22 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:20:23 - Custom Detection: text not matched.
+2026-07-19 18:20:23 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:20:23 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:20:42 - Screen 'Continue' created.
+2026-07-19 18:20:56 - Screen 'Continue' overwritten with 'Expeditions' > 'Ingame' (6 step(s)).
+2026-07-19 18:21:22 - Overlay opened.
+2026-07-19 18:21:22 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:21:22 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 1.
+2026-07-19 18:21:22 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:21:22 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:21:23 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:21:24 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:21:24 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:21:25 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:21:25 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:21:25 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:21:25 - Placing towers for map: Expeditions
+2026-07-19 18:21:26 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:21:26 - After-place click at (450, 290)
+2026-07-19 18:21:26 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:21:27 - After-place click at (450, 290)
+2026-07-19 18:21:27 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:21:27 - After-place click at (450, 290)
+2026-07-19 18:21:28 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:21:28 - After-place click at (450, 290)
+2026-07-19 18:21:28 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:21:29 - After-place click at (450, 290)
+2026-07-19 18:21:29 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:21:29 - After-place click at (450, 290)
+2026-07-19 18:21:30 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:21:30 - Checking for 'Continue'...
+2026-07-19 18:21:30 - Custom Detection: text not matched.
+2026-07-19 18:21:31 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:31 - Checking for round end...
+2026-07-19 18:21:32 - Round End Detection: text not matched.
+2026-07-19 18:21:32 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:21:32 - --- Screen repetition 1 complete - back at Start (lifetime: 4) ---
+2026-07-19 18:21:32 - Checking for 'Continue'...
+2026-07-19 18:21:33 - Custom Detection: text not matched.
+2026-07-19 18:21:33 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:34 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:21:34 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:21:34 - --- Screen repetition 2 complete - back at Start (lifetime: 5) ---
+2026-07-19 18:21:34 - Checking for 'Continue'...
+2026-07-19 18:21:35 - Custom Detection: text not matched.
+2026-07-19 18:21:36 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:36 - Clicked 'Continue' at (671, 581)
+2026-07-19 18:21:37 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:21:37 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:21:38 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:21:38 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:21:38 - --- Screen repetition 3 complete - back at Start (lifetime: 6) ---
+2026-07-19 18:21:38 - Checking for 'Continue'...
+2026-07-19 18:21:38 - Custom Detection: text not matched.
+2026-07-19 18:21:39 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:39 - --- Screen repetition 4 complete - back at Start (lifetime: 7) ---
+2026-07-19 18:21:39 - Checking for 'Continue'...
+2026-07-19 18:21:40 - Custom Detection: text not matched.
+2026-07-19 18:21:41 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:41 - --- Screen repetition 5 complete - back at Start (lifetime: 8) ---
+2026-07-19 18:21:41 - Checking for 'Continue'...
+2026-07-19 18:21:42 - Custom Detection: text not matched.
+2026-07-19 18:21:42 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:42 - --- Screen repetition 6 complete - back at Start (lifetime: 9) ---
+2026-07-19 18:21:42 - Overlay closed. Window lock released.
+2026-07-19 18:21:42 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:21:42 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:21:54 - Overlay opened.
+2026-07-19 18:21:55 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:21:55 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 3.
+2026-07-19 18:21:55 - Checking for 'Continue'...
+2026-07-19 18:21:55 - Custom Detection: text not matched.
+2026-07-19 18:21:56 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:21:56 - Checking for round end...
+2026-07-19 18:21:57 - Round End Detection: text not matched.
+2026-07-19 18:21:57 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:21:57 - --- Screen repetition 1 complete - back at Start (lifetime: 10) ---
+2026-07-19 18:21:57 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:21:57 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:21:57 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:21:58 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:21:58 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:22:00 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:22:00 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:22:00 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:22:00 - Placing towers for map: Expeditions
+2026-07-19 18:22:00 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:22:01 - After-place click at (450, 290)
+2026-07-19 18:22:01 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:22:01 - After-place click at (450, 290)
+2026-07-19 18:22:02 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:22:02 - After-place click at (450, 290)
+2026-07-19 18:22:02 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:22:03 - After-place click at (450, 290)
+2026-07-19 18:22:03 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:22:04 - After-place click at (450, 290)
+2026-07-19 18:22:04 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:22:04 - After-place click at (450, 290)
+2026-07-19 18:22:05 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:22:05 - Checking for 'Continue'...
+2026-07-19 18:22:05 - Custom Detection: text not matched.
+2026-07-19 18:22:06 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:07 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:22:07 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:22:07 - --- Screen repetition 2 complete - back at Start (lifetime: 11) ---
+2026-07-19 18:22:07 - Checking for 'Continue'...
+2026-07-19 18:22:08 - Custom Detection: text not matched.
+2026-07-19 18:22:08 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:09 - Clicked 'Continue' at (671, 581)
+2026-07-19 18:22:09 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:22:10 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:22:10 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:22:10 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:22:10 - --- Screen repetition 3 complete - back at Start (lifetime: 12) ---
+2026-07-19 18:22:10 - Checking for 'Continue'...
+2026-07-19 18:22:11 - Custom Detection: text not matched.
+2026-07-19 18:22:12 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:12 - --- Screen repetition 4 complete - back at Start (lifetime: 13) ---
+2026-07-19 18:22:12 - Checking for 'Continue'...
+2026-07-19 18:22:13 - Custom Detection: text not matched.
+2026-07-19 18:22:13 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:13 - --- Screen repetition 5 complete - back at Start (lifetime: 14) ---
+2026-07-19 18:22:13 - Checking for 'Continue'...
+2026-07-19 18:22:14 - Custom Detection: text not matched.
+2026-07-19 18:22:15 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:15 - --- Screen repetition 6 complete - back at Start (lifetime: 15) ---
+2026-07-19 18:22:15 - Checking for 'Continue'...
+2026-07-19 18:22:16 - Custom Detection: text not matched.
+2026-07-19 18:22:17 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:17 - --- Screen repetition 7 complete - back at Start (lifetime: 16) ---
+2026-07-19 18:22:17 - Checking for 'Continue'...
+2026-07-19 18:22:17 - Custom Detection: text not matched.
+2026-07-19 18:22:18 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:18 - --- Screen repetition 8 complete - back at Start (lifetime: 17) ---
+2026-07-19 18:22:18 - Checking for 'Continue'...
+2026-07-19 18:22:19 - Custom Detection: text not matched.
+2026-07-19 18:22:20 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:20 - --- Screen repetition 9 complete - back at Start (lifetime: 18) ---
+2026-07-19 18:22:20 - Checking for 'Continue'...
+2026-07-19 18:22:21 - Custom Detection: text not matched.
+2026-07-19 18:22:22 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:22 - --- Screen repetition 10 complete - back at Start (lifetime: 19) ---
+2026-07-19 18:22:22 - Checking for 'Continue'...
+2026-07-19 18:22:22 - Custom Detection: text not matched.
+2026-07-19 18:22:23 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:23 - --- Screen repetition 11 complete - back at Start (lifetime: 20) ---
+2026-07-19 18:22:23 - Checking for 'Continue'...
+2026-07-19 18:22:24 - Custom Detection: text not matched.
+2026-07-19 18:22:25 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:25 - --- Screen repetition 12 complete - back at Start (lifetime: 21) ---
+2026-07-19 18:22:25 - Checking for 'Continue'...
+2026-07-19 18:22:26 - Custom Detection: text not matched.
+2026-07-19 18:22:26 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:26 - --- Screen repetition 13 complete - back at Start (lifetime: 22) ---
+2026-07-19 18:22:27 - Checking for 'Continue'...
+2026-07-19 18:22:27 - Custom Detection: text not matched.
+2026-07-19 18:22:28 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:28 - --- Screen repetition 14 complete - back at Start (lifetime: 23) ---
+2026-07-19 18:22:28 - Checking for 'Continue'...
+2026-07-19 18:22:29 - Custom Detection: text not matched.
+2026-07-19 18:22:30 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:30 - --- Screen repetition 15 complete - back at Start (lifetime: 24) ---
+2026-07-19 18:22:30 - Checking for 'Continue'...
+2026-07-19 18:22:31 - Custom Detection: text not matched.
+2026-07-19 18:22:32 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:32 - --- Screen repetition 16 complete - back at Start (lifetime: 25) ---
+2026-07-19 18:22:32 - Checking for 'Continue'...
+2026-07-19 18:22:33 - Custom Detection: text not matched.
+2026-07-19 18:22:34 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:34 - --- Screen repetition 17 complete - back at Start (lifetime: 26) ---
+2026-07-19 18:22:34 - Checking for 'Continue'...
+2026-07-19 18:22:34 - Custom Detection: text not matched.
+2026-07-19 18:22:35 - Overlay closed. Window lock released.
+2026-07-19 18:22:35 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:22:35 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:35 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:22:44 - Configuration saved.
+2026-07-19 18:22:44 - Configuration saved.
+2026-07-19 18:22:44 - Configuration saved.
+2026-07-19 18:22:45 - Overlay opened.
+2026-07-19 18:22:46 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:22:46 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 3.
+2026-07-19 18:22:46 - Checking for 'Continue'...
+2026-07-19 18:22:46 - Custom Detection: text not matched.
+2026-07-19 18:22:47 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:47 - Checking for round end...
+2026-07-19 18:22:48 - Round End Detection: text not matched.
+2026-07-19 18:22:48 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:22:48 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:22:48 - --- Screen repetition 1 complete - back at Start (lifetime: 27) ---
+2026-07-19 18:22:48 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:22:48 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:22:49 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:22:50 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:22:50 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:22:51 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:22:51 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:22:51 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:22:51 - Placing towers for map: Expeditions
+2026-07-19 18:22:52 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:22:52 - After-place click at (450, 290)
+2026-07-19 18:22:52 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:22:53 - After-place click at (450, 290)
+2026-07-19 18:22:53 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:22:53 - After-place click at (450, 290)
+2026-07-19 18:22:54 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:22:54 - After-place click at (450, 290)
+2026-07-19 18:22:55 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:22:55 - After-place click at (450, 290)
+2026-07-19 18:22:55 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:22:56 - After-place click at (450, 290)
+2026-07-19 18:22:56 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:22:56 - Checking for 'Continue'...
+2026-07-19 18:22:57 - Custom Detection: text not matched.
+2026-07-19 18:22:58 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:22:58 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:22:58 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:22:58 - --- Screen repetition 2 complete - back at Start (lifetime: 28) ---
+2026-07-19 18:22:59 - Checking for 'Continue'...
+2026-07-19 18:22:59 - Custom Detection: text not matched.
+2026-07-19 18:23:00 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:23:01 - Clicked 'Continue' at (671, 581)
+2026-07-19 18:23:01 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:23:01 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:23:02 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:23:02 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:23:02 - --- Screen repetition 3 complete - back at Start (lifetime: 29) ---
+2026-07-19 18:23:02 - Checking for 'Continue'...
+2026-07-19 18:23:03 - Overlay closed. Window lock released.
+2026-07-19 18:23:03 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:23:03 - Custom Detection: text not matched.
+2026-07-19 18:23:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:23:03 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:23:40 - Step OCR test result: '
+'
+2026-07-19 18:23:41 - Step OCR test result: '
+'
+2026-07-19 18:23:46 - Step OCR test result: 'Catin ue
+'
+2026-07-19 18:23:54 - Step OCR test result: 'Cmtinue
+'
+2026-07-19 18:24:02 - Step OCR test result: 'X Extr®t - Cmtinue
+'
+2026-07-19 18:24:13 - Step OCR test result: 'X Extr®t - Cmtinue
+'
+2026-07-19 18:24:14 - Step OCR test result: 'X Extr®t - Cmtinue
+'
+2026-07-19 18:24:23 - Step OCR test result: '
+'
+2026-07-19 18:24:24 - Step OCR test result: '
+'
+2026-07-19 18:24:37 - Step OCR test result: 'Cmtinu' X Extr®t 2,660
+'
+2026-07-19 18:24:55 - Overlay opened.
+2026-07-19 18:24:55 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:24:55 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 3.
+2026-07-19 18:24:55 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:24:56 - Custom Detection: text matched.
+2026-07-19 18:24:57 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:24:57 - Screen 'Ingame' -> jumping to 'Continue'.
+2026-07-19 18:24:57 - Clicked 'Continue' at (684, 581)
+2026-07-19 18:24:58 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:24:58 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:24:58 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:24:58 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:24:58 - --- Screen repetition 1 complete - back at Start (lifetime: 30) ---
+2026-07-19 18:24:59 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:24:59 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:24:59 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:25:00 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:25:00 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:25:01 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:25:01 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:25:01 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:25:01 - Placing towers for map: Expeditions
+2026-07-19 18:25:02 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:25:02 - After-place click at (450, 290)
+2026-07-19 18:25:03 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:25:03 - After-place click at (450, 290)
+2026-07-19 18:25:03 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:25:04 - After-place click at (450, 290)
+2026-07-19 18:25:04 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:25:04 - After-place click at (450, 290)
+2026-07-19 18:25:05 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:25:05 - After-place click at (450, 290)
+2026-07-19 18:25:05 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:25:06 - After-place click at (450, 290)
+2026-07-19 18:25:06 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:25:06 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:25:07 - Custom Detection: text not matched.
+2026-07-19 18:25:08 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:25:08 - Checking for round end...
+2026-07-19 18:25:08 - Overlay closed. Window lock released.
+2026-07-19 18:25:08 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:25:08 - Round End Detection: text not matched.
+2026-07-19 18:25:08 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:25:08 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:25:21 - Configuration saved.
+2026-07-19 18:25:21 - Configuration saved.
+2026-07-19 18:25:21 - Configuration saved.
+2026-07-19 18:25:21 - Configuration saved.
+2026-07-19 18:25:23 - Overlay opened.
+2026-07-19 18:25:24 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:25:24 - Macro started using preset 'Expeditions'.
+2026-07-19 18:25:24 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:25:24 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:25:24 - Camera setup for 'Expeditions': using the shared [General] actions (1 configured).
+2026-07-19 18:25:24 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:25:25 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:25:25 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:25:26 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:25:26 - Placing towers for map: Expeditions
+2026-07-19 18:25:26 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:25:26 - After-place click at (450, 290)
+2026-07-19 18:25:27 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:25:27 - After-place click at (450, 290)
+2026-07-19 18:25:27 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:25:28 - After-place click at (450, 290)
+2026-07-19 18:25:28 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:25:28 - After-place click at (450, 290)
+2026-07-19 18:25:29 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:25:29 - After-place click at (450, 290)
+2026-07-19 18:25:30 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:25:30 - After-place click at (450, 290)
+2026-07-19 18:25:30 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:25:30 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:25:31 - Custom Detection: text not matched.
+2026-07-19 18:25:32 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:25:32 - Checking for round end...
+2026-07-19 18:25:32 - Round End Detection: text not matched.
+2026-07-19 18:25:33 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:25:33 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:25:33 - --- Screen repetition 1 complete - back at Start (lifetime: 31) ---
+2026-07-19 18:25:33 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:25:34 - Custom Detection: text not matched.
+2026-07-19 18:25:34 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:25:35 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:25:35 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:25:35 - --- Screen repetition 2 complete - back at Start (lifetime: 32) ---
+2026-07-19 18:25:35 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:25:36 - Custom Detection: text not matched.
+2026-07-19 18:25:36 - Overlay closed. Window lock released.
+2026-07-19 18:25:36 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:25:36 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:25:36 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:25:41 - Overlay opened.
+2026-07-19 18:25:42 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:25:42 - Macro started using preset 'Expeditions'.
+2026-07-19 18:25:42 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:25:42 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:25:42 - Camera setup for 'Expeditions': using the shared [General] actions (1 configured).
+2026-07-19 18:25:42 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:25:43 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:25:43 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:25:43 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:25:43 - Placing towers for map: Expeditions
+2026-07-19 18:25:44 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:25:44 - Overlay closed. Window lock released.
+2026-07-19 18:25:44 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:25:44 - After-place click at (450, 290)
+2026-07-19 18:25:44 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:26:07 - Overlay opened.
+2026-07-19 18:26:08 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:26:08 - Macro started using preset 'Expeditions'.
+2026-07-19 18:26:08 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:26:08 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:26:08 - Camera setup for 'Expeditions': using the shared [General] actions (1 configured).
+2026-07-19 18:26:08 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:26:09 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:26:09 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:26:09 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:26:09 - Placing towers for map: Expeditions
+2026-07-19 18:26:10 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:26:10 - After-place click at (450, 290)
+2026-07-19 18:26:10 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:26:11 - After-place click at (450, 290)
+2026-07-19 18:26:11 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:26:11 - After-place click at (450, 290)
+2026-07-19 18:26:12 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:26:12 - After-place click at (450, 290)
+2026-07-19 18:26:12 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:26:13 - After-place click at (450, 290)
+2026-07-19 18:26:13 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:26:13 - After-place click at (450, 290)
+2026-07-19 18:26:14 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:26:14 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:14 - Custom Detection: text matched.
+2026-07-19 18:26:15 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:15 - Screen 'Ingame' -> jumping to 'Continue'.
+2026-07-19 18:26:16 - Clicked 'Continue' at (684, 581)
+2026-07-19 18:26:16 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:26:17 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:26:17 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:26:17 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:26:17 - --- Screen repetition 1 complete - back at Start (lifetime: 33) ---
+2026-07-19 18:26:17 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:18 - Custom Detection: text not matched.
+2026-07-19 18:26:19 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:19 - Checking for round end...
+2026-07-19 18:26:20 - Round End Detection: text not matched.
+2026-07-19 18:26:20 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:26:20 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:26:20 - --- Screen repetition 2 complete - back at Start (lifetime: 34) ---
+2026-07-19 18:26:20 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:21 - Custom Detection: text not matched.
+2026-07-19 18:26:22 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:22 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:26:22 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:26:22 - --- Screen repetition 3 complete - back at Start (lifetime: 35) ---
+2026-07-19 18:26:23 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:23 - Custom Detection: text not matched.
+2026-07-19 18:26:24 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:24 - --- Screen repetition 4 complete - back at Start (lifetime: 36) ---
+2026-07-19 18:26:24 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:25 - Custom Detection: text not matched.
+2026-07-19 18:26:26 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:26 - --- Screen repetition 5 complete - back at Start (lifetime: 37) ---
+2026-07-19 18:26:26 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:26 - Custom Detection: text not matched.
+2026-07-19 18:26:27 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:27 - --- Screen repetition 6 complete - back at Start (lifetime: 38) ---
+2026-07-19 18:26:28 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:28 - Custom Detection: text not matched.
+2026-07-19 18:26:29 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:29 - --- Screen repetition 7 complete - back at Start (lifetime: 39) ---
+2026-07-19 18:26:29 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:30 - Custom Detection: text not matched.
+2026-07-19 18:26:31 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:31 - --- Screen repetition 8 complete - back at Start (lifetime: 40) ---
+2026-07-19 18:26:31 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:32 - Custom Detection: text not matched.
+2026-07-19 18:26:33 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:33 - --- Screen repetition 9 complete - back at Start (lifetime: 41) ---
+2026-07-19 18:26:33 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:26:34 - Custom Detection: text not matched.
+2026-07-19 18:26:34 - Overlay closed. Window lock released.
+2026-07-19 18:26:34 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:26:34 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:26:34 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:27:00 - Step OCR test result: '3,700
+'
+2026-07-19 18:27:03 - Step OCR test result: '
+'
+2026-07-19 18:27:08 - Step OCR test result: '00
+'
+2026-07-19 18:27:10 - Overlay opened.
+2026-07-19 18:27:11 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:27:11 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 3.
+2026-07-19 18:27:11 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:12 - Custom Detection: text not matched.
+2026-07-19 18:27:12 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:12 - Checking for round end...
+2026-07-19 18:27:13 - Round End Detection: text not matched.
+2026-07-19 18:27:13 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:27:13 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:27:13 - --- Screen repetition 1 complete - back at Start (lifetime: 42) ---
+2026-07-19 18:27:14 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:27:14 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:27:14 - Camera setup for 'Expeditions': using the shared [General] actions (1 configured).
+2026-07-19 18:27:14 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:27:15 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:27:15 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:27:15 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:27:15 - Placing towers for map: Expeditions
+2026-07-19 18:27:15 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:27:16 - After-place click at (450, 290)
+2026-07-19 18:27:16 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:27:16 - After-place click at (450, 290)
+2026-07-19 18:27:17 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:27:17 - After-place click at (450, 290)
+2026-07-19 18:27:18 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:27:18 - Overlay closed. Window lock released.
+2026-07-19 18:27:18 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:27:18 - After-place click at (450, 290)
+2026-07-19 18:27:18 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:27:39 - Overlay opened.
+2026-07-19 18:27:39 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:27:39 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 1.
+2026-07-19 18:27:39 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:27:39 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:27:40 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:27:41 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:27:41 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:27:42 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:27:42 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:27:42 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:27:42 - Placing towers for map: Expeditions
+2026-07-19 18:27:43 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:27:43 - After-place click at (450, 290)
+2026-07-19 18:27:43 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:27:44 - After-place click at (450, 290)
+2026-07-19 18:27:44 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:27:44 - After-place click at (450, 290)
+2026-07-19 18:27:45 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:27:45 - After-place click at (450, 290)
+2026-07-19 18:27:46 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:27:46 - After-place click at (450, 290)
+2026-07-19 18:27:46 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:27:47 - After-place click at (450, 290)
+2026-07-19 18:27:47 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:27:47 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:48 - Custom Detection: text not matched.
+2026-07-19 18:27:49 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:49 - Checking for round end...
+2026-07-19 18:27:49 - Round End Detection: text not matched.
+2026-07-19 18:27:50 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:27:50 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:27:50 - --- Screen repetition 1 complete - back at Start (lifetime: 43) ---
+2026-07-19 18:27:50 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:51 - Custom Detection: text not matched.
+2026-07-19 18:27:51 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:52 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:27:52 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:27:52 - --- Screen repetition 2 complete - back at Start (lifetime: 44) ---
+2026-07-19 18:27:52 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:53 - Custom Detection: text not matched.
+2026-07-19 18:27:53 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:54 - Clicked 'Continue' at (684, 581)
+2026-07-19 18:27:54 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:27:55 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:27:55 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:27:55 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:27:55 - --- Screen repetition 3 complete - back at Start (lifetime: 45) ---
+2026-07-19 18:27:55 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:56 - Custom Detection: text not matched.
+2026-07-19 18:27:57 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:57 - --- Screen repetition 4 complete - back at Start (lifetime: 46) ---
+2026-07-19 18:27:57 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:27:58 - Custom Detection: text not matched.
+2026-07-19 18:27:58 - Overlay closed. Window lock released.
+2026-07-19 18:27:58 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:27:58 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:27:58 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:28:17 - Overlay opened.
+2026-07-19 18:28:18 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:28:18 - Macro started using preset 'Expeditions'.
+2026-07-19 18:28:18 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:28:18 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:28:18 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:28:19 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:28:20 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:28:21 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:28:21 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:28:21 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:28:21 - Placing towers for map: Expeditions
+2026-07-19 18:28:21 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:28:22 - After-place click at (450, 290)
+2026-07-19 18:28:22 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:28:22 - After-place click at (450, 290)
+2026-07-19 18:28:23 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:28:23 - After-place click at (450, 290)
+2026-07-19 18:28:23 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:28:24 - After-place click at (450, 290)
+2026-07-19 18:28:24 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:28:24 - After-place click at (450, 290)
+2026-07-19 18:28:25 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:28:25 - After-place click at (450, 290)
+2026-07-19 18:28:26 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:28:26 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:26 - Custom Detection: text not matched.
+2026-07-19 18:28:27 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:27 - Checking for round end...
+2026-07-19 18:28:28 - Round End Detection: text not matched.
+2026-07-19 18:28:28 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:28:28 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:28:28 - --- Screen repetition 1 complete - back at Start (lifetime: 47) ---
+2026-07-19 18:28:28 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:29 - Custom Detection: text not matched.
+2026-07-19 18:28:30 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:30 - Clicked 'Defeat' at (387, 624)
+2026-07-19 18:28:30 - Screen 'Round End' -> jumping to 'Ingame'.
+2026-07-19 18:28:30 - --- Screen repetition 2 complete - back at Start (lifetime: 48) ---
+2026-07-19 18:28:30 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:31 - Custom Detection: text not matched.
+2026-07-19 18:28:32 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:33 - Clicked 'Continue' at (684, 581)
+2026-07-19 18:28:33 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:28:34 - Clicked 'Continue' at (585, 456)
+2026-07-19 18:28:34 - Waited 0.20000000000000001s after 'Button Click'.
+2026-07-19 18:28:34 - Screen 'Continue' -> jumping to 'Ingame'.
+2026-07-19 18:28:34 - --- Screen repetition 3 complete - back at Start (lifetime: 49) ---
+2026-07-19 18:28:34 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:35 - Custom Detection: text not matched.
+2026-07-19 18:28:36 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:36 - --- Screen repetition 4 complete - back at Start (lifetime: 50) ---
+2026-07-19 18:28:36 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:37 - Custom Detection: text not matched.
+2026-07-19 18:28:38 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:38 - --- Screen repetition 5 complete - back at Start (lifetime: 51) ---
+2026-07-19 18:28:38 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:38 - Custom Detection: text not matched.
+2026-07-19 18:28:39 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:39 - --- Screen repetition 6 complete - back at Start (lifetime: 52) ---
+2026-07-19 18:28:39 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:40 - Custom Detection: text not matched.
+2026-07-19 18:28:41 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:41 - --- Screen repetition 7 complete - back at Start (lifetime: 53) ---
+2026-07-19 18:28:41 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:42 - Custom Detection: text not matched.
+2026-07-19 18:28:43 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:43 - --- Screen repetition 8 complete - back at Start (lifetime: 54) ---
+2026-07-19 18:28:43 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:44 - Custom Detection: text not matched.
+2026-07-19 18:28:45 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:45 - --- Screen repetition 9 complete - back at Start (lifetime: 55) ---
+2026-07-19 18:28:45 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:46 - Custom Detection: text not matched.
+2026-07-19 18:28:46 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:46 - --- Screen repetition 10 complete - back at Start (lifetime: 56) ---
+2026-07-19 18:28:47 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:47 - Custom Detection: text not matched.
+2026-07-19 18:28:48 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:48 - --- Screen repetition 11 complete - back at Start (lifetime: 57) ---
+2026-07-19 18:28:48 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:49 - Custom Detection: text not matched.
+2026-07-19 18:28:50 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:50 - --- Screen repetition 12 complete - back at Start (lifetime: 58) ---
+2026-07-19 18:28:50 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:50 - Custom Detection: text not matched.
+2026-07-19 18:28:51 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:51 - --- Screen repetition 13 complete - back at Start (lifetime: 59) ---
+2026-07-19 18:28:51 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:52 - Custom Detection: text not matched.
+2026-07-19 18:28:53 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:53 - --- Screen repetition 14 complete - back at Start (lifetime: 60) ---
+2026-07-19 18:28:53 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:54 - Custom Detection: text not matched.
+2026-07-19 18:28:55 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:55 - --- Screen repetition 15 complete - back at Start (lifetime: 61) ---
+2026-07-19 18:28:55 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:55 - Custom Detection: text not matched.
+2026-07-19 18:28:56 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:56 - --- Screen repetition 16 complete - back at Start (lifetime: 62) ---
+2026-07-19 18:28:56 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:57 - Custom Detection: text not matched.
+2026-07-19 18:28:58 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:58 - --- Screen repetition 17 complete - back at Start (lifetime: 63) ---
+2026-07-19 18:28:58 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:28:59 - Custom Detection: text not matched.
+2026-07-19 18:28:59 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:28:59 - --- Screen repetition 18 complete - back at Start (lifetime: 64) ---
+2026-07-19 18:29:00 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:00 - Custom Detection: text not matched.
+2026-07-19 18:29:01 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:01 - --- Screen repetition 19 complete - back at Start (lifetime: 65) ---
+2026-07-19 18:29:01 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:02 - Custom Detection: text not matched.
+2026-07-19 18:29:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:03 - --- Screen repetition 20 complete - back at Start (lifetime: 66) ---
+2026-07-19 18:29:03 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:04 - Custom Detection: text not matched.
+2026-07-19 18:29:05 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:05 - --- Screen repetition 21 complete - back at Start (lifetime: 67) ---
+2026-07-19 18:29:05 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:06 - Custom Detection: text not matched.
+2026-07-19 18:29:07 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:07 - --- Screen repetition 22 complete - back at Start (lifetime: 68) ---
+2026-07-19 18:29:07 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:07 - Custom Detection: text not matched.
+2026-07-19 18:29:08 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:08 - --- Screen repetition 23 complete - back at Start (lifetime: 69) ---
+2026-07-19 18:29:08 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:09 - Custom Detection: text not matched.
+2026-07-19 18:29:10 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:10 - --- Screen repetition 24 complete - back at Start (lifetime: 70) ---
+2026-07-19 18:29:10 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:10 - Custom Detection: text not matched.
+2026-07-19 18:29:11 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:11 - --- Screen repetition 25 complete - back at Start (lifetime: 71) ---
+2026-07-19 18:29:11 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:12 - Custom Detection: text not matched.
+2026-07-19 18:29:13 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:13 - --- Screen repetition 26 complete - back at Start (lifetime: 72) ---
+2026-07-19 18:29:13 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:14 - Custom Detection: text not matched.
+2026-07-19 18:29:15 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:15 - --- Screen repetition 27 complete - back at Start (lifetime: 73) ---
+2026-07-19 18:29:15 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:16 - Custom Detection: text not matched.
+2026-07-19 18:29:16 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:16 - --- Screen repetition 28 complete - back at Start (lifetime: 74) ---
+2026-07-19 18:29:17 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:17 - Custom Detection: text not matched.
+2026-07-19 18:29:18 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:18 - --- Screen repetition 29 complete - back at Start (lifetime: 75) ---
+2026-07-19 18:29:18 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:19 - Custom Detection: text not matched.
+2026-07-19 18:29:20 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:20 - --- Screen repetition 30 complete - back at Start (lifetime: 76) ---
+2026-07-19 18:29:20 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:21 - Custom Detection: text not matched.
+2026-07-19 18:29:21 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:21 - --- Screen repetition 31 complete - back at Start (lifetime: 77) ---
+2026-07-19 18:29:22 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:22 - Custom Detection: text not matched.
+2026-07-19 18:29:23 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:23 - --- Screen repetition 32 complete - back at Start (lifetime: 78) ---
+2026-07-19 18:29:23 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:24 - Custom Detection: text not matched.
+2026-07-19 18:29:25 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:25 - --- Screen repetition 33 complete - back at Start (lifetime: 79) ---
+2026-07-19 18:29:25 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:25 - Custom Detection: text not matched.
+2026-07-19 18:29:27 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:27 - --- Screen repetition 34 complete - back at Start (lifetime: 80) ---
+2026-07-19 18:29:27 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:27 - Custom Detection: text not matched.
+2026-07-19 18:29:29 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:29 - --- Screen repetition 35 complete - back at Start (lifetime: 81) ---
+2026-07-19 18:29:29 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:30 - Custom Detection: text not matched.
+2026-07-19 18:29:31 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:31 - --- Screen repetition 36 complete - back at Start (lifetime: 82) ---
+2026-07-19 18:29:31 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:32 - Custom Detection: text not matched.
+2026-07-19 18:29:33 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:33 - --- Screen repetition 37 complete - back at Start (lifetime: 83) ---
+2026-07-19 18:29:33 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:33 - Custom Detection: text not matched.
+2026-07-19 18:29:35 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:35 - --- Screen repetition 38 complete - back at Start (lifetime: 84) ---
+2026-07-19 18:29:35 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:35 - Custom Detection: text not matched.
+2026-07-19 18:29:37 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:37 - --- Screen repetition 39 complete - back at Start (lifetime: 85) ---
+2026-07-19 18:29:37 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:37 - Custom Detection: text not matched.
+2026-07-19 18:29:38 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:38 - --- Screen repetition 40 complete - back at Start (lifetime: 86) ---
+2026-07-19 18:29:38 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:39 - Custom Detection: text not matched.
+2026-07-19 18:29:40 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:40 - --- Screen repetition 41 complete - back at Start (lifetime: 87) ---
+2026-07-19 18:29:40 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:41 - Custom Detection: text not matched.
+2026-07-19 18:29:42 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:42 - --- Screen repetition 42 complete - back at Start (lifetime: 88) ---
+2026-07-19 18:29:42 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:42 - Custom Detection: text not matched.
+2026-07-19 18:29:43 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:43 - --- Screen repetition 43 complete - back at Start (lifetime: 89) ---
+2026-07-19 18:29:43 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:44 - Custom Detection: text not matched.
+2026-07-19 18:29:45 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:45 - --- Screen repetition 44 complete - back at Start (lifetime: 90) ---
+2026-07-19 18:29:45 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:46 - Custom Detection: text not matched.
+2026-07-19 18:29:47 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:47 - --- Screen repetition 45 complete - back at Start (lifetime: 91) ---
+2026-07-19 18:29:47 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:47 - Custom Detection: text not matched.
+2026-07-19 18:29:48 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:48 - --- Screen repetition 46 complete - back at Start (lifetime: 92) ---
+2026-07-19 18:29:48 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:49 - Custom Detection: text not matched.
+2026-07-19 18:29:50 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:50 - --- Screen repetition 47 complete - back at Start (lifetime: 93) ---
+2026-07-19 18:29:50 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:51 - Custom Detection: text not matched.
+2026-07-19 18:29:52 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:52 - --- Screen repetition 48 complete - back at Start (lifetime: 94) ---
+2026-07-19 18:29:52 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:52 - Custom Detection: text not matched.
+2026-07-19 18:29:53 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:53 - --- Screen repetition 49 complete - back at Start (lifetime: 95) ---
+2026-07-19 18:29:53 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:54 - Custom Detection: text not matched.
+2026-07-19 18:29:55 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:55 - --- Screen repetition 50 complete - back at Start (lifetime: 96) ---
+2026-07-19 18:29:55 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:55 - Custom Detection: text not matched.
+2026-07-19 18:29:56 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:56 - --- Screen repetition 51 complete - back at Start (lifetime: 97) ---
+2026-07-19 18:29:56 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:57 - Custom Detection: text not matched.
+2026-07-19 18:29:58 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:58 - --- Screen repetition 52 complete - back at Start (lifetime: 98) ---
+2026-07-19 18:29:58 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:29:59 - Custom Detection: text not matched.
+2026-07-19 18:29:59 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:29:59 - --- Screen repetition 53 complete - back at Start (lifetime: 99) ---
+2026-07-19 18:30:00 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:00 - Custom Detection: text not matched.
+2026-07-19 18:30:01 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:01 - --- Screen repetition 54 complete - back at Start (lifetime: 100) ---
+2026-07-19 18:30:01 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:02 - Custom Detection: text not matched.
+2026-07-19 18:30:03 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:03 - --- Screen repetition 55 complete - back at Start (lifetime: 101) ---
+2026-07-19 18:30:03 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:04 - Custom Detection: text not matched.
+2026-07-19 18:30:05 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:05 - --- Screen repetition 56 complete - back at Start (lifetime: 102) ---
+2026-07-19 18:30:05 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:06 - Custom Detection: text not matched.
+2026-07-19 18:30:07 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:07 - --- Screen repetition 57 complete - back at Start (lifetime: 103) ---
+2026-07-19 18:30:07 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:08 - Custom Detection: text not matched.
+2026-07-19 18:30:09 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:09 - --- Screen repetition 58 complete - back at Start (lifetime: 104) ---
+2026-07-19 18:30:09 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:09 - Custom Detection: text not matched.
+2026-07-19 18:30:11 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:11 - --- Screen repetition 59 complete - back at Start (lifetime: 105) ---
+2026-07-19 18:30:11 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:12 - Custom Detection: text not matched.
+2026-07-19 18:30:12 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:12 - --- Screen repetition 60 complete - back at Start (lifetime: 106) ---
+2026-07-19 18:30:12 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:13 - Custom Detection: text not matched.
+2026-07-19 18:30:14 - Overlay closed. Window lock released.
+2026-07-19 18:30:14 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:30:14 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:14 - Macro stopped. Ready to restart with F10.
+2026-07-19 18:30:28 - Overlay opened.
+2026-07-19 18:30:29 - Game window positioned and locked (RobloxPlayerBeta.exe), 1248x702 at (50, 50).
+2026-07-19 18:30:29 - Macro started using preset 'Expeditions', beginning at screen 'Ingame' step 3.
+2026-07-19 18:30:29 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:29 - Custom Detection: text not matched.
+2026-07-19 18:30:30 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:30 - Checking for round end...
+2026-07-19 18:30:31 - Round End Detection: text not matched.
+2026-07-19 18:30:31 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:30:31 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:30:31 - --- Screen repetition 1 complete - back at Start (lifetime: 107) ---
+2026-07-19 18:30:31 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:30:31 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:32 - Camera setup for 'Expeditions': using the shared [General] actions (2 configured).
+2026-07-19 18:30:33 - Map action: dragged (670, 130) -> (670, 600) over 500ms.
+2026-07-19 18:30:33 - Zoomed out (50 wheel ticks) for map setup.
+2026-07-19 18:30:34 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:30:34 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:34 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:34 - Placing towers for map: Expeditions
+2026-07-19 18:30:34 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:30:35 - After-place click at (450, 290)
+2026-07-19 18:30:35 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:30:35 - After-place click at (450, 290)
+2026-07-19 18:30:36 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:30:36 - After-place click at (450, 290)
+2026-07-19 18:30:37 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:30:37 - After-place click at (450, 290)
+2026-07-19 18:30:37 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:30:38 - After-place click at (450, 290)
+2026-07-19 18:30:38 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:30:38 - After-place click at (450, 290)
+2026-07-19 18:30:39 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:30:39 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:39 - Custom Detection: text not matched.
+2026-07-19 18:30:40 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:40 - Checking for round end...
+2026-07-19 18:30:41 - Round End Detection: text not matched.
+2026-07-19 18:30:41 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:30:41 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:30:41 - --- Screen repetition 2 complete - back at Start (lifetime: 108) ---
+2026-07-19 18:30:42 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:30:42 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:42 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:42 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:30:42 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:43 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:43 - Placing towers for map: Expeditions
+2026-07-19 18:30:43 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:30:43 - After-place click at (450, 290)
+2026-07-19 18:30:44 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:30:44 - After-place click at (450, 290)
+2026-07-19 18:30:44 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:30:45 - After-place click at (450, 290)
+2026-07-19 18:30:45 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:30:45 - After-place click at (450, 290)
+2026-07-19 18:30:46 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:30:46 - After-place click at (450, 290)
+2026-07-19 18:30:47 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:30:47 - After-place click at (450, 290)
+2026-07-19 18:30:47 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:30:47 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:48 - Custom Detection: text not matched.
+2026-07-19 18:30:49 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:49 - Checking for round end...
+2026-07-19 18:30:49 - Round End Detection: text not matched.
+2026-07-19 18:30:50 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:30:50 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:30:50 - --- Screen repetition 3 complete - back at Start (lifetime: 109) ---
+2026-07-19 18:30:50 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:30:50 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:50 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:51 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:30:51 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:51 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:51 - Placing towers for map: Expeditions
+2026-07-19 18:30:51 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:30:52 - After-place click at (450, 290)
+2026-07-19 18:30:52 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:30:52 - After-place click at (450, 290)
+2026-07-19 18:30:53 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:30:53 - After-place click at (450, 290)
+2026-07-19 18:30:54 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:30:54 - After-place click at (450, 290)
+2026-07-19 18:30:54 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:30:55 - After-place click at (450, 290)
+2026-07-19 18:30:55 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:30:55 - After-place click at (450, 290)
+2026-07-19 18:30:56 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:30:56 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:30:56 - Custom Detection: text not matched.
+2026-07-19 18:30:57 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:30:57 - Checking for round end...
+2026-07-19 18:30:58 - Round End Detection: text not matched.
+2026-07-19 18:30:58 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:30:58 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:30:58 - --- Screen repetition 4 complete - back at Start (lifetime: 110) ---
+2026-07-19 18:30:58 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:30:58 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:58 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:59 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:30:59 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:30:59 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:30:59 - Placing towers for map: Expeditions
+2026-07-19 18:31:00 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:00 - After-place click at (450, 290)
+2026-07-19 18:31:01 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:01 - After-place click at (450, 290)
+2026-07-19 18:31:01 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:02 - After-place click at (450, 290)
+2026-07-19 18:31:02 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:02 - After-place click at (450, 290)
+2026-07-19 18:31:03 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:03 - After-place click at (450, 290)
+2026-07-19 18:31:03 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:04 - After-place click at (450, 290)
+2026-07-19 18:31:04 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:04 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:05 - Custom Detection: text not matched.
+2026-07-19 18:31:06 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:06 - Checking for round end...
+2026-07-19 18:31:07 - Round End Detection: text not matched.
+2026-07-19 18:31:08 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:08 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:08 - --- Screen repetition 5 complete - back at Start (lifetime: 111) ---
+2026-07-19 18:31:08 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:08 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:08 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:09 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:09 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:09 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:09 - Placing towers for map: Expeditions
+2026-07-19 18:31:10 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:10 - After-place click at (450, 290)
+2026-07-19 18:31:11 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:11 - After-place click at (450, 290)
+2026-07-19 18:31:11 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:12 - After-place click at (450, 290)
+2026-07-19 18:31:12 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:12 - After-place click at (450, 290)
+2026-07-19 18:31:13 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:13 - After-place click at (450, 290)
+2026-07-19 18:31:13 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:14 - After-place click at (450, 290)
+2026-07-19 18:31:14 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:14 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:15 - Custom Detection: text not matched.
+2026-07-19 18:31:16 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:16 - Checking for round end...
+2026-07-19 18:31:17 - Round End Detection: text not matched.
+2026-07-19 18:31:17 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:17 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:17 - --- Screen repetition 6 complete - back at Start (lifetime: 112) ---
+2026-07-19 18:31:17 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:17 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:17 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:18 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:18 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:18 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:19 - Placing towers for map: Expeditions
+2026-07-19 18:31:19 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:19 - After-place click at (450, 290)
+2026-07-19 18:31:20 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:20 - After-place click at (450, 290)
+2026-07-19 18:31:20 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:21 - After-place click at (450, 290)
+2026-07-19 18:31:21 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:21 - After-place click at (450, 290)
+2026-07-19 18:31:22 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:22 - After-place click at (450, 290)
+2026-07-19 18:31:23 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:23 - After-place click at (450, 290)
+2026-07-19 18:31:23 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:23 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:24 - Custom Detection: text not matched.
+2026-07-19 18:31:25 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:25 - Checking for round end...
+2026-07-19 18:31:25 - Round End Detection: text not matched.
+2026-07-19 18:31:26 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:26 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:26 - --- Screen repetition 7 complete - back at Start (lifetime: 113) ---
+2026-07-19 18:31:26 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:26 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:26 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:27 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:27 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:27 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:27 - Placing towers for map: Expeditions
+2026-07-19 18:31:28 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:28 - After-place click at (450, 290)
+2026-07-19 18:31:29 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:29 - After-place click at (450, 290)
+2026-07-19 18:31:29 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:30 - After-place click at (450, 290)
+2026-07-19 18:31:30 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:30 - After-place click at (450, 290)
+2026-07-19 18:31:31 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:31 - After-place click at (450, 290)
+2026-07-19 18:31:32 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:32 - After-place click at (450, 290)
+2026-07-19 18:31:32 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:32 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:33 - Custom Detection: text not matched.
+2026-07-19 18:31:34 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:34 - Checking for round end...
+2026-07-19 18:31:34 - Round End Detection: text not matched.
+2026-07-19 18:31:35 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:35 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:35 - --- Screen repetition 8 complete - back at Start (lifetime: 114) ---
+2026-07-19 18:31:35 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:35 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:35 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:36 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:36 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:36 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:36 - Placing towers for map: Expeditions
+2026-07-19 18:31:36 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:37 - After-place click at (450, 290)
+2026-07-19 18:31:37 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:37 - After-place click at (450, 290)
+2026-07-19 18:31:38 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:38 - After-place click at (450, 290)
+2026-07-19 18:31:39 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:39 - After-place click at (450, 290)
+2026-07-19 18:31:39 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:40 - After-place click at (450, 290)
+2026-07-19 18:31:40 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:40 - After-place click at (450, 290)
+2026-07-19 18:31:41 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:41 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:41 - Custom Detection: text not matched.
+2026-07-19 18:31:42 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:42 - Checking for round end...
+2026-07-19 18:31:43 - Round End Detection: text not matched.
+2026-07-19 18:31:43 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:43 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:43 - --- Screen repetition 9 complete - back at Start (lifetime: 115) ---
+2026-07-19 18:31:44 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:44 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:44 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:45 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:45 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:45 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:45 - Placing towers for map: Expeditions
+2026-07-19 18:31:46 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:46 - After-place click at (450, 290)
+2026-07-19 18:31:46 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:47 - After-place click at (450, 290)
+2026-07-19 18:31:47 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:48 - After-place click at (450, 290)
+2026-07-19 18:31:48 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:48 - After-place click at (450, 290)
+2026-07-19 18:31:49 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:49 - After-place click at (450, 290)
+2026-07-19 18:31:49 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:50 - After-place click at (450, 290)
+2026-07-19 18:31:50 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:50 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:51 - Custom Detection: text not matched.
+2026-07-19 18:31:52 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:31:52 - Checking for round end...
+2026-07-19 18:31:52 - Round End Detection: text not matched.
+2026-07-19 18:31:53 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:31:53 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:31:53 - --- Screen repetition 10 complete - back at Start (lifetime: 116) ---
+2026-07-19 18:31:53 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:31:53 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:53 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:54 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:31:54 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:31:54 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:31:54 - Placing towers for map: Expeditions
+2026-07-19 18:31:54 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:31:54 - After-place click at (450, 290)
+2026-07-19 18:31:55 - Slot 2 placed at (653, 427) [Expeditions]
+2026-07-19 18:31:55 - After-place click at (450, 290)
+2026-07-19 18:31:56 - Slot 3 placed at (675, 433) [Expeditions]
+2026-07-19 18:31:56 - After-place click at (450, 290)
+2026-07-19 18:31:56 - Slot 4 placed at (662, 380) [Expeditions]
+2026-07-19 18:31:57 - After-place click at (450, 290)
+2026-07-19 18:31:57 - Slot 5 placed at (673, 372) [Expeditions]
+2026-07-19 18:31:58 - After-place click at (450, 290)
+2026-07-19 18:31:58 - Slot 6 placed at (675, 405) [Expeditions]
+2026-07-19 18:31:58 - After-place click at (450, 290)
+2026-07-19 18:31:59 - Waited 0.20000000000000001s after 'Place Towers'.
+2026-07-19 18:31:59 - Checking for 'Continue 'X Extr®t - Cmtinue'...
+2026-07-19 18:31:59 - Custom Detection: text not matched.
+2026-07-19 18:32:00 - Waited 0.5s after 'Custom Detection'.
+2026-07-19 18:32:00 - Checking for round end...
+2026-07-19 18:32:01 - Round End Detection: text not matched.
+2026-07-19 18:32:01 - Waited 0.20000000000000001s after 'Round End Detection'.
+2026-07-19 18:32:01 - Screen 'Ingame' -> jumping to 'Ingame'.
+2026-07-19 18:32:01 - --- Screen repetition 11 complete - back at Start (lifetime: 117) ---
+2026-07-19 18:32:01 - Camera Setup step running (last detected map: '')...
+2026-07-19 18:32:01 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:32:01 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:32:02 - Waited 0.5s after 'Camera Setup'.
+2026-07-19 18:32:02 - No map detected via 'Detect Map' - using configured Default Map: Expeditions
+2026-07-19 18:32:02 - Camera setup: already done this cycle - skipping.
+2026-07-19 18:32:02 - Placing towers for map: Expeditions
+2026-07-19 18:32:03 - Overlay closed. Window lock released.
+2026-07-19 18:32:03 - EMERGENCY STOP: macro stopped.
+2026-07-19 18:32:03 - Slot 1 placed at (667, 399) [Expeditions]
+2026-07-19 18:32:03 - After-place click at (450, 290)
+2026-07-19 18:32:03 - Macro stopped. Ready to restart with F10.
