@@ -56,6 +56,34 @@ JoinList(arr) {
 }
 
 ; ============================================================
+; ADVANCED DETECTION OUTCOMES (serialization helpers)
+; ============================================================
+; A "Custom Detection" step with Advanced checked stores its named outcomes as a single flattened
+; string (fits into one stepsLV column / one ini value, same as every other step field) instead of
+; a proper nested structure - "Name=Screen|Name=Screen|...". Names/screen values aren't expected to
+; contain "|" or "=" in practice (screen names are picked from a dropdown; outcome names are short
+; OCR expected-text labels), so this is deliberately simple rather than fully escaped.
+SerializeOutcomes(outcomes) {
+    s := ""
+    for o in outcomes
+        s .= (s = "" ? "" : "|") o.Name "=" o.Screen
+    return s
+}
+
+ParseOutcomes(s) {
+    outcomes := []
+    if (s = "")
+        return outcomes
+    for part in StrSplit(s, "|") {
+        eqPos := InStr(part, "=")
+        if !eqPos
+            continue
+        outcomes.Push({Name: SubStr(part, 1, eqPos - 1), Screen: SubStr(part, eqPos + 1)})
+    }
+    return outcomes
+}
+
+; ============================================================
 ; PER-OPTION DAILY USAGE (Option Select challenge limits)
 ; ============================================================
 ; Each option's "used today" counter is stored alongside the date it was last touched, so it
@@ -198,6 +226,9 @@ DisconnectRestartPending := false ; set by CheckDisconnectTick when a disconnect
                                    ; to the beginning of the current preset (once MainLoop returns) when this is true
 DisconnectCheckBusy := false      ; guards against an overlapping disconnect OCR scan if one ever takes longer than the timer period
 DisconnectLastCheckTick := 0      ; A_TickCount of the last disconnect OCR scan, used to honor the configurable check interval
+EditingOutcomes := []              ; the "Custom Detection" step currently shown in the Step Editor's Advanced
+                                   ; Detection outcomes (array of {Name, Screen}) - pre-commit, mirrors every
+                                   ; other step-editor field until "Add Step"/"Update Selected" is clicked
 
 ; ============================================================
 ; BUILD GUI
@@ -414,7 +445,13 @@ RefreshProcessList()
 ; +Resize adds a resizable border AND a maximize button to the title bar, so this window can be
 ; dragged bigger or maximized when it feels cramped - see EditGuiSizeHandler below, which widens
 ; the step list to actually use the extra space instead of just leaving it blank.
-EditGui := Gui("+Owner" MyGui.Hwnd " +Resize +MinSize860x700", "Edit Preset")
+; +0x200000 is the raw WS_VSCROLL window style (AHK has no named "VScroll" Gui option) - it makes
+; this window show a vertical scrollbar when it's opened shorter than its full content height (see
+; OpenEditGui, which caps the shown height to the screen's work area). Windows draws the scrollbar
+; for a WS_VSCROLL window automatically, but does NOT move any controls or track a position on its
+; own - that's hooked up by hand further below (UpdateEditGuiScrollRange/ScrollEditGuiTo/
+; EditGuiOnVScroll/EditGuiOnMouseWheel).
+EditGui := Gui("+Owner" MyGui.Hwnd " +Resize +MinSize860x400 +0x200000", "Edit Preset")
 EditGui.SetFont("s10")
 EditGui.OnEvent("Size", EditGuiSizeHandler)
 
@@ -454,7 +491,7 @@ EditGui.AddButton("x220 y75 w95", "Delete").OnEvent("Click", (*) => DeleteScreen
 EditGui.AddButton("x320 y75 w95", "Move Up").OnEvent("Click", (*) => MoveScreenUpClick())
 EditGui.AddButton("x420 y75 w95", "Move Down").OnEvent("Click", (*) => MoveScreenDownClick())
 
-stepsLV := EditGui.AddListView("x20 y170 w750 h190 Grid", ["#", "Type", "Label", "X / Duration", "Y", "End X", "End Y", "Drag (ms)", "Once/Cycle", "On True", "On False", "Wait After (s)"])
+stepsLV := EditGui.AddListView("x20 y170 w750 h190 Grid", ["#", "Type", "Label", "X / Duration", "Y", "End X", "End Y", "Drag (ms)", "Once/Cycle", "On True", "On False", "Wait After (s)", "FB After N", "FB Max", "FB Screen", "Advanced", "Outcomes"])
 stepsLV.ModifyCol(1, 28)
 stepsLV.ModifyCol(2, 100)
 stepsLV.ModifyCol(3, 95)
@@ -467,14 +504,29 @@ stepsLV.ModifyCol(9, 62)
 stepsLV.ModifyCol(10, 75)
 stepsLV.ModifyCol(11, 75)
 stepsLV.ModifyCol(12, 80)
+stepsLV.ModifyCol(13, 62)
+stepsLV.ModifyCol(14, 50)
+stepsLV.ModifyCol(15, 75)
+stepsLV.ModifyCol(16, 60)
+stepsLV.ModifyCol(17, 150)
 stepsLV.OnEvent("Click", (*) => LoadEditorFromSelection())
 
-EditGui.AddGroupBox("x20 y370 w750 h230", "Step Editor")
+EditGui.AddGroupBox("x20 y370 w750 h260", "Step Editor")
 EditGui.AddText("x40 y395", "Type:")
 stepTypeDdl := EditGui.AddDropDownList("x90 y392 w170", ["Start", "Option Select", "Button Click", "Press Start Button", "Restart Stage Button", "Camera Setup", "Place Towers", "Drag", "Zoom Out", "Wait", "Detect Map", "Round End Detection", "Ingame Detection", "Custom Detection"])
 stepTypeDdl.Text := "Button Click"
 stepLabelLbl := EditGui.AddText("x280 y395", "Label:")
 stepLabelEdit := EditGui.AddEdit("x330 y392 w150", "")
+
+; --- "Custom Detection" only: turns the single fixed True/False branch into any number of named
+; outcomes, each checked (in order) against this step's OCR region - see the Advanced Detection
+; Outcomes popup below. Reuses the same horizontal space Label/On True/On False would otherwise
+; occupy, since those become irrelevant once outcomes take over. ---
+stepAdvancedChk := EditGui.AddCheckBox("x480 y397 w140", "Advanced Detection")
+stepAdvancedChk.OnEvent("Click", (*) => StepAdvancedChkToggled())
+AddHelpIcon(EditGui, 624, 397, "Only for 'Custom Detection' steps. When checked, this step's single fixed True/False branch is replaced by any number of named outcomes (Configure Outcomes...) - each outcome's Name doubles as OCR expected text to match against this step's region, checked top-to-bottom, first match wins. By default there are 2 outcomes ('True'/'False', both left on '(continue)') mirroring the normal behavior, but you can rename them (which also changes what text they match) and add as many more as you need, each jumping to a different screen depending on what's detected.")
+stepAdvancedConfigBtn := EditGui.AddButton("x650 y392 w120", "Configure Outcomes...")
+stepAdvancedConfigBtn.OnEvent("Click", (*) => OpenAdvDetGui())
 
 stepXLabel := EditGui.AddText("x40 y430", "X:")
 stepXEdit := EditGui.AddEdit("x95 y427 w60", "0")
@@ -514,21 +566,31 @@ AddHelpIcon(EditGui, 615, 537, "Jump to another screen when this step finishes. 
 oncePerCycleChk := EditGui.AddCheckBox("x40 y570 w650", "Once per cycle (run only once, skip until the next Detect Map / new round)")
 AddHelpIcon(EditGui, 700, 571, "When checked, this step only runs once and is then skipped on every repeat - until a 'Detect Map' step runs again (i.e. a new round starts). Useful for e.g. a Drag or Zoom Out step inside a repeating screen that shouldn't run every loop.")
 
-EditGui.AddButton("x40 y610 w100", "Add Step").OnEvent("Click", (*) => AddStepClick())
-EditGui.AddButton("x150 y610 w130", "Update Selected").OnEvent("Click", (*) => UpdateSelectedClick())
-EditGui.AddButton("x290 y610 w130", "Remove Selected").OnEvent("Click", (*) => RemoveSelectedClick())
-EditGui.AddButton("x430 y610 w90", "Move Up").OnEvent("Click", (*) => MoveUpClick())
-EditGui.AddButton("x530 y610 w90", "Move Down").OnEvent("Click", (*) => MoveDownClick())
-startFromStepBtn := EditGui.AddButton("x630 y610 w140", "Start Macro From This Step")
+; --- Logic steps only: gives up after N attempts that led to no progress (i.e. resolved to
+; "(Repeat)") and jumps to a fallback screen instead - a safety net for a detection step whose
+; On True/On False is set to "(Repeat)", so it doesn't loop forever if the expected text never
+; shows up. ---
+stepFallbackChk := EditGui.AddCheckBox("x40 y600 w195", "Fallback after N attempts:")
+stepFallbackMaxEdit := EditGui.AddEdit("x235 y597 w45", "5")
+stepFallbackScreenLbl := EditGui.AddText("x295 y600", "-> Screen:")
+stepFallbackScreenDdl := EditGui.AddDropDownList("x365 y597 w190")
+AddHelpIcon(EditGui, 615, 600, "Only for Logic steps (Detect Map, Round End/Ingame/Custom Detection). Counts how many times in a row this step's result led to '(Repeat)' (see On True/On False above) without success; once the count reaches N, it jumps to the screen picked here instead (or 'Stop Macro') - so a step retrying via '(Repeat)' can't loop forever if the expected text never appears. The count resets to 0 as soon as the step succeeds (no longer resolves to '(Repeat)'), and also whenever a new round starts (a 'Detect Map' step runs).")
+
+EditGui.AddButton("x40 y640 w100", "Add Step").OnEvent("Click", (*) => AddStepClick())
+EditGui.AddButton("x150 y640 w130", "Update Selected").OnEvent("Click", (*) => UpdateSelectedClick())
+EditGui.AddButton("x290 y640 w130", "Remove Selected").OnEvent("Click", (*) => RemoveSelectedClick())
+EditGui.AddButton("x430 y640 w90", "Move Up").OnEvent("Click", (*) => MoveUpClick())
+EditGui.AddButton("x530 y640 w90", "Move Down").OnEvent("Click", (*) => MoveDownClick())
+startFromStepBtn := EditGui.AddButton("x630 y640 w140", "Start Macro From This Step")
 startFromStepBtn.OnEvent("Click", (*) => StartFromStepClick())
-AddHelpIcon(EditGui, 775, 613, "Starts the macro beginning at the currently selected step, skipping everything before it on this screen. Later screens (via jumps/fallthrough) still run normally from their own start. While the macro runs, this window follows along - showing whichever screen/step is currently executing.")
+AddHelpIcon(EditGui, 775, 643, "Starts the macro beginning at the currently selected step, skipping everything before it on this screen. Later screens (via jumps/fallthrough) still run normally from their own start. While the macro runs, this window follows along - showing whichever screen/step is currently executing.")
 
 ; --- 3 challenge options, specific to this preset (only shown while editing an "Option Select" step) ---
-optionSectionLabel := EditGui.AddText("x20 y650", "Challenge options for this preset (used by its 'Option Select' steps):")
+optionSectionLabel := EditGui.AddText("x20 y680", "Challenge options for this preset (used by its 'Option Select' steps):")
 OptionSectionControls.Push(optionSectionLabel)
 optionBoxW := 235
 optionGap := 15
-optionYBase := 670
+optionYBase := 700
 optionBoxH := 190
 Loop 3 {
     i := A_Index
@@ -580,28 +642,134 @@ Loop 3 {
 ;  - Fallback Screen: what to do if EVERY option turns out unavailable - jumps straight to a
 ;    different screen (e.g. a "Farming" screen) instead of clicking a fixed position. Leave it on
 ;    "(none)" to fall back to the old behavior of waiting 5s and rechecking instead. ---
-EditGui.AddGroupBox("x20 y870 w800 h68", "Option Select: Back Button & Fallback Screen")
-EditGui.AddText("x35 y897", "Back X:")
-backXEdit := EditGui.AddEdit("x90 y894 w50", "0")
-EditGui.AddText("x155 y897", "Back Y:")
-backYEdit := EditGui.AddEdit("x210 y894 w50", "0")
-backPosBtn := EditGui.AddButton("x280 y893 w100", "Set Position")
+EditGui.AddGroupBox("x20 y900 w800 h68", "Option Select: Back Button & Fallback Screen")
+EditGui.AddText("x35 y927", "Back X:")
+backXEdit := EditGui.AddEdit("x90 y924 w50", "0")
+EditGui.AddText("x155 y927", "Back Y:")
+backYEdit := EditGui.AddEdit("x210 y924 w50", "0")
+backPosBtn := EditGui.AddButton("x280 y923 w100", "Set Position")
 backPosBtn.OnEvent("Click", StartCapture.Bind(backXEdit, backYEdit))
-EditGui.AddText("x410 y897", "Fallback Screen ->")
-fallbackScreenDdl := EditGui.AddDropDownList("x520 y894 w250")
-AddHelpIcon(EditGui, 795, 875, "Back Button: clicked to return to the mode-select screen after an option's Availability Check comes back negative, so the next priority can be tried. Fallback Screen: jumped to instead if every option turns out unavailable (including all 3 hitting their daily 'Max' limit) - leave it on '(none)' to fall back to the old behavior of waiting 5s and rechecking instead, or pick 'Stop Macro' to end the run cleanly once nothing is left to play today.")
+EditGui.AddText("x410 y927", "Fallback Screen ->")
+fallbackScreenDdl := EditGui.AddDropDownList("x520 y924 w250")
+AddHelpIcon(EditGui, 795, 905, "Back Button: clicked to return to the mode-select screen after an option's Availability Check comes back negative, so the next priority can be tried. Fallback Screen: jumped to instead if every option turns out unavailable (including all 3 hitting their daily 'Max' limit) - leave it on '(none)' to fall back to the old behavior of waiting 5s and rechecking instead, or pick 'Stop Macro' to end the run cleanly once nothing is left to play today.")
 for ctrl in [backXEdit, backYEdit, backPosBtn, fallbackScreenDdl]
     OptionSectionControls.Push(ctrl)
 
 ; --- default map fallback, specific to this preset ---
-EditGui.AddText("x20 y955", "Default Map:")
-defaultMapDdl := EditGui.AddDropDownList("x110 y952 w260")
-AddHelpIcon(EditGui, 380, 953, "Used by 'Place Towers' if no 'Detect Map' step ran (or it found nothing) while this preset is running. Set to '(none)' to always require detection.")
+EditGui.AddText("x20 y985", "Default Map:")
+defaultMapDdl := EditGui.AddDropDownList("x110 y982 w260")
+AddHelpIcon(EditGui, 380, 983, "Used by 'Place Towers' if no 'Detect Map' step ran (or it found nothing) while this preset is running. Set to '(none)' to always require detection.")
 
-EditGui.AddButton("x680 y992 w90", "Close").OnEvent("Click", (*) => CloseEditGui())
+EditGui.AddButton("x680 y1022 w90", "Close").OnEvent("Click", (*) => CloseEditGui())
 EditGui.OnEvent("Close", (*) => CloseEditGui())
 
 stepTypeDdl.OnEvent("Change", (*) => StepTypeChangedByUser())
+
+; ============================================================
+; EDIT PRESET WINDOW: MANUAL VERTICAL SCROLLING
+; ============================================================
+; EditGui's content (1070px) is taller than plenty of screens, so OpenEditGui caps its shown height
+; to the work area and it's given the raw WS_VSCROLL style above. Windows draws the scrollbar for
+; that style on its own, but doesn't move any controls or track a position - this section does that
+; by hand: every control is repositioned by the same delta whenever the scroll offset changes,
+; whether that change came from dragging/clicking the real scrollbar (WM_VSCROLL) or the mouse
+; wheel (WM_MOUSEWHEEL, which the OS scrollbar does not respond to on its own).
+EditGuiScrollY := 0        ; current vertical scroll offset in px (0 = top/unscrolled)
+EditGuiContentHeight := 0  ; full logical content height - bottom edge of the lowest control
+
+; Measures the content height (bottom edge of the lowest control) and (re)configures the OS
+; scrollbar's range/page size to match. Called once EditGui is first shown, and again on every
+; resize (the viewport height changes, so the scrollable range does too).
+UpdateEditGuiScrollRange() {
+    global EditGui, EditGuiScrollY, EditGuiContentHeight
+    tallest := 0
+    for ctrl in EditGui {
+        ctrl.GetPos(&cx, &cy, &cw, &ch)
+        if (cy + ch > tallest)
+            tallest := cy + ch
+    }
+    EditGuiContentHeight := tallest + 20
+
+    EditGui.GetClientPos(, , , &viewH)
+    maxScroll := Max(0, EditGuiContentHeight - viewH)
+    if (EditGuiScrollY > maxScroll)
+        ScrollEditGuiTo(maxScroll)
+
+    si := Buffer(28, 0)
+    NumPut("UInt", 28, si, 0)     ; cbSize
+    NumPut("UInt", 0x7, si, 4)    ; fMask: SIF_RANGE | SIF_PAGE | SIF_POS
+    NumPut("Int", 0, si, 8)       ; nMin
+    NumPut("Int", EditGuiContentHeight - 1, si, 12) ; nMax
+    NumPut("UInt", viewH, si, 16) ; nPage
+    NumPut("Int", EditGuiScrollY, si, 20) ; nPos
+    DllCall("SetScrollInfo", "Ptr", EditGui.Hwnd, "Int", 1, "Ptr", si, "Int", true) ; SB_VERT = 1
+}
+
+; Moves every control by the difference between `newY` and the current scroll offset (clamped to
+; the valid range), then updates the scrollbar thumb to match. Shared by the scrollbar's own
+; WM_VSCROLL handler and the mouse wheel handler below.
+; WM_SETREDRAW is turned off for the actual moves (avoids flicker across ~150 controls) and back
+; on afterward, followed by an explicit InvalidateRect+UpdateWindow - without that last step,
+; Windows never repaints the areas vacated by each moved control, leaving visible ghost trails
+; behind (most noticeable scrolling down then back up).
+ScrollEditGuiTo(newY) {
+    global EditGui, EditGuiScrollY, EditGuiContentHeight
+    EditGui.GetClientPos(, , , &viewH)
+    maxScroll := Max(0, EditGuiContentHeight - viewH)
+    newY := Max(0, Min(maxScroll, Round(newY)))
+    delta := newY - EditGuiScrollY
+    if (delta = 0)
+        return
+    EditGuiScrollY := newY
+    DllCall("SendMessage", "Ptr", EditGui.Hwnd, "UInt", 0x0B, "Ptr", 0, "Ptr", 0) ; WM_SETREDRAW off
+    for ctrl in EditGui {
+        ctrl.GetPos(&cx, &cy)
+        ctrl.Move(cx, cy - delta)
+    }
+    DllCall("SendMessage", "Ptr", EditGui.Hwnd, "UInt", 0x0B, "Ptr", 1, "Ptr", 0) ; WM_SETREDRAW on
+    DllCall("SetScrollPos", "Ptr", EditGui.Hwnd, "Int", 1, "Int", newY, "Int", true)
+    DllCall("InvalidateRect", "Ptr", EditGui.Hwnd, "Ptr", 0, "Int", true)
+    DllCall("UpdateWindow", "Ptr", EditGui.Hwnd)
+}
+
+; WM_VSCROLL (0x115): fires when the user clicks the scrollbar's arrows/track or drags its thumb.
+EditGuiOnVScroll(wParam, lParam, msg, hwnd) {
+    global EditGui, EditGuiScrollY, EditGuiContentHeight
+    if (hwnd != EditGui.Hwnd)
+        return
+    EditGui.GetClientPos(, , , &viewH)
+    maxScroll := Max(0, EditGuiContentHeight - viewH)
+    action := wParam & 0xFFFF
+    newPos := EditGuiScrollY
+    switch action {
+        case 0: newPos -= 30                          ; SB_LINEUP
+        case 1: newPos += 30                          ; SB_LINEDOWN
+        case 2: newPos -= viewH                        ; SB_PAGEUP
+        case 3: newPos += viewH                        ; SB_PAGEDOWN
+        case 4, 5: newPos := (wParam >> 16) & 0xFFFF  ; SB_THUMBPOSITION / SB_THUMBTRACK
+        case 6: newPos := 0                            ; SB_TOP
+        case 7: newPos := maxScroll                    ; SB_BOTTOM
+        default: return
+    }
+    ScrollEditGuiTo(newPos)
+}
+
+; WM_MOUSEWHEEL (0x20A): the OS scrollbar alone doesn't respond to the mouse wheel. Only acts when
+; the cursor is directly over EditGui's own background (hwnd matches exactly, not a child control)
+; so it never fights a child control's own wheel behavior (e.g. the step list's internal scrolling,
+; or changing a focused dropdown's selection).
+EditGuiOnMouseWheel(wParam, lParam, msg, hwnd) {
+    global EditGui, EditGuiScrollY
+    if (hwnd != EditGui.Hwnd)
+        return
+    delta := (wParam >> 16) & 0xFFFF
+    if (delta > 0x7FFF)
+        delta -= 0x10000
+    ScrollEditGuiTo(EditGuiScrollY - Round(delta / 120) * 40)
+}
+
+OnMessage(0x115, EditGuiOnVScroll)
+OnMessage(0x20A, EditGuiOnMouseWheel)
 
 ; ============================================================
 ; MAP ADVANCED SETTINGS WINDOW (Drag / Zoom Out action list, per map profile)
@@ -700,6 +868,38 @@ AddHelpIcon(OptionAvailGui, 245, 224, "Copies the region/text/invert settings cu
 OptionAvailGui.AddButton("x420 y260 w90", "Close").OnEvent("Click", (*) => CloseOptionAvailGui())
 OptionAvailGui.OnEvent("Close", (*) => CloseOptionAvailGui())
 
+; ============================================================
+; ADVANCED DETECTION OUTCOMES WINDOW (per "Custom Detection" step, when "Advanced" is checked)
+; ============================================================
+; Edits EditingOutcomes (the currently-open Step Editor step's outcome list) - not committed to
+; the step until "Add Step"/"Update Selected" is clicked in the main Step Editor, same as every
+; other field there.
+AdvDetGui := Gui("+Owner" EditGui.Hwnd, "Advanced Detection Outcomes")
+AdvDetGui.SetFont("s10")
+
+AdvDetGui.AddText("x20 y15 w600", "Each outcome's Name doubles as the OCR expected text matched against this step's Region1/Region2. Checked top-to-bottom - the first match wins.")
+
+advDetLV := AdvDetGui.AddListView("x20 y50 w500 h180 Grid", ["#", "Name / Expected Text", "Screen ->"])
+advDetLV.ModifyCol(1, 30)
+advDetLV.ModifyCol(2, 260)
+advDetLV.ModifyCol(3, 190)
+advDetLV.OnEvent("Click", (*) => AdvDetLoadEditorFromSelection())
+
+AdvDetGui.AddText("x20 y245", "Name / Expected Text:")
+advDetNameEdit := AdvDetGui.AddEdit("x160 y242 w200", "")
+AdvDetGui.AddText("x380 y245", "Screen ->")
+advDetScreenDdl := AdvDetGui.AddDropDownList("x440 y242 w190")
+
+AdvDetGui.AddButton("x20 y280 w100", "Add").OnEvent("Click", (*) => AdvDetAddClick())
+AdvDetGui.AddButton("x130 y280 w130", "Update Selected").OnEvent("Click", (*) => AdvDetUpdateClick())
+AdvDetGui.AddButton("x270 y280 w130", "Remove Selected").OnEvent("Click", (*) => AdvDetRemoveClick())
+AdvDetGui.AddButton("x410 y280 w90", "Move Up").OnEvent("Click", (*) => AdvDetMoveUpClick())
+AdvDetGui.AddButton("x510 y280 w90", "Move Down").OnEvent("Click", (*) => AdvDetMoveDownClick())
+AddHelpIcon(AdvDetGui, 605, 17, "'Screen ->' accepts '(continue)' (fall through to the next step), '(Repeat)' (re-run this step - see the Fallback-after-N-attempts safety net above it), '(Stop Macro)', or any screen name.")
+
+AdvDetGui.AddButton("x510 y320 w90", "Close").OnEvent("Click", (*) => CloseAdvDetGui())
+AdvDetGui.OnEvent("Close", (*) => CloseAdvDetGui())
+
 ; ---------------- MAP PROFILE BOOTSTRAP ----------------
 ; (must run before preset bootstrap - LoadPreset() needs defaultMapDdl already populated)
 InitMapProfiles()
@@ -713,11 +913,24 @@ MyGui.Show("w820 h815")
 CreateMarker()
 
 OpenEditGui(*) {
-    global CurrentPresetName, EditGui, editingLabel, EditGuiVisible
+    global CurrentPresetName, EditGui, editingLabel, EditGuiVisible, EditGuiScrollY
     LoadPreset(CurrentPresetName)
     editingLabel.Text := "Editing: " CurrentPresetName
     RefreshImportPresetDdl()
-    EditGui.Show("w860 h1040")
+    ; This window's full content is 1070px tall, which doesn't fit on plenty of screens - cap the
+    ; shown height to the work area (leaving a small margin for the taskbar/title bar) instead of
+    ; letting the window run off-screen. The WS_VSCROLL style set on EditGui above then shows a
+    ; scrollbar so anything that doesn't fit is still reachable by scrolling.
+    ; EditGui is only Show()/Hide()'d (never recreated), so if it was left scrolled down from a
+    ; previous visit, its controls are still physically shifted from last time - restore them to
+    ; their authored position before recomputing the range for this visit's (possibly different)
+    ; screen/window size.
+    if (EditGuiScrollY != 0)
+        ScrollEditGuiTo(0)
+    MonitorGetWorkArea(, &waLeft, &waTop, &waRight, &waBottom)
+    maxHeight := (waBottom - waTop) - 40
+    EditGui.Show("w860 h" Min(1070, maxHeight))
+    UpdateEditGuiScrollRange()
     EditGuiVisible := true
 }
 
@@ -730,13 +943,15 @@ CloseEditGui(*) {
 
 ; Fires whenever the Edit Preset window is resized or maximized/restored. Widens the step list
 ; (stepsLV) to fill the extra width instead of leaving it blank - that ListView packs 12 columns
-; into a fixed width by default, which is the main thing that gets unreadably cramped. Everything
-; else keeps its original position; resizing taller just gives you more blank margin below.
+; into a fixed width by default, which is the main thing that gets unreadably cramped. Also
+; recomputes the vertical scroll range, since resizing taller/shorter changes the viewport height
+; (and therefore how much of the content is already visible without scrolling).
 EditGuiSizeHandler(guiObj, minMax, width, height) {
     global stepsLV
     if (minMax = -1)  ; minimized - nothing to reflow
         return
     try stepsLV.Move(, , Max(750, width - 90), )
+    try UpdateEditGuiScrollRange()
 }
 
 OpenMapAdvancedGui(*) {
@@ -787,6 +1002,119 @@ CloseOptionAvailGui(*) {
         opt.DetInvert := optAvailInvertChk.Value
     }
     OptionAvailGui.Hide()
+}
+
+; ============================================================
+; ADVANCED DETECTION OUTCOMES (popup for "Custom Detection" + "Advanced Detection")
+; ============================================================
+; Repopulates the popup's "Screen ->" dropdown from the current preset's screen list, same pseudo-
+; targets as the per-step Logic Fallback dropdown (minus "(none)", since every outcome should
+; always resolve to something - "(continue)" is the neutral default).
+RefreshAdvDetScreenDdl() {
+    global advDetScreenDdl, CurrentPresetName
+    cur := advDetScreenDdl.Text
+    items := ["(continue)", "(Repeat)", "(Stop Macro)"]
+    for n in GetPresetScreenNames(CurrentPresetName)
+        items.Push(n)
+    advDetScreenDdl.Delete()
+    advDetScreenDdl.Add(items)
+    advDetScreenDdl.Text := (cur != "") ? cur : "(continue)"
+}
+
+LoadAdvDetLV() {
+    global advDetLV, EditingOutcomes
+    advDetLV.Delete()
+    for i, o in EditingOutcomes
+        advDetLV.Add("", i, o.Name, o.Screen)
+}
+
+OpenAdvDetGui(*) {
+    global EditingOutcomes, AdvDetGui
+    if (EditingOutcomes.Length = 0) {
+        EditingOutcomes.Push({Name: "True", Screen: "(continue)"})
+        EditingOutcomes.Push({Name: "False", Screen: "(continue)"})
+    }
+    RefreshAdvDetScreenDdl()
+    LoadAdvDetLV()
+    AdvDetGui.Show("w630 h360")
+}
+
+; Flushes the ListView back into EditingOutcomes, then hides the popup - actual commit onto the
+; step itself still happens later via "Add Step"/"Update Selected", same as every other field.
+CloseAdvDetGui(*) {
+    global advDetLV, EditingOutcomes, AdvDetGui
+    arr := []
+    Loop advDetLV.GetCount() {
+        i := A_Index
+        arr.Push({Name: advDetLV.GetText(i, 2), Screen: advDetLV.GetText(i, 3)})
+    }
+    EditingOutcomes := arr
+    AdvDetGui.Hide()
+}
+
+AdvDetLoadEditorFromSelection(*) {
+    global advDetLV, advDetNameEdit, advDetScreenDdl
+    row := advDetLV.GetNext(0, "Focused")
+    if !row
+        return
+    advDetNameEdit.Value := advDetLV.GetText(row, 2)
+    advDetScreenDdl.Text := advDetLV.GetText(row, 3)
+}
+
+AdvDetAddClick(*) {
+    global advDetLV, advDetNameEdit, advDetScreenDdl
+    if (Trim(advDetNameEdit.Value) = "") {
+        MsgBox "Enter a name/expected text first."
+        return
+    }
+    advDetLV.Add("", advDetLV.GetCount() + 1, advDetNameEdit.Value, advDetScreenDdl.Text)
+}
+
+AdvDetUpdateClick(*) {
+    global advDetLV, advDetNameEdit, advDetScreenDdl
+    row := advDetLV.GetNext(0, "Focused")
+    if !row {
+        MsgBox "No outcome selected."
+        return
+    }
+    advDetLV.Modify(row, "", row, advDetNameEdit.Value, advDetScreenDdl.Text)
+}
+
+AdvDetRemoveClick(*) {
+    global advDetLV
+    row := advDetLV.GetNext(0, "Focused")
+    if !row
+        return
+    advDetLV.Delete(row)
+    Loop advDetLV.GetCount()
+        advDetLV.Modify(A_Index, "", A_Index)
+}
+
+AdvDetSwapRows(r1, r2) {
+    global advDetLV
+    n1 := advDetLV.GetText(r1, 2), s1 := advDetLV.GetText(r1, 3)
+    n2 := advDetLV.GetText(r2, 2), s2 := advDetLV.GetText(r2, 3)
+    advDetLV.Modify(r1, "", r1, n2, s2)
+    advDetLV.Modify(r2, "", r2, n1, s1)
+}
+
+AdvDetMoveUpClick(*) {
+    global advDetLV
+    row := advDetLV.GetNext(0, "Focused")
+    if (!row || row = 1)
+        return
+    AdvDetSwapRows(row, row - 1)
+    advDetLV.Modify(row - 1, "Focus Select")
+}
+
+AdvDetMoveDownClick(*) {
+    global advDetLV
+    row := advDetLV.GetNext(0, "Focused")
+    n := advDetLV.GetCount()
+    if (!row || row = n)
+        return
+    AdvDetSwapRows(row, row + 1)
+    advDetLV.Modify(row + 1, "Focus Select")
 }
 
 ; Tests whatever's currently entered in the popup (not necessarily saved to OptData yet).
@@ -1151,6 +1479,7 @@ RunOcrOnRegion(x, y, w, h, outFileName := "ocr_result.txt") {
 ; entered for the selected Logic step (not necessarily saved yet).
 StepTestOcrClick(*) {
     global stepTypeDdl, stepXEdit, stepYEdit, dragEndXEdit, dragEndYEdit, stepLabelEdit, stepOcrResultText, MapProfileNames
+    global stepAdvancedChk, EditingOutcomes
     rect := {x: Min(SafeInt(stepXEdit.Value), SafeInt(dragEndXEdit.Value)),
         y: Min(SafeInt(stepYEdit.Value), SafeInt(dragEndYEdit.Value)),
         w: Abs(SafeInt(dragEndXEdit.Value) - SafeInt(stepXEdit.Value)),
@@ -1185,6 +1514,23 @@ StepTestOcrClick(*) {
             }
         }
         stepOcrResultText.Text := "Recognized: '" text "' -> map: " (matched != "" ? matched : "(none matched)")
+    } else if (stepTypeDdl.Text = "Custom Detection" && stepAdvancedChk.Value) {
+        matched := ""
+        for o in EditingOutcomes {
+            if (o.Name != "" && InStr(text, o.Name)) {
+                matched := o
+                break
+            }
+        }
+        if (matched = "") {
+            for o in EditingOutcomes {
+                if (o.Name != "" && TextContainsPartialMatch(text, o.Name, 6)) {
+                    matched := o
+                    break
+                }
+            }
+        }
+        stepOcrResultText.Text := "Recognized: '" text "' -> " (matched != "" ? "matches outcome '" matched.Name "' (-> " matched.Screen ")" : "(no outcome matched)")
     } else {
         expected := stepLabelEdit.Value
         isMatch := (expected != "") && (InStr(text, expected) || TextContainsPartialMatch(text, expected, 6))
@@ -1499,9 +1845,13 @@ UpdateStepEditorLabels(*) {
     global stepTypeDdl, stepXLabel, stepYLabel, stepXEdit, stepYEdit, stepPosBtn, stepLabelLbl, OptionSectionControls
     global dragEndXLabel, dragEndXEdit, dragEndYLabel, dragEndYEdit, dragEndPosBtn, dragMsLabel, dragMsEdit
     global stepOcrTestBtn, stepOcrResultText, stepOnTrueLbl, stepOnTrueDdl, stepOnFalseLbl, stepOnFalseDdl
+    global stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenLbl, stepFallbackScreenDdl
+    global stepAdvancedChk, stepAdvancedConfigBtn
     t := stepTypeDdl.Text
     isDrag := (t = "Drag")
     isLogic := IsLogicStepType(t)
+    isCustomDetection := (t = "Custom Detection")
+    advancedOn := isCustomDetection && stepAdvancedChk.Value
 
     ; Challenge options are only relevant while working on an "Option Select" step.
     for ctrl in OptionSectionControls
@@ -1523,19 +1873,32 @@ UpdateStepEditorLabels(*) {
     ; Every step type can jump to another screen when it finishes. Logic steps get two branches
     ; (On True/On False, based on the OCR result); Mechanic steps get a single unconditional jump
     ; (reusing the same "On True" field/column - e.g. a plain Round End button that just always
-    ; goes back to "Ingame" with no detection needed).
-    stepOnTrueLbl.Visible := true
-    stepOnTrueDdl.Visible := true
+    ; goes back to "Ingame" with no detection needed). Advanced Custom Detection replaces both
+    ; branches with its own per-outcome screens (Configure Outcomes...), so they're hidden then.
+    stepOnTrueLbl.Visible := !advancedOn
+    stepOnTrueDdl.Visible := !advancedOn
     stepOnTrueLbl.Text := isLogic ? "On True ->" : "Then Go To ->"
-    stepOnFalseLbl.Visible := isLogic
-    stepOnFalseDdl.Visible := isLogic
+    stepOnFalseLbl.Visible := isLogic && !advancedOn
+    stepOnFalseDdl.Visible := isLogic && !advancedOn
+
+    ; Logic-only: the "fallback after N (Repeat) attempts" safety net.
+    for ctrl in [stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenLbl, stepFallbackScreenDdl]
+        ctrl.Visible := isLogic
+
+    ; "Advanced Detection" (Custom Detection only): replaces the single fixed True/False branch
+    ; with any number of named outcomes - see OpenAdvDetGui/StepAdvancedChkToggled.
+    stepAdvancedChk.Visible := isCustomDetection
+    stepAdvancedConfigBtn.Visible := advancedOn
 
     ; The Label field doubles as the OCR "expected text" for Round End/Ingame/Custom Detection
     ; (Detect Map instead matches against every map profile's own expected text, so its Label is
     ; just an optional free description). "Custom Detection" is a freely-nameable version of the
     ; same check - use it for any extra popup/screen you need to detect and click through, without
-    ; touching the built-in Map/Round End/Ingame detection logic.
+    ; touching the built-in Map/Round End/Ingame detection logic. Hidden entirely once Advanced
+    ; Detection is on, since each outcome carries its own name/expected text instead.
     stepLabelLbl.Text := (t = "Round End Detection" || t = "Ingame Detection" || t = "Custom Detection") ? "Expected Text:" : "Label:"
+    stepLabelLbl.Visible := !advancedOn
+    stepLabelEdit.Visible := !advancedOn
 
     if (t = "Zoom Out") {
         stepXLabel.Text := "Ticks:"
@@ -1589,6 +1952,19 @@ StepTypeChangedByUser(*) {
     } else if (t = "Restart Stage Button") {
         stepXEdit.Value := "400"
         stepYEdit.Value := "620"
+    }
+    UpdateStepEditorLabels()
+}
+
+; Fires when the "Advanced Detection" checkbox itself is clicked. Seeds 2 default outcomes
+; ("True"/"False", both "(continue)") the first time it's turned on for a step that doesn't have
+; any yet - mirroring the normal True/False branch it replaces - so "Configure Outcomes..." (or
+; committing the step right away) never starts from an empty, unusable list.
+StepAdvancedChkToggled(*) {
+    global stepAdvancedChk, EditingOutcomes
+    if (stepAdvancedChk.Value && EditingOutcomes.Length = 0) {
+        EditingOutcomes.Push({Name: "True", Screen: "(continue)"})
+        EditingOutcomes.Push({Name: "False", Screen: "(continue)"})
     }
     UpdateStepEditorLabels()
 }
@@ -2217,7 +2593,13 @@ BuildScreenStepsFromIni(name, screenIdx) {
             AlreadyDone: false,
             Seconds: Cfg(section, "Screen" screenIdx "Step" i "Seconds", "0"),
             OnTrueScreen: Cfg(section, "Screen" screenIdx "Step" i "OnTrueScreen", "(continue)"),
-            OnFalseScreen: Cfg(section, "Screen" screenIdx "Step" i "OnFalseScreen", "(continue)")})
+            OnFalseScreen: Cfg(section, "Screen" screenIdx "Step" i "OnFalseScreen", "(continue)"),
+            FallbackEnabled: Integer(Cfg(section, "Screen" screenIdx "Step" i "FallbackEnabled", "0")),
+            FallbackMaxAttempts: Cfg(section, "Screen" screenIdx "Step" i "FallbackMaxAttempts", "5"),
+            FallbackScreen: Cfg(section, "Screen" screenIdx "Step" i "FallbackScreen", "(none)"),
+            FallbackAttemptCount: 0,
+            Advanced: Integer(Cfg(section, "Screen" screenIdx "Step" i "Advanced", "0")),
+            OutcomesRaw: Cfg(section, "Screen" screenIdx "Step" i "Outcomes", "")})
     }
     return arr
 }
@@ -2248,6 +2630,11 @@ WriteScreenSteps(name, idx, screenName, steps) {
         IniWrite st.OnTrueScreen, ConfigFile, section, "Screen" idx "Step" j "OnTrueScreen"
         IniWrite st.OnFalseScreen, ConfigFile, section, "Screen" idx "Step" j "OnFalseScreen"
         IniWrite st.Seconds, ConfigFile, section, "Screen" idx "Step" j "Seconds"
+        IniWrite (st.FallbackEnabled ? 1 : 0), ConfigFile, section, "Screen" idx "Step" j "FallbackEnabled"
+        IniWrite st.FallbackMaxAttempts, ConfigFile, section, "Screen" idx "Step" j "FallbackMaxAttempts"
+        IniWrite st.FallbackScreen, ConfigFile, section, "Screen" idx "Step" j "FallbackScreen"
+        IniWrite (st.Advanced ? 1 : 0), ConfigFile, section, "Screen" idx "Step" j "Advanced"
+        IniWrite st.OutcomesRaw, ConfigFile, section, "Screen" idx "Step" j "Outcomes"
     }
 }
 
@@ -2284,7 +2671,9 @@ LoadScreenSteps(name, screenName) {
     global stepsLV
     stepsLV.Delete()
     for i, s in BuildScreenStepsFromIniByName(name, screenName)
-        stepsLV.Add("", i, s.Type, s.Label, s.X, s.Y, s.EndX, s.EndY, s.DragMs, (s.OncePerCycle ? "Yes" : "No"), s.OnTrueScreen, s.OnFalseScreen, s.Seconds)
+        stepsLV.Add("", i, s.Type, s.Label, s.X, s.Y, s.EndX, s.EndY, s.DragMs, (s.OncePerCycle ? "Yes" : "No"), s.OnTrueScreen, s.OnFalseScreen, s.Seconds,
+            (s.FallbackEnabled ? "Yes" : "No"), s.FallbackMaxAttempts, s.FallbackScreen,
+            (s.Advanced ? "Yes" : "No"), s.OutcomesRaw)
     RefreshJumpTargetDdls(name)
 }
 
@@ -2310,6 +2699,11 @@ SaveScreenToIni(name, screenName) {
         IniWrite stepsLV.GetText(i, 10), ConfigFile, section, "Screen" idx "Step" i "OnTrueScreen"
         IniWrite stepsLV.GetText(i, 11), ConfigFile, section, "Screen" idx "Step" i "OnFalseScreen"
         IniWrite stepsLV.GetText(i, 12), ConfigFile, section, "Screen" idx "Step" i "Seconds"
+        IniWrite (stepsLV.GetText(i, 13) = "Yes" ? 1 : 0), ConfigFile, section, "Screen" idx "Step" i "FallbackEnabled"
+        IniWrite stepsLV.GetText(i, 14), ConfigFile, section, "Screen" idx "Step" i "FallbackMaxAttempts"
+        IniWrite stepsLV.GetText(i, 15), ConfigFile, section, "Screen" idx "Step" i "FallbackScreen"
+        IniWrite (stepsLV.GetText(i, 16) = "Yes" ? 1 : 0), ConfigFile, section, "Screen" idx "Step" i "Advanced"
+        IniWrite stepsLV.GetText(i, 17), ConfigFile, section, "Screen" idx "Step" i "Outcomes"
     }
 }
 
@@ -2318,7 +2712,7 @@ SaveScreenToIni(name, screenName) {
 ; selection where still valid. Called whenever the screen list changes (add/rename/delete/move)
 ; and every time the visible screen switches, so it must NOT clobber a not-yet-saved selection.
 RefreshJumpTargetDdls(name) {
-    global stepOnTrueDdl, stepOnFalseDdl, fallbackScreenDdl
+    global stepOnTrueDdl, stepOnFalseDdl, fallbackScreenDdl, stepFallbackScreenDdl
     ; "(Repeat)" is a pseudo-screen, not an actual one - handled specially in RunSteps instead of
     ; being resolved as a screen jump: it re-runs this exact step again (honoring its own "Wait
     ; After" as the pause between attempts) instead of moving to the next step or another screen.
@@ -2335,7 +2729,8 @@ RefreshJumpTargetDdls(name) {
     stepOnFalseDdl.Text := (curFalse != "") ? curFalse : "(continue)"
 
     ; "(Stop Macro)" is a pseudo-screen, not an actual one - handled specially in RunSteps'
-    ; "Option Select" case instead of being resolved as a jump target.
+    ; "Option Select" case (and the per-step Logic fallback below) instead of being resolved as a
+    ; jump target.
     fbItems := ["(none)", "(Stop Macro)"]
     for n in GetPresetScreenNames(name)
         fbItems.Push(n)
@@ -2343,6 +2738,12 @@ RefreshJumpTargetDdls(name) {
     fallbackScreenDdl.Delete()
     fallbackScreenDdl.Add(fbItems)
     fallbackScreenDdl.Text := (curFallback != "") ? curFallback : "(none)"
+
+    ; Same item list, reused for the per-step Logic "Fallback after N attempts" screen dropdown.
+    curStepFallback := stepFallbackScreenDdl.Text
+    stepFallbackScreenDdl.Delete()
+    stepFallbackScreenDdl.Add(fbItems)
+    stepFallbackScreenDdl.Text := (curStepFallback != "") ? curStepFallback : "(none)"
 }
 
 ; Switches which screen's steps are shown in stepsLV, saving the screen being left first.
@@ -2429,6 +2830,20 @@ RenameJumpTargetsEverywhere(name, oldName, newName) {
                 IniWrite newName, ConfigFile, section, "Screen" si "Step" sj "OnTrueScreen"
             if (Cfg(section, "Screen" si "Step" sj "OnFalseScreen", "(continue)") = oldName)
                 IniWrite newName, ConfigFile, section, "Screen" si "Step" sj "OnFalseScreen"
+            if (Cfg(section, "Screen" si "Step" sj "FallbackScreen", "(none)") = oldName)
+                IniWrite newName, ConfigFile, section, "Screen" si "Step" sj "FallbackScreen"
+
+            outcomesKey := "Screen" si "Step" sj "Outcomes"
+            outcomes := ParseOutcomes(Cfg(section, outcomesKey, ""))
+            changed := false
+            for o in outcomes {
+                if (o.Screen = oldName) {
+                    o.Screen := newName
+                    changed := true
+                }
+            }
+            if changed
+                IniWrite SerializeOutcomes(outcomes), ConfigFile, section, outcomesKey
         }
     }
 }
@@ -2440,7 +2855,7 @@ DeleteScreenClick(*) {
         MsgBox "At least one screen must remain."
         return
     }
-    res := MsgBox("Delete screen '" CurrentScreenName "'? Any On True/On False jumps pointing to it will fall back to '(continue)'.", "Confirm", "YesNo")
+    res := MsgBox("Delete screen '" CurrentScreenName "'? Any On True/On False jumps (or Advanced Detection outcomes) pointing to it will fall back to '(continue)', and any Logic Fallback Screen pointing to it will fall back to '(none)'.", "Confirm", "YesNo")
     if (res != "Yes")
         return
     idx := ScreenIndexByName(CurrentPresetName, CurrentScreenName)
@@ -2459,6 +2874,16 @@ DeleteScreenClick(*) {
                 st.OnTrueScreen := "(continue)"
             if (st.OnFalseScreen = CurrentScreenName)
                 st.OnFalseScreen := "(continue)"
+            if (st.FallbackScreen = CurrentScreenName)
+                st.FallbackScreen := "(none)"
+            if (st.OutcomesRaw != "") {
+                outcomes := ParseOutcomes(st.OutcomesRaw)
+                for o in outcomes {
+                    if (o.Screen = CurrentScreenName)
+                        o.Screen := "(continue)"
+                }
+                st.OutcomesRaw := SerializeOutcomes(outcomes)
+            }
         }
         remaining.Push({Name: n, Steps: steps})
     }
@@ -2700,7 +3125,9 @@ ImportStepClick(*) {
     }
     st := steps[idx]
     stepsLV.Add("", stepsLV.GetCount() + 1, st.Type, st.Label, st.X, st.Y, st.EndX, st.EndY, st.DragMs,
-        (st.OncePerCycle ? "Yes" : "No"), st.OnTrueScreen, st.OnFalseScreen, st.Seconds)
+        (st.OncePerCycle ? "Yes" : "No"), st.OnTrueScreen, st.OnFalseScreen, st.Seconds,
+        (st.FallbackEnabled ? "Yes" : "No"), st.FallbackMaxAttempts, st.FallbackScreen,
+        (st.Advanced ? "Yes" : "No"), st.OutcomesRaw)
     LogMsg("Imported step '" st.Type "' from '" srcPreset "' > '" srcScreen "' into screen '" CurrentScreenName "'.")
 }
 
@@ -2739,7 +3166,12 @@ MigrateLegacyPhaseSteps(psection, prefix) {
             OncePerCycle: Integer(Cfg(psection, prefix "Step" i "OncePerCycle", "0")),
             Seconds: Cfg(psection, prefix "Step" i "Seconds", "0"),
             OnTrueScreen: "(continue)",
-            OnFalseScreen: "(continue)"})
+            OnFalseScreen: "(continue)",
+            FallbackEnabled: 0,
+            FallbackMaxAttempts: "5",
+            FallbackScreen: "(none)",
+            Advanced: 0,
+            OutcomesRaw: ""})
     }
     return arr
 }
@@ -3105,6 +3537,7 @@ DeletePresetClick(*) {
 LoadEditorFromSelection(*) {
     global stepsLV, stepTypeDdl, stepLabelEdit, stepXEdit, stepYEdit, stepSecEdit
     global dragEndXEdit, dragEndYEdit, dragMsEdit, oncePerCycleChk, stepOnTrueDdl, stepOnFalseDdl
+    global stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenDdl, stepAdvancedChk, EditingOutcomes
     row := stepsLV.GetNext(0, "Focused")
     if !row
         return
@@ -3119,30 +3552,49 @@ LoadEditorFromSelection(*) {
     stepOnTrueDdl.Text := stepsLV.GetText(row, 10)
     stepOnFalseDdl.Text := stepsLV.GetText(row, 11)
     stepSecEdit.Value := stepsLV.GetText(row, 12)
+    stepFallbackChk.Value := (stepsLV.GetText(row, 13) = "Yes") ? 1 : 0
+    stepFallbackMaxEdit.Value := stepsLV.GetText(row, 14)
+    stepFallbackScreenDdl.Text := stepsLV.GetText(row, 15)
+    stepAdvancedChk.Value := (stepsLV.GetText(row, 16) = "Yes") ? 1 : 0
+    EditingOutcomes := ParseOutcomes(stepsLV.GetText(row, 17))
     UpdateStepEditorLabels()
 }
 
 AddStepClick(*) {
     global stepsLV, stepTypeDdl, stepLabelEdit, stepXEdit, stepYEdit, stepSecEdit
     global dragEndXEdit, dragEndYEdit, dragMsEdit, oncePerCycleChk, stepOnTrueDdl, stepOnFalseDdl
+    global stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenDdl, stepAdvancedChk, EditingOutcomes
     onTrue := stepOnTrueDdl.Text
-    onFalse := IsLogicStepType(stepTypeDdl.Text) ? stepOnFalseDdl.Text : "(continue)"
+    isLogic := IsLogicStepType(stepTypeDdl.Text)
+    onFalse := isLogic ? stepOnFalseDdl.Text : "(continue)"
+    fbEnabled := isLogic && stepFallbackChk.Value
+    isCustomDetection := (stepTypeDdl.Text = "Custom Detection")
+    advEnabled := isCustomDetection && stepAdvancedChk.Value
     stepsLV.Add("", stepsLV.GetCount() + 1, stepTypeDdl.Text, stepLabelEdit.Value, stepXEdit.Value, stepYEdit.Value,
-        dragEndXEdit.Value, dragEndYEdit.Value, dragMsEdit.Value, (oncePerCycleChk.Value ? "Yes" : "No"), onTrue, onFalse, stepSecEdit.Value)
+        dragEndXEdit.Value, dragEndYEdit.Value, dragMsEdit.Value, (oncePerCycleChk.Value ? "Yes" : "No"), onTrue, onFalse, stepSecEdit.Value,
+        (fbEnabled ? "Yes" : "No"), stepFallbackMaxEdit.Value, stepFallbackScreenDdl.Text,
+        (advEnabled ? "Yes" : "No"), (advEnabled ? SerializeOutcomes(EditingOutcomes) : ""))
 }
 
 UpdateSelectedClick(*) {
     global stepsLV, stepTypeDdl, stepLabelEdit, stepXEdit, stepYEdit, stepSecEdit
     global dragEndXEdit, dragEndYEdit, dragMsEdit, oncePerCycleChk, stepOnTrueDdl, stepOnFalseDdl
+    global stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenDdl, stepAdvancedChk, EditingOutcomes
     row := stepsLV.GetNext(0, "Focused")
     if !row {
         LogMsg("No step selected.")
         return
     }
     onTrue := stepOnTrueDdl.Text
-    onFalse := IsLogicStepType(stepTypeDdl.Text) ? stepOnFalseDdl.Text : "(continue)"
+    isLogic := IsLogicStepType(stepTypeDdl.Text)
+    onFalse := isLogic ? stepOnFalseDdl.Text : "(continue)"
+    fbEnabled := isLogic && stepFallbackChk.Value
+    isCustomDetection := (stepTypeDdl.Text = "Custom Detection")
+    advEnabled := isCustomDetection && stepAdvancedChk.Value
     stepsLV.Modify(row, "", row, stepTypeDdl.Text, stepLabelEdit.Value, stepXEdit.Value, stepYEdit.Value,
-        dragEndXEdit.Value, dragEndYEdit.Value, dragMsEdit.Value, (oncePerCycleChk.Value ? "Yes" : "No"), onTrue, onFalse, stepSecEdit.Value)
+        dragEndXEdit.Value, dragEndYEdit.Value, dragMsEdit.Value, (oncePerCycleChk.Value ? "Yes" : "No"), onTrue, onFalse, stepSecEdit.Value,
+        (fbEnabled ? "Yes" : "No"), stepFallbackMaxEdit.Value, stepFallbackScreenDdl.Text,
+        (advEnabled ? "Yes" : "No"), (advEnabled ? SerializeOutcomes(EditingOutcomes) : ""))
 }
 
 RemoveSelectedClick(*) {
@@ -3159,11 +3611,15 @@ SwapRows(r1, r2) {
     t1 := stepsLV.GetText(r1, 2), l1 := stepsLV.GetText(r1, 3), x1 := stepsLV.GetText(r1, 4), y1 := stepsLV.GetText(r1, 5)
     ex1 := stepsLV.GetText(r1, 6), ey1 := stepsLV.GetText(r1, 7), dm1 := stepsLV.GetText(r1, 8), o1 := stepsLV.GetText(r1, 9)
     ot1 := stepsLV.GetText(r1, 10), of1 := stepsLV.GetText(r1, 11), s1 := stepsLV.GetText(r1, 12)
+    fbe1 := stepsLV.GetText(r1, 13), fbm1 := stepsLV.GetText(r1, 14), fbs1 := stepsLV.GetText(r1, 15)
+    adv1 := stepsLV.GetText(r1, 16), oc1 := stepsLV.GetText(r1, 17)
     t2 := stepsLV.GetText(r2, 2), l2 := stepsLV.GetText(r2, 3), x2 := stepsLV.GetText(r2, 4), y2 := stepsLV.GetText(r2, 5)
     ex2 := stepsLV.GetText(r2, 6), ey2 := stepsLV.GetText(r2, 7), dm2 := stepsLV.GetText(r2, 8), o2 := stepsLV.GetText(r2, 9)
     ot2 := stepsLV.GetText(r2, 10), of2 := stepsLV.GetText(r2, 11), s2 := stepsLV.GetText(r2, 12)
-    stepsLV.Modify(r1, "", r1, t2, l2, x2, y2, ex2, ey2, dm2, o2, ot2, of2, s2)
-    stepsLV.Modify(r2, "", r2, t1, l1, x1, y1, ex1, ey1, dm1, o1, ot1, of1, s1)
+    fbe2 := stepsLV.GetText(r2, 13), fbm2 := stepsLV.GetText(r2, 14), fbs2 := stepsLV.GetText(r2, 15)
+    adv2 := stepsLV.GetText(r2, 16), oc2 := stepsLV.GetText(r2, 17)
+    stepsLV.Modify(r1, "", r1, t2, l2, x2, y2, ex2, ey2, dm2, o2, ot2, of2, s2, fbe2, fbm2, fbs2, adv2, oc2)
+    stepsLV.Modify(r2, "", r2, t1, l1, x1, y1, ex1, ey1, dm1, o1, ot1, of1, s1, fbe1, fbm1, fbs1, adv1, oc1)
 }
 
 MoveUpClick(*) {
@@ -3395,12 +3851,16 @@ MainLoop(startScreenIdx := 0, startStepIdx := 1) {
 }
 
 ; "Once per cycle" steps skip themselves once done, until the next "Detect Map" step runs (i.e. a
-; new round has started) resets every step's AlreadyDone flag back to false.
+; new round has started) resets every step's AlreadyDone flag back to false. Also resets every
+; Logic step's "(Repeat)" attempt counter (see the Step Editor's "Fallback after N attempts"),
+; since a new round means whatever it was retrying is a fresh situation.
 ResetOncePerCycleFlags() {
     global PresetScreens
     for scr in PresetScreens
-        for st in scr.Steps
+        for st in scr.Steps {
             st.AlreadyDone := false
+            st.FallbackAttemptCount := 0
+        }
 }
 
 ; If the Edit Preset window is currently open (and showing the preset that's actually running),
@@ -3680,15 +4140,56 @@ RunSteps(steps, startAt := 1) {
                 }
 
             case "Round End Detection", "Ingame Detection", "Custom Detection":
-                what := (step.Type = "Round End Detection") ? "round end" : (step.Type = "Ingame Detection") ? "ingame state" : "'" step.Label "'"
-                LogMsg("Checking for " what "...")
-                detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label)
-                ReactivateGameWindow()
-                if detectResult
-                    LogMsg(step.Type ": text matched.")
-                else
-                    LogMsg(step.Type ": text not matched.")
-                stepJumpTarget := LogicJumpTarget(step, detectResult)
+                if (step.Type = "Custom Detection" && step.Advanced) {
+                    ; Advanced Detection: N named outcomes instead of a single fixed True/False -
+                    ; one OCR scan of the region, checked against every outcome's Name (exact match
+                    ; across all outcomes first, then a forgiving fuzzy pass - same two-pass order
+                    ; DetectMapProfileInRegion uses, so two outcomes sharing a short substring can't
+                    ; get confused with each other). First match wins.
+                    LogMsg("Checking advanced detection outcomes for '" step.Label "'...")
+                    rect := RectFromStep(step)
+                    text := (rect.w > 0 && rect.h > 0) ? RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h) : ""
+                    ReactivateGameWindow()
+                    outcomes := ParseOutcomes(step.OutcomesRaw)
+                    matched := ""
+                    if (text != "") {
+                        for o in outcomes {
+                            if (o.Name != "" && InStr(text, o.Name)) {
+                                matched := o
+                                break
+                            }
+                        }
+                        if (matched = "") {
+                            for o in outcomes {
+                                if (o.Name != "" && TextContainsPartialMatch(text, o.Name, 6)) {
+                                    matched := o
+                                    break
+                                }
+                            }
+                        }
+                    }
+                    if (matched != "") {
+                        LogMsg("Advanced Detection: matched outcome '" matched.Name "' (recognized: '" text "').")
+                        if (matched.Screen = "(Stop Macro)") {
+                            LogMsg("Advanced Detection: 'Stop Macro' outcome matched - stopping the macro.")
+                            Running := false
+                        } else if (matched.Screen != "" && matched.Screen != "(continue)") {
+                            stepJumpTarget := matched.Screen
+                        }
+                    } else {
+                        LogMsg("Advanced Detection: no outcome matched (recognized: '" (text != "" ? text : "(no text recognized)") "').")
+                    }
+                } else {
+                    what := (step.Type = "Round End Detection") ? "round end" : (step.Type = "Ingame Detection") ? "ingame state" : "'" step.Label "'"
+                    LogMsg("Checking for " what "...")
+                    detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label)
+                    ReactivateGameWindow()
+                    if detectResult
+                        LogMsg(step.Type ": text matched.")
+                    else
+                        LogMsg(step.Type ": text not matched.")
+                    stepJumpTarget := LogicJumpTarget(step, detectResult)
+                }
 
             case "Drag":
                 dStartX := SafeInt(step.X)
@@ -3731,6 +4232,31 @@ RunSteps(steps, startAt := 1) {
                 waited += 0.01
             }
             LogMsg("Waited " extraWait "s after '" step.Type "'.")
+        }
+
+        ; Logic steps with "Fallback after N attempts" enabled: count consecutive passes that
+        ; resolved to "(Repeat)" without success, and once the configured limit is reached, swap
+        ; to the configured Fallback Screen (or stop the macro) instead of repeating forever.
+        if (IsLogicStepType(step.Type) && step.FallbackEnabled) {
+            if (stepJumpTarget = "(Repeat)") {
+                step.FallbackAttemptCount += 1
+                maxAttempts := Max(1, SafeInt(step.FallbackMaxAttempts, 5))
+                if (step.FallbackAttemptCount >= maxAttempts) {
+                    step.FallbackAttemptCount := 0
+                    if (step.FallbackScreen = "(Stop Macro)") {
+                        LogMsg("Fallback: '" step.Type "' (" step.Label ") reached " maxAttempts " attempt(s) without success - stopping the macro.")
+                        Running := false
+                        stepJumpTarget := ""
+                    } else if (step.FallbackScreen != "" && step.FallbackScreen != "(none)") {
+                        LogMsg("Fallback: '" step.Type "' (" step.Label ") reached " maxAttempts " attempt(s) without success - switching to screen '" step.FallbackScreen "'.")
+                        stepJumpTarget := step.FallbackScreen
+                    }
+                    ; else: enabled but no Fallback Screen chosen - nothing configured to switch to,
+                    ; so keep repeating as before instead of silently doing nothing.
+                }
+            } else {
+                step.FallbackAttemptCount := 0
+            }
         }
 
         ; "(Repeat)" re-runs this exact step again - stepIdx is deliberately left unchanged - rather
