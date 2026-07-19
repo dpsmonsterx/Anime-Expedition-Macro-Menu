@@ -56,6 +56,72 @@ JoinList(arr) {
 }
 
 ; ============================================================
+; PER-OPTION DAILY USAGE (Option Select challenge limits)
+; ============================================================
+; Each option's "used today" counter is stored alongside the date it was last touched, so it
+; auto-resets the first time it's read/written on a new day - no separate midnight timer needed.
+TodayStamp() {
+    return FormatTime(, "yyyyMMdd")
+}
+
+; Returns option i's still-valid "used today" count for the given preset ini section (0 if the
+; stored count belongs to an earlier day).
+GetOptionUsedToday(section, i) {
+    storedDate := Cfg(section, "Option" i "UsedDate", "")
+    if (storedDate != TodayStamp())
+        return 0
+    return SafeInt(Cfg(section, "Option" i "UsedCount", "0"))
+}
+
+SetOptionUsedToday(section, i, count) {
+    global ConfigFile
+    IniWrite Max(0, count), ConfigFile, section, "Option" i "UsedCount"
+    IniWrite TodayStamp(), ConfigFile, section, "Option" i "UsedDate"
+}
+
+; Bumps option i's "used today" count for `presetName` by one (called once an Option Select step
+; actually commits to playing that option) and returns the new count.
+IncrementOptionUsed(presetName, i) {
+    section := "Preset_" presetName
+    newCount := GetOptionUsedToday(section, i) + 1
+    SetOptionUsedToday(section, i, newCount)
+    return newCount
+}
+
+; Refreshes the Preset Settings tab's "Today's Challenge Usage" rows for `name` - option names/max
+; mirrored from OptData (already loaded by the time this is called from LoadPreset/SavePresetToIni),
+; used-today counts read fresh from ini (auto-resetting on a new day, see GetOptionUsedToday).
+LoadUsageFields(name) {
+    global OptData, UsageNameTexts, UsageUsedEdits, UsageMaxEdits
+    section := "Preset_" name
+    Loop 3 {
+        i := A_Index
+        opt := OptData[i]
+        try UsageNameTexts[i].Text := opt.NameEdit.Value
+        try UsageUsedEdits[i].Value := GetOptionUsedToday(section, i)
+        try UsageMaxEdits[i].Value := SafeInt(opt.MaxEdit.Value, 0)
+    }
+}
+
+; Persists a manual edit to one of the Preset Settings tab's "used today" fields immediately -
+; these are daily counters, not "click Save to keep it" config, so they save on every change.
+SaveUsageFieldClick(i, ctrl, *) {
+    global CurrentPresetName, UsageUsedEdits
+    section := "Preset_" CurrentPresetName
+    SetOptionUsedToday(section, i, SafeInt(UsageUsedEdits[i].Value, 0))
+}
+
+; Persists a manual edit to one of the Preset Settings tab's daily-limit fields immediately, and
+; mirrors it into OptData's MaxEdit (the same field shown in Edit Preset > Option > Max) so both
+; stay in sync regardless of which one was just edited.
+SaveUsageMaxFieldClick(i, ctrl, *) {
+    global CurrentPresetName, ConfigFile, OptData
+    val := Max(0, SafeInt(ctrl.Value, 0))
+    OptData[i].MaxEdit.Value := val
+    IniWrite val, ConfigFile, "Preset_" CurrentPresetName, "Option" i "MaxUses"
+}
+
+; ============================================================
 ; HOVER TOOLTIPS ("?" help icons)
 ; ============================================================
 ; Adds a small gray "?" icon at the given position and shows tipText as a tooltip
@@ -125,6 +191,9 @@ HoverTooltipMap := Map()      ; Hwnd -> tooltip text, for "?" help icons
 LastHoverHwnd := 0            ; Hwnd currently showing its tooltip (0 = none)
 MapAdvStepsDoneThisCycle := false ; the map's Drag/Zoom Out actions run at most once per cycle,
                                    ; reset whenever a "Detect Map" step runs again (new round)
+UsageNameTexts := []          ; Preset Settings tab: option name labels (mirror OptData's NameEdit)
+UsageUsedEdits := []          ; Preset Settings tab: editable "used today" count per option
+UsageMaxEdits := []           ; Preset Settings tab: editable daily limit per option (mirrors/writes OptData's MaxEdit)
 
 ; ============================================================
 ; BUILD GUI
@@ -147,6 +216,28 @@ MyGui.AddButton("x340 y85 w130", "New").OnEvent("Click", (*) => NewPresetClick()
 MyGui.AddButton("x340 y117 w130", "Rename").OnEvent("Click", (*) => RenamePresetClick())
 MyGui.AddButton("x340 y149 w130", "Delete").OnEvent("Click", (*) => DeletePresetClick())
 MyGui.AddButton("x340 y181 w130", "Edit").OnEvent("Click", (*) => OpenEditGui())
+
+; --- today's usage per challenge option: how many times each option has already been played
+; today, against its daily limit. Both numbers are directly editable here (as well as the limit
+; being editable in Edit Preset > Option > Max - the two stay in sync either way). Usage auto-
+; increments as the macro plays an option and auto-resets on a new day; both fields can be
+; corrected by hand at any time (e.g. if some runs happened outside the macro, or to change the
+; limit without opening Edit Preset). ---
+MyGui.AddGroupBox("x30 y225 w470 h150", "Today's Challenge Usage")
+Loop 3 {
+    i := A_Index
+    rowY := 255 + (i - 1) * 35
+    UsageNameTexts.Push(MyGui.AddText("x50 y" (rowY + 4) " w130", "Option " i))
+    usedEdit := MyGui.AddEdit("x190 y" rowY " w45", "0")
+    usedEdit.OnEvent("Change", SaveUsageFieldClick.Bind(i))
+    UsageUsedEdits.Push(usedEdit)
+    MyGui.AddText("x240 y" (rowY + 4) " w12", "/")
+    maxEdit2 := MyGui.AddEdit("x255 y" rowY " w45", "0")
+    maxEdit2.OnEvent("Change", SaveUsageMaxFieldClick.Bind(i))
+    UsageMaxEdits.Push(maxEdit2)
+    MyGui.AddText("x310 y" (rowY + 4) " w170", "today (0 = unlimited)")
+}
+AddHelpIcon(MyGui, 458, 233, "How many times each challenge option has already been played today, against its daily limit. Both numbers are directly editable here (the daily limit is also editable in 'Edit' > Option > Max - either one stays in sync with the other). 'Used' counts up automatically as the macro runs and resets automatically every day.")
 
 ; ---------------- TAB 2: PLACEMENT ----------------
 tab.UseTab(2)
@@ -424,6 +515,12 @@ Loop 3 {
     prioDdl := EditGui.AddDropDownList("x" (xBase + 70) " y" (optionYBase + 133) " w60", ["1", "2", "3"])
     prioDdl.Text := String(i)
 
+    ; Daily play limit for this option (0 = unlimited). Checked/enforced during "Option Select"
+    ; (see RunSteps) and mirrored, with the actual count used today, on the Preset Settings tab.
+    optMaxLbl := EditGui.AddText("x" (xBase + 140) " y" (optionYBase + 136), "Max:")
+    maxEdit := EditGui.AddEdit("x" (xBase + 175) " y" (optionYBase + 133) " w45", "0")
+    HoverTooltipMap[maxEdit.Hwnd] := "How many times this option may be played per day (0 = unlimited). Resets automatically every day. Once all 3 options are exhausted for today, the 'Fallback Screen' setting below takes over (including the 'Stop Macro' option)."
+
     ; Opens the shared Option Availability Check popup, pre-loaded for THIS option (i). Lets you
     ; configure an OCR region + expected text that verifies this option is actually playable
     ; in-game before the macro commits to it.
@@ -432,9 +529,9 @@ Loop 3 {
 
     posBtn.OnEvent("Click", StartCapture.Bind(xEdit, yEdit))
 
-    OptData.Push({NameEdit: nameEdit, XEdit: xEdit, YEdit: yEdit, AvailChk: availChk, PrioDdl: prioDdl,
+    OptData.Push({NameEdit: nameEdit, XEdit: xEdit, YEdit: yEdit, AvailChk: availChk, PrioDdl: prioDdl, MaxEdit: maxEdit,
         DetX: "0", DetY: "0", DetEndX: "0", DetEndY: "0", DetText: "", DetInvert: 0})
-    for ctrl in [optGroupBox, optNameLbl, nameEdit, optXLbl, xEdit, optYLbl, yEdit, posBtn, availChk, optPrioLbl, prioDdl, availDetBtn]
+    for ctrl in [optGroupBox, optNameLbl, nameEdit, optXLbl, xEdit, optYLbl, yEdit, posBtn, availChk, optPrioLbl, prioDdl, optMaxLbl, maxEdit, availDetBtn]
         OptionSectionControls.Push(ctrl)
 }
 
@@ -454,7 +551,7 @@ backPosBtn := EditGui.AddButton("x280 y893 w100", "Set Position")
 backPosBtn.OnEvent("Click", StartCapture.Bind(backXEdit, backYEdit))
 EditGui.AddText("x410 y897", "Fallback Screen ->")
 fallbackScreenDdl := EditGui.AddDropDownList("x520 y894 w250")
-AddHelpIcon(EditGui, 795, 875, "Back Button: clicked to return to the mode-select screen after an option's Availability Check comes back negative, so the next priority can be tried. Fallback Screen: jumped to instead if every option turns out unavailable - leave it on '(none)' to fall back to the old behavior of waiting 5s and rechecking instead.")
+AddHelpIcon(EditGui, 795, 875, "Back Button: clicked to return to the mode-select screen after an option's Availability Check comes back negative, so the next priority can be tried. Fallback Screen: jumped to instead if every option turns out unavailable (including all 3 hitting their daily 'Max' limit) - leave it on '(none)' to fall back to the old behavior of waiting 5s and rechecking instead, or pick 'Stop Macro' to end the run cleanly once nothing is left to play today.")
 for ctrl in [backXEdit, backYEdit, backPosBtn, fallbackScreenDdl]
     OptionSectionControls.Push(ctrl)
 
@@ -1580,18 +1677,10 @@ CreateOverlay() {
     panelW := rightW - sideGap * 2
     if (rightW > 2 * sideGap + 80 && panelW > 80) {
         margin := 10
-        btnH := 22
         LogGui := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x08000000")
         LogGui.BackColor := "000000"
         LogGui.SetFont("s9 cWhite", "Consolas")
-        ; This panel's window is WS_EX_NOACTIVATE so clicking it never steals keyboard focus from
-        ; the game while the macro runs - which also means the Edit control below can't reliably
-        ; be click-selected or Ctrl+C'd (no keyboard focus = no caret/copy). A "Copy" button works
-        ; fine even without window activation (button clicks don't require focus), so that's the
-        ; way to get the log text onto the clipboard here.
-        logCopyBtn := LogGui.AddButton("x" (panelW - margin - 70) " y" margin " w70 h" btnH, "Copy")
-        logCopyBtn.OnEvent("Click", (*) => CopyLogClick())
-        LogEdit := LogGui.AddEdit("x" margin " y" (margin + btnH + 4) " w" (panelW - margin * 2) " h" (hole.h - margin * 2 - btnH - 4)
+        LogEdit := LogGui.AddEdit("x" margin " y" margin " w" (panelW - margin * 2) " h" (hole.h - margin * 2)
             . " ReadOnly VScroll Background000000 cWhite")
         LogGui.Show("x" panelX " y" hole.y " w" panelW " h" hole.h " NoActivate")
         ; Seed the panel with whatever's already in the log so far, instead of starting blank.
@@ -1892,20 +1981,9 @@ RenderLogPanel() {
     }
 }
 
-; Puts the full visible log text on the clipboard. The log panel's own Edit control can't be
-; relied on for click-to-select + Ctrl+C, since its owner window is WS_EX_NOACTIVATE (see
-; CreateOverlay) - this button is the actual way to get log text out of it.
-CopyLogClick(*) {
-    global LogLines
-    display := ""
-    for l in LogLines
-        display .= l "`n"
-    A_Clipboard := display
-    ToolTip("Log copied to clipboard.")
-    SetTimer((*) => ToolTip(), -1500)
-}
-
-; Same idea as CopyLogClick(), for the Application Stats panel's current values.
+; Puts the Application Stats panel's current values on the clipboard - same rationale as needed
+; anywhere in this NOACTIVATE overlay (see CreateOverlay): its controls can't get real keyboard
+; focus, so click-to-select + Ctrl+C doesn't work reliably; a button click does.
 CopyStatsClick(*) {
     global CurrentCycleCount, LastDetectedMap, RunningScreenName, RunningStepDescription
     text := "Cycle Count: " CurrentCycleCount "`n"
@@ -2127,7 +2205,9 @@ RefreshJumpTargetDdls(name) {
     stepOnTrueDdl.Text := (curTrue != "") ? curTrue : "(continue)"
     stepOnFalseDdl.Text := (curFalse != "") ? curFalse : "(continue)"
 
-    fbItems := ["(none)"]
+    ; "(Stop Macro)" is a pseudo-screen, not an actual one - handled specially in RunSteps'
+    ; "Option Select" case instead of being resolved as a jump target.
+    fbItems := ["(none)", "(Stop Macro)"]
     for n in GetPresetScreenNames(name)
         fbItems.Push(n)
     curFallback := fallbackScreenDdl.Text
@@ -2705,6 +2785,7 @@ LoadPreset(name) {
         opt.YEdit.Value := Cfg(section, "Option" i "Y", "0")
         opt.AvailChk.Value := Integer(Cfg(section, "Option" i "Available", "1"))
         opt.PrioDdl.Text := Cfg(section, "Option" i "Priority", String(i))
+        opt.MaxEdit.Value := Cfg(section, "Option" i "MaxUses", "0")
         opt.DetX := Cfg(section, "Option" i "DetX", "0")
         opt.DetY := Cfg(section, "Option" i "DetY", "0")
         opt.DetEndX := Cfg(section, "Option" i "DetEndX", "0")
@@ -2718,6 +2799,7 @@ LoadPreset(name) {
     ; This preset's screen list was just (re)loaded above via LoadPresetScreens, so
     ; fallbackScreenDdl's items already match - just set the selection to what was saved.
     fallbackScreenDdl.Text := Cfg(section, "FallbackScreen", "(none)")
+    LoadUsageFields(name)
 }
 
 SavePresetToIni(name) {
@@ -2733,6 +2815,7 @@ SavePresetToIni(name) {
         IniWrite opt.YEdit.Value, ConfigFile, section, "Option" i "Y"
         IniWrite opt.AvailChk.Value, ConfigFile, section, "Option" i "Available"
         IniWrite opt.PrioDdl.Text, ConfigFile, section, "Option" i "Priority"
+        IniWrite opt.MaxEdit.Value, ConfigFile, section, "Option" i "MaxUses"
         IniWrite opt.DetX, ConfigFile, section, "Option" i "DetX"
         IniWrite opt.DetY, ConfigFile, section, "Option" i "DetY"
         IniWrite opt.DetEndX, ConfigFile, section, "Option" i "DetEndX"
@@ -2744,6 +2827,8 @@ SavePresetToIni(name) {
     IniWrite backXEdit.Value, ConfigFile, section, "BackX"
     IniWrite backYEdit.Value, ConfigFile, section, "BackY"
     IniWrite fallbackScreenDdl.Text, ConfigFile, section, "FallbackScreen"
+    ; Refresh the Preset Settings tab's usage fields in case Max was just edited.
+    LoadUsageFields(name)
 }
 
 RebuildPresetListBox() {
@@ -2795,6 +2880,7 @@ NewPresetClick(*) {
         opt.YEdit.Value := "0"
         opt.AvailChk.Value := 1
         opt.PrioDdl.Text := String(i)
+        opt.MaxEdit.Value := "0"
         opt.DetX := "0"
         opt.DetY := "0"
         opt.DetEndX := "0"
@@ -3250,6 +3336,7 @@ RunSteps(steps, startAt := 1) {
     global afterPlaceClickChk, afterPlaceXEdit, afterPlaceYEdit, RunningScreenName
     global backXEdit, backYEdit, fallbackScreenDdl
     global RunningStepDescription
+    global UsageUsedEdits
     clickDelay := SafeInt(clickDelayEdit.Value)
     placeTowerDelay := SafeInt(placeTowerDelayEdit.Value)
 
@@ -3284,11 +3371,17 @@ RunSteps(steps, startAt := 1) {
                 ; configured for it) verify it's actually playable right now via OCR - if not,
                 ; click Back and move on to the next priority. Every option is re-checked fresh
                 ; like this on every single pass (no cooldown/skip-ahead) - only "Available at
-                ; start" unchecked skips one without clicking it. If NONE end up available, jump
-                ; straight to the Fallback Screen instead (or, if that's not configured either,
-                ; fall back to the old wait-5s-and-recheck loop).
+                ; start" unchecked, or its daily "Max" limit already reached, skips one without
+                ; clicking it. If NONE end up available, jump straight to the Fallback Screen
+                ; instead - or, if that's set to "(Stop Macro)", stop the run outright (both of
+                ; which stay in effect every cycle for the rest of the day once every option's
+                ; daily limit is exhausted, since none of them can become available again until
+                ; the counters reset tomorrow). With no Fallback Screen configured, falls back to
+                ; the old wait-5s-and-recheck loop.
                 fbScreen := fallbackScreenDdl.Text
-                hasFallback := (fbScreen != "" && fbScreen != "(none)")
+                stopOnExhausted := (fbScreen = "(Stop Macro)")
+                hasFallback := (!stopOnExhausted && fbScreen != "" && fbScreen != "(none)")
+                usageSection := "Preset_" CurrentPresetName
 
                 order := []
                 for oi, o in OptData
@@ -3311,6 +3404,12 @@ RunSteps(steps, startAt := 1) {
                         opt := OptData[entry.Idx]
                         if !opt.AvailChk.Value
                             continue
+                        maxUses := SafeInt(opt.MaxEdit.Value, 0)
+                        usedToday := GetOptionUsedToday(usageSection, entry.Idx)
+                        if (maxUses > 0 && usedToday >= maxUses) {
+                            LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") daily limit reached (" usedToday "/" maxUses ") - skipping.")
+                            continue
+                        }
                         Click SafeInt(opt.XEdit.Value), SafeInt(opt.YEdit.Value)
                         Sleep clickDelay
                         LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") clicked, checking availability...")
@@ -3328,11 +3427,18 @@ RunSteps(steps, startAt := 1) {
                             }
                         }
                         picked := true
-                        LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") available - playing.")
+                        newUsed := IncrementOptionUsed(CurrentPresetName, entry.Idx)
+                        try UsageUsedEdits[entry.Idx].Value := newUsed
+                        LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") available - playing. (" newUsed "/" (maxUses > 0 ? maxUses : "unlimited") " today)")
                         break
                     }
                     if picked
                         break
+                    if stopOnExhausted {
+                        LogMsg("No option available (daily limits reached) - stopping the macro.")
+                        Running := false
+                        break
+                    }
                     if hasFallback {
                         LogMsg("No option available - switching to Fallback Screen '" fbScreen "'.")
                         stepJumpTarget := fbScreen
