@@ -9,3 +9,5 @@ ocr_capture.png
 
 # Rotating config.ini backups (local safety net, not source)
 config_backups/
+
+config.ini
