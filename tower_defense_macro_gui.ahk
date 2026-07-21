@@ -22,6 +22,10 @@ Cfg(section, key, default) {
     return IniRead(ConfigFile, section, key, default)
 }
 
+; Bring older configs (absolute-pixel coordinates) up to the current percent-of-opening format,
+; ONCE, before any value is read into the GUI. See MigrateCoordsToPercent for the how/why.
+MigrateCoordsToPercent()
+
 ; Robust integer parser for user-entered numeric fields (coordinates, delays, wait times, ...).
 ; Accepts a comma as a decimal separator (e.g. German keyboards/locale produce "0,1" instead of
 ; "0.1") as well as a period, trims whitespace, and falls back to `def` for anything that still
@@ -53,6 +57,161 @@ JoinList(arr) {
     for v in arr
         s .= (s = "" ? "" : ",") v
     return s
+}
+
+; ============================================================
+; WINDOW-RELATIVE COORDINATES (percent of the "opening")
+; ============================================================
+; The game window is always pinned into a fixed "opening" rectangle (Game Window tab). Every click
+; position and detection-region corner is stored as a PERCENTAGE (0-100) of that opening rather
+; than as a fixed screen pixel - so a preset keeps working if the opening is moved to another
+; position/monitor or resized (a different resolution), instead of every coordinate breaking.
+; These convert between an absolute screen pixel and that stored percentage. A zero-size opening
+; (misconfigured) degrades gracefully by treating the value as a raw pixel.
+;
+; Note: the opening's OWN geometry (HoleX/Y/W/H) stays in absolute pixels - it's the reference
+; frame everything else is measured against, so it can't be relative to itself.
+
+; absolute screen X pixel -> stored percent-of-opening (3 decimals ~= 0.01px on a 1248px opening)
+PctXFromAbs(absX) {
+    hole := GetHoleRect()
+    return (hole.w > 0) ? Round((absX - hole.x) / hole.w * 100, 3) : absX
+}
+PctYFromAbs(absY) {
+    hole := GetHoleRect()
+    return (hole.h > 0) ? Round((absY - hole.y) / hole.h * 100, 3) : absY
+}
+
+; stored percent-of-opening (either axis, parsed leniently) -> absolute screen {x, y} pixels
+AbsXY(pctX, pctY) {
+    hole := GetHoleRect()
+    return {
+        x: (hole.w > 0) ? Round(hole.x + SafeNum(pctX) / 100 * hole.w) : SafeInt(pctX),
+        y: (hole.h > 0) ? Round(hole.y + SafeNum(pctY) / 100 * hole.h) : SafeInt(pctY)
+    }
+}
+
+; ------------------------------------------------------------
+; ONE-TIME MIGRATION: absolute-pixel coordinates -> percent-of-opening
+; ------------------------------------------------------------
+; Older configs stored every click/region coordinate as an absolute screen pixel. This converts
+; them ONCE to percent-of-opening and stamps [General] CoordFormat=percent so it never runs again.
+; It's exact/behavior-preserving at the current opening: because the game window is always pinned
+; into the opening, an old absolute pixel = opening-origin + offset, so percent = (px-origin)/size
+; reproduces the identical on-screen point. Type-aware - only real coordinate fields are touched
+; (e.g. a "Zoom Out" step keeps a wheel-tick count in X, which must NOT be converted). Runs before
+; any config value is read into the GUI, and uses the opening read straight from the config file
+; (not the GUI controls, which don't exist yet at that point).
+
+; Converts one coordinate key in place. `r` = the reference opening {x,y,w,h}. `isX` picks the axis.
+MigConvertKey(section, key, isX, r) {
+    global ConfigFile
+    v := Cfg(section, key, "")
+    if (v = "")
+        return
+    if isX
+        IniWrite Round((SafeNum(v) - r.x) / r.w * 100, 3), ConfigFile, section, key
+    else
+        IniWrite Round((SafeNum(v) - r.y) / r.h * 100, 3), ConfigFile, section, key
+}
+
+; Converts a section's Map Advanced (Drag/Zoom Out) step coordinates. Normalizes any legacy
+; Center-Camera/Zoom flags into the AdvStep format first (same call the app makes), then converts
+; only the Drag steps' corners - a Zoom Out step keeps its tick count in X.
+MigrateAdvStepCoords(section, r) {
+    GetMapAdvSteps(section)
+    n := SafeInt(Cfg(section, "AdvStepsCount", "0"))
+    Loop n {
+        i := A_Index
+        if (Cfg(section, "AdvStep" i "Type", "Drag") = "Drag") {
+            MigConvertKey(section, "AdvStep" i "X", true, r)
+            MigConvertKey(section, "AdvStep" i "Y", false, r)
+            MigConvertKey(section, "AdvStep" i "EndX", true, r)
+            MigConvertKey(section, "AdvStep" i "EndY", false, r)
+        }
+    }
+}
+
+MigrateCoordsToPercent() {
+    global ConfigFile
+    if (Cfg("General", "CoordFormat", "") = "percent")
+        return
+
+    r := {x: SafeInt(Cfg("General", "HoleX", "50")), y: SafeInt(Cfg("General", "HoleY", "50")),
+        w: SafeInt(Cfg("General", "HoleW", "1248")), h: SafeInt(Cfg("General", "HoleH", "702"))}
+    if (r.w <= 0 || r.h <= 0)
+        return   ; opening not usable yet - retry next launch rather than convert against a bad frame
+
+    ; Clearly-named safety copy of the pre-migration config, on top of the normal rotating backups.
+    try {
+        backupDir := A_ScriptDir "\config_backups"
+        if !DirExist(backupDir)
+            DirCreate backupDir
+        if FileExist(ConfigFile)
+            FileCopy ConfigFile, backupDir "\config_before_percent_" FormatTime(, "yyyyMMdd_HHmmss") ".ini", 1
+    }
+
+    ; [General]: after-place click, disconnect region + reconnect click, shared camera actions.
+    MigConvertKey("General", "AfterPlaceClickX", true, r)
+    MigConvertKey("General", "AfterPlaceClickY", false, r)
+    MigConvertKey("General", "DisconnectX1", true, r)
+    MigConvertKey("General", "DisconnectY1", false, r)
+    MigConvertKey("General", "DisconnectX2", true, r)
+    MigConvertKey("General", "DisconnectY2", false, r)
+    MigConvertKey("General", "DisconnectReconnectX", true, r)
+    MigConvertKey("General", "DisconnectReconnectY", false, r)
+    MigrateAdvStepCoords("General", r)
+
+    ; Each preset: 3 options (click + availability region), the Back button, and every step.
+    for name in StrSplit(Cfg("Presets", "List", ""), ",") {
+        if (name = "")
+            continue
+        section := "Preset_" name
+        Loop 3 {
+            i := A_Index
+            MigConvertKey(section, "Option" i "X", true, r)
+            MigConvertKey(section, "Option" i "Y", false, r)
+            MigConvertKey(section, "Option" i "DetX", true, r)
+            MigConvertKey(section, "Option" i "DetY", false, r)
+            MigConvertKey(section, "Option" i "DetEndX", true, r)
+            MigConvertKey(section, "Option" i "DetEndY", false, r)
+        }
+        MigConvertKey(section, "BackX", true, r)
+        MigConvertKey(section, "BackY", false, r)
+
+        Loop SafeInt(Cfg(section, "ScreenCount", "0")) {
+            s := A_Index
+            Loop SafeInt(Cfg(section, "Screen" s "StepCount", "0")) {
+                prefix := "Screen" s "Step" A_Index
+                stepType := Cfg(section, prefix "Type", "Button Click")
+                if (stepType = "Button Click" || stepType = "Press Start Button" || stepType = "Restart Stage Button") {
+                    MigConvertKey(section, prefix "X", true, r)
+                    MigConvertKey(section, prefix "Y", false, r)
+                } else if (stepType = "Drag" || stepType = "Detect Map" || stepType = "Round End Detection" || stepType = "Ingame Detection" || stepType = "Custom Detection") {
+                    MigConvertKey(section, prefix "X", true, r)
+                    MigConvertKey(section, prefix "Y", false, r)
+                    MigConvertKey(section, prefix "EndX", true, r)
+                    MigConvertKey(section, prefix "EndY", false, r)
+                }
+                ; Zoom Out (X=ticks) and Start/Option Select/Camera Setup/Place Towers/Wait: no coords.
+            }
+        }
+    }
+
+    ; Each map profile: up to 10 tower placements + this map's own camera actions (if custom).
+    for name in StrSplit(Cfg("MapProfiles", "List", ""), ",") {
+        if (name = "")
+            continue
+        section := "MapProfile_" name
+        Loop 10 {
+            i := A_Index
+            MigConvertKey(section, "Placement" i "X", true, r)
+            MigConvertKey(section, "Placement" i "Y", false, r)
+        }
+        MigrateAdvStepCoords(section, r)
+    }
+
+    IniWrite "percent", ConfigFile, "General", "CoordFormat"
 }
 
 ; Sets a DropDownList's selection to `value`, falling back to `fallback` (or, failing that too,
@@ -196,6 +355,10 @@ SetTimer(CheckHoverTooltips, 100)
 ; ============================================================
 Running := false
 Paused := false
+DryRun := false          ; "test mode": walk the preset and LOG every action, but skip the actual
+                          ; clicks/keypresses/drags - for safely watching what a preset WOULD do.
+                          ; Read from dryRunChk at StartMacro time; not persisted (always off on launch).
+RegionPreviewGui := ""   ; translucent overlay that briefly highlights an OCR region on screen
 CaptureTarget := ""      ; "active" while a position capture is in progress
 CaptureXCtrl := ""
 CaptureYCtrl := ""
@@ -235,6 +398,9 @@ StatsStepRepeatText := ""
 StatsStartRepeatText := ""
 StatsVictoryText := ""
 StatsDefeatText := ""
+StatsLastVals := Map()        ; last value pushed to each stats control (keyed by field) - lets
+                               ; RenderStatsPanel (called every step) skip control updates whose value
+                               ; didn't actually change, avoiding needless WM_SETTEXT/repaint churn
 ScreenRepeatCount := 0        ; screen-repetitions (returns to the Start screen) so far THIS run -
                                ; resets every MainLoop() call; was called "Cycle Count"
 StepRepeatCount := 0          ; how many times any step's On True/On False resolved to "(Repeat)"
@@ -261,6 +427,14 @@ DisconnectLastCheckTick := 0      ; A_TickCount of the last disconnect OCR scan,
 EditingOutcomes := []              ; the "Custom Detection" step currently shown in the Step Editor's Advanced
                                    ; Detection outcomes (array of {Name, Screen}) - pre-commit, mirrors every
                                    ; other step-editor field until "Add Step"/"Update Selected" is clicked
+OcrServerPid := 0                  ; PID of the persistent OCR helper (ocr_server.ps1) - 0 when not running.
+                                   ; One long-lived process loads the .NET/WinRT OCR assemblies ONCE and then
+                                   ; services every scan, instead of paying ~0.5s of powershell.exe startup per
+                                   ; call (see EnsureOcrServer/RunOcrOnRegion).
+OcrReqToken := 0                   ; incrementing request id, so a response can be matched to its request and a
+                                   ; stray/stale response file is never mistaken for the current answer
+OcrBusy := false                   ; true while the main thread is mid OCR request - CheckDisconnectTick checks
+                                   ; this and skips its own scan rather than clashing over the request/response files
 
 ; ============================================================
 ; BUILD GUI
@@ -283,6 +457,10 @@ MyGui.AddButton("x340 y85 w130", "New").OnEvent("Click", (*) => NewPresetClick()
 MyGui.AddButton("x340 y117 w130", "Rename").OnEvent("Click", (*) => RenamePresetClick())
 MyGui.AddButton("x340 y149 w130", "Delete").OnEvent("Click", (*) => DeletePresetClick())
 MyGui.AddButton("x340 y181 w130", "Edit").OnEvent("Click", (*) => OpenEditGui())
+
+MyGui.AddButton("x480 y85 w130", "Export...").OnEvent("Click", (*) => ExportPresetClick())
+MyGui.AddButton("x480 y117 w130", "Import...").OnEvent("Click", (*) => ImportPresetFileClick())
+AddHelpIcon(MyGui, 615, 87, "Export saves the selected preset - all its screens, steps, options and settings - to a .ini file you can back up or share. Import loads such a file back as a new preset. Coordinates are stored window-relative (percent), so a shared preset works even on a different screen position/resolution. Map profiles aren't bundled - set the Default Map after importing if the preset uses one.")
 
 ; --- today's usage per challenge option: how many times each option has already been played
 ; today, against its daily limit. Both numbers are directly editable here (as well as the limit
@@ -454,13 +632,18 @@ disconnectIntervalEdit := MyGui.AddEdit("x610 y657 w50", Cfg("General", "Disconn
 
 disconnectTestBtn := MyGui.AddButton("x50 y689 w100", "Test OCR")
 disconnectTestBtn.OnEvent("Click", (*) => DisconnectTestOcrClick())
-disconnectOcrResultText := MyGui.AddEdit("x160 y691 w600 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
+disconnectShowRegionBtn := MyGui.AddButton("x160 y689 w100", "Show Region")
+disconnectShowRegionBtn.OnEvent("Click", (*) => ShowRegionPreviewFromPct(disconnectX1Edit.Value, disconnectY1Edit.Value, disconnectX2Edit.Value, disconnectY2Edit.Value))
+disconnectOcrResultText := MyGui.AddEdit("x270 y691 w490 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
 
 tab.UseTab()
 
 ; ---------------- STATUS & CONTROLS (always visible) ----------------
 statusText := MyGui.AddText("x10 y720 w800 h20", "Ready.")
 MyGui.AddText("x10 y745 w800 h20", "F8 = confirm position | F9 = Pause/Resume | F10 = Start | F7 = Placement Mode | Escape = Stop/Cancel/Close Overlay")
+
+dryRunChk := MyGui.AddCheckBox("x10 y778 w220", "Dry Run (test: log only, no clicks)")
+AddHelpIcon(MyGui, 232, 778, "When checked and you press Start, the macro walks through the preset and LOGS every action (click/tower/detection/jump) exactly as normal, but performs NO actual clicks, key presses or drags - so you can safely watch what a preset WOULD do. Every log line is prefixed [DRY]. Uncheck for a real run. Always starts off when the app launches.")
 
 saveBtn := MyGui.AddButton("x500 y775 w90", "Save")
 placementBtn := MyGui.AddButton("x600 y775 w120", "Placement Mode (F7)")
@@ -469,8 +652,11 @@ saveBtn.OnEvent("Click", (*) => (SaveConfig(), LogMsg("Configuration saved.")))
 placementBtn.OnEvent("Click", (*) => PlacementModeClick())
 startBtn.OnEvent("Click", (*) => StartMacro())
 
-MyGui.OnEvent("Close", (*) => (SaveConfig(), ExitApp()))
+MyGui.OnEvent("Close", (*) => (SaveConfig(), StopOcrServer(), ExitApp()))
 MyGui.OnEvent("Size", (*) => "")  ; prevents errors on resize
+; Also stop the OCR helper on any other exit path (e.g. Reload, tray Exit) so no orphan process
+; lingers - OnExit fires for those cases the GUI Close handler above doesn't cover.
+OnExit((*) => (StopOcrServer(), 0))
 
 UpdatePlacementVisibility()
 UpdateGeneralSlotVisibility()
@@ -589,7 +775,9 @@ dragMsEdit := EditGui.AddEdit("x520 y462 w60", "500")
 ; --- Logic steps only: test OCR against the region/text entered above ---
 stepOcrTestBtn := EditGui.AddButton("x40 y500 w110", "Test OCR")
 stepOcrTestBtn.OnEvent("Click", (*) => StepTestOcrClick())
-stepOcrResultText := EditGui.AddEdit("x160 y502 w590 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
+stepShowRegionBtn := EditGui.AddButton("x160 y500 w110", "Show Region")
+stepShowRegionBtn.OnEvent("Click", (*) => ShowRegionPreviewFromPct(stepXEdit.Value, stepYEdit.Value, dragEndXEdit.Value, dragEndYEdit.Value))
+stepOcrResultText := EditGui.AddEdit("x280 y502 w470 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
 
 ; --- Where to jump when this step finishes: Logic steps get two branches (true/false, based on
 ; the OCR result); Mechanic steps get a single unconditional jump (reuses the same "On True"
@@ -895,7 +1083,9 @@ AddHelpIcon(OptionAvailGui, 505, 153, "Leave Expected Text empty to skip the det
 
 optAvailTestBtn := OptionAvailGui.AddButton("x20 y185 w110", "Test OCR")
 optAvailTestBtn.OnEvent("Click", (*) => OptAvailTestOcrClick())
-optAvailResultText := OptionAvailGui.AddEdit("x140 y187 w370 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
+optAvailShowRegionBtn := OptionAvailGui.AddButton("x140 y185 w100", "Show Region")
+optAvailShowRegionBtn.OnEvent("Click", (*) => ShowRegionPreviewFromPct(optAvailXEdit.Value, optAvailYEdit.Value, optAvailEndXEdit.Value, optAvailEndYEdit.Value))
+optAvailResultText := OptionAvailGui.AddEdit("x250 y187 w260 h22 ReadOnly -WantReturn -E0x200", "OCR result will appear here.")
 
 ; Convenience for the common case where every option shows the same "no attempts left" indicator
 ; in the same spot regardless of which one was clicked - no need to set up the same region/text
@@ -1159,10 +1349,9 @@ AdvDetMoveDownClick(*) {
 ; Tests whatever's currently entered in the popup (not necessarily saved to OptData yet).
 OptAvailTestOcrClick(*) {
     global optAvailXEdit, optAvailYEdit, optAvailEndXEdit, optAvailEndYEdit, optAvailTextEdit, optAvailResultText
-    rect := {x: Min(SafeInt(optAvailXEdit.Value), SafeInt(optAvailEndXEdit.Value)),
-        y: Min(SafeInt(optAvailYEdit.Value), SafeInt(optAvailEndYEdit.Value)),
-        w: Abs(SafeInt(optAvailEndXEdit.Value) - SafeInt(optAvailXEdit.Value)),
-        h: Abs(SafeInt(optAvailEndYEdit.Value) - SafeInt(optAvailYEdit.Value))}
+    a := AbsXY(optAvailXEdit.Value, optAvailYEdit.Value)
+    b := AbsXY(optAvailEndXEdit.Value, optAvailEndYEdit.Value)
+    rect := {x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)}
     if (rect.w <= 0 || rect.h <= 0) {
         MsgBox "Set both Region1 and Region2 positions first."
         return
@@ -1496,19 +1685,168 @@ DeleteMapProfileClick(*) {
 ; Logic step (Detect Map / Round End Detection / Ingame Detection) carries its own region now,
 ; instead of there being one shared region per detection kind.
 RectFromStep(step) {
-    x1 := SafeInt(step.X), y1 := SafeInt(step.Y)
-    x2 := SafeInt(step.EndX), y2 := SafeInt(step.EndY)
-    return {x: Min(x1, x2), y: Min(y1, y2), w: Abs(x2 - x1), h: Abs(y2 - y1)}
+    ; step.X/Y and step.EndX/EndY are the two region corners, stored as percent-of-opening.
+    a := AbsXY(step.X, step.Y)
+    b := AbsXY(step.EndX, step.EndY)
+    return {x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)}
 }
 
-; Captures the given screen region and runs it through Windows' built-in OCR engine
-; via a small PowerShell helper script. Returns the recognized text (may be empty).
-; outFileName defaults to the shared result file used by step/option OCR calls; pass a distinct
-; name (as the disconnect-detection timer does) so a scan running on its own timer never races
-; with an OCR call already in progress on the main thread over the same file.
-RunOcrOnRegion(x, y, w, h, outFileName := "ocr_result.txt") {
+; ============================================================
+; OCR REGION LIVE PREVIEW
+; ============================================================
+; Briefly outlines the given absolute-pixel rect on screen (a bright, click-through, hollow border)
+; so you can visually confirm which area a detection region actually covers - handy when dialing in
+; Region1/Region2 for a step, an option Availability Check, or Disconnect Detection. Auto-hides
+; after ~2.5s. `rect2` is the two percent corners {x1,y1,x2,y2} straight from the edit fields.
+ShowRegionPreviewFromPct(x1, y1, x2, y2) {
+    a := AbsXY(x1, y1)
+    b := AbsXY(x2, y2)
+    ShowRegionPreview({x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)})
+}
+ShowRegionPreview(rect) {
+    global RegionPreviewGui
+    if (rect.w <= 0 || rect.h <= 0) {
+        MsgBox "Set both Region1 and Region2 positions first."
+        return
+    }
+    HideRegionPreview()
+    RegionPreviewGui := []
+    t := 3   ; border thickness (px) - a hollow outline so the content inside stays visible
+    bars := [
+        {x: rect.x - t, y: rect.y - t, w: rect.w + 2 * t, h: t},        ; top
+        {x: rect.x - t, y: rect.y + rect.h, w: rect.w + 2 * t, h: t},   ; bottom
+        {x: rect.x - t, y: rect.y, w: t, h: rect.h},                    ; left
+        {x: rect.x + rect.w, y: rect.y, w: t, h: rect.h}               ; right
+    ]
+    for b in bars {
+        g := Gui("+AlwaysOnTop -Caption +ToolWindow +E0x20 +E0x08000000")  ; E0x20 = click-through
+        g.BackColor := "FF2A2A"
+        g.Show("x" b.x " y" b.y " w" b.w " h" b.h " NoActivate")
+        RegionPreviewGui.Push(g)
+    }
+    SetTimer HideRegionPreview, -2500
+}
+HideRegionPreview() {
+    global RegionPreviewGui
+    if (RegionPreviewGui != "") {
+        for g in RegionPreviewGui
+            try g.Destroy()
+    }
+    RegionPreviewGui := ""
+}
+
+; Starts the persistent OCR helper (ocr_server.ps1) if it isn't already running, and waits for it
+; to signal readiness. Returns true once a live, ready server exists; false if it couldn't be
+; started (missing script, launch error, or it never came up) - in which case callers fall back to
+; the slower one-shot path. Cheap to call repeatedly: a no-op when the server is already up.
+EnsureOcrServer() {
+    global OcrServerPid
+    if (OcrServerPid && ProcessExist(OcrServerPid))
+        return true
+
+    OcrServerPid := 0
+    scriptPath := A_ScriptDir "\ocr_server.ps1"
+    if !FileExist(scriptPath)
+        return false
+
+    ; Clear any stale protocol files left by a previous (crashed) server before starting fresh.
+    for f in ["ocr_ready.txt", "ocr_req.txt", "ocr_req.txt.tmp", "ocr_resp.txt", "ocr_resp.txt.tmp", "ocr_stop.txt"]
+        try FileDelete A_ScriptDir "\" f
+
+    pid := 0
+    try {
+        Run 'powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' scriptPath '" -Dir "' A_ScriptDir '"', , "Hide", &pid
+    } catch {
+        return false
+    }
+    OcrServerPid := pid
+
+    ; One-time startup wait (assembly load + engine creation). Generous timeout; only paid once.
+    startWait := A_TickCount
+    while (A_TickCount - startWait < 15000) {
+        if FileExist(A_ScriptDir "\ocr_ready.txt")
+            return true
+        if !ProcessExist(OcrServerPid) {
+            OcrServerPid := 0
+            return false
+        }
+        Sleep 50
+    }
+    return true  ; assume slow-but-alive; the request path has its own timeout/fallback
+}
+
+; Asks the OCR server to exit cleanly (and force-closes it if it doesn't), then clears protocol
+; files. Called on app exit so no orphan powershell process is left behind.
+StopOcrServer() {
+    global OcrServerPid
+    if !OcrServerPid
+        return
+    try FileAppend "1", A_ScriptDir "\ocr_stop.txt"
+    ; Give it a brief moment to notice the stop file and exit on its own.
+    waited := 0
+    while (waited < 600 && ProcessExist(OcrServerPid)) {
+        Sleep 50
+        waited += 50
+    }
+    if ProcessExist(OcrServerPid)
+        try ProcessClose(OcrServerPid)
+    OcrServerPid := 0
+    for f in ["ocr_ready.txt", "ocr_req.txt", "ocr_req.txt.tmp", "ocr_resp.txt", "ocr_resp.txt.tmp", "ocr_stop.txt"]
+        try FileDelete A_ScriptDir "\" f
+}
+
+; Captures the given screen region and runs it through Windows' built-in OCR engine, returning the
+; recognized text (may be empty). Uses the persistent OCR server (fast - assemblies already loaded)
+; and falls back to a one-shot powershell.exe invocation only if the server can't be started or
+; dies mid-request.
+RunOcrOnRegion(x, y, w, h) {
+    global OcrReqToken, OcrBusy, OcrServerPid
+    if (w <= 0 || h <= 0)
+        return ""
+    if !EnsureOcrServer()
+        return RunOcrOneShot(x, y, w, h)
+
+    OcrBusy := true
+    token := ++OcrReqToken
+    reqTmp := A_ScriptDir "\ocr_req.txt.tmp"
+    reqFile := A_ScriptDir "\ocr_req.txt"
+    respFile := A_ScriptDir "\ocr_resp.txt"
+
+    try FileDelete respFile
+    try FileDelete reqTmp
+    try FileAppend token "|" x "|" y "|" w "|" h, reqTmp
+    try FileMove reqTmp, reqFile, 1  ; atomic publish so the server never reads a half-written request
+
+    text := ""
+    startWait := A_TickCount
+    while (A_TickCount - startWait < 6000) {
+        if FileExist(respFile) {
+            resp := ""
+            try resp := FileRead(respFile)
+            barPos := InStr(resp, "|")
+            if (barPos && SubStr(resp, 1, barPos - 1) = token) {
+                text := Trim(SubStr(resp, barPos + 1), " `t`r`n")
+                try FileDelete respFile
+                break
+            }
+        }
+        if !ProcessExist(OcrServerPid) {   ; server died mid-request - fall back for this scan
+            OcrServerPid := 0
+            OcrBusy := false
+            return RunOcrOneShot(x, y, w, h)
+        }
+        Sleep 10
+    }
+    OcrBusy := false
+    return text
+}
+
+; Fallback path: one self-contained powershell.exe invocation via the standalone ocr_region.ps1
+; script. Slower (pays full startup each call) but has no dependency on a running server - used only
+; when the persistent server is unavailable.
+RunOcrOneShot(x, y, w, h) {
     scriptPath := A_ScriptDir "\ocr_region.ps1"
-    outFile := A_ScriptDir "\" outFileName
+    outFile := A_ScriptDir "\ocr_result.txt"
     try FileDelete outFile
 
     cmd := 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "' scriptPath '" -X ' x ' -Y ' y ' -Width ' w ' -Height ' h ' > "' outFile '" 2>&1'
@@ -1524,10 +1862,9 @@ RunOcrOnRegion(x, y, w, h, outFileName := "ocr_result.txt") {
 StepTestOcrClick(*) {
     global stepTypeDdl, stepXEdit, stepYEdit, dragEndXEdit, dragEndYEdit, stepLabelEdit, stepOcrResultText, MapProfileNames
     global stepAdvancedChk, EditingOutcomes
-    rect := {x: Min(SafeInt(stepXEdit.Value), SafeInt(dragEndXEdit.Value)),
-        y: Min(SafeInt(stepYEdit.Value), SafeInt(dragEndYEdit.Value)),
-        w: Abs(SafeInt(dragEndXEdit.Value) - SafeInt(stepXEdit.Value)),
-        h: Abs(SafeInt(dragEndYEdit.Value) - SafeInt(stepYEdit.Value))}
+    a := AbsXY(stepXEdit.Value, stepYEdit.Value)
+    b := AbsXY(dragEndXEdit.Value, dragEndYEdit.Value)
+    rect := {x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)}
     if (rect.w <= 0 || rect.h <= 0) {
         MsgBox "Set both Region1 and Region2 positions first."
         return
@@ -1617,19 +1954,26 @@ DetectMapProfileInRegion(rect, timeoutSec := 5) {
         return ""
     }
 
+    ; Read each profile's expected text ONCE up front rather than re-hitting the ini file on every
+    ; poll iteration (this loop can run ~16 times over a 5s timeout).
+    profiles := []
+    for name in MapProfileNames {
+        expected := Cfg("MapProfile_" name, "ExpectedText", "")
+        if (expected != "")
+            profiles.Push({Name: name, Expected: expected})
+    }
+
     startTime := A_TickCount
     Loop {
         text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h)
         if (text != "") {
-            for name in MapProfileNames {
-                expected := Cfg("MapProfile_" name, "ExpectedText", "")
-                if (expected != "" && InStr(text, expected))
-                    return name
+            for p in profiles {
+                if InStr(text, p.Expected)
+                    return p.Name
             }
-            for name in MapProfileNames {
-                expected := Cfg("MapProfile_" name, "ExpectedText", "")
-                if (expected != "" && TextContainsPartialMatch(text, expected, 6))
-                    return name
+            for p in profiles {
+                if TextContainsPartialMatch(text, p.Expected, 6)
+                    return p.Name
             }
         }
         if (A_TickCount - startTime > timeoutSec * 1000)
@@ -1642,16 +1986,15 @@ DetectMapProfileInRegion(rect, timeoutSec := 5) {
 ; entered for Disconnect Detection (not necessarily saved yet).
 DisconnectTestOcrClick(*) {
     global disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit, disconnectTextEdit, disconnectOcrResultText
-    rect := {x: Min(SafeInt(disconnectX1Edit.Value), SafeInt(disconnectX2Edit.Value)),
-        y: Min(SafeInt(disconnectY1Edit.Value), SafeInt(disconnectY2Edit.Value)),
-        w: Abs(SafeInt(disconnectX2Edit.Value) - SafeInt(disconnectX1Edit.Value)),
-        h: Abs(SafeInt(disconnectY2Edit.Value) - SafeInt(disconnectY1Edit.Value))}
+    a := AbsXY(disconnectX1Edit.Value, disconnectY1Edit.Value)
+    b := AbsXY(disconnectX2Edit.Value, disconnectY2Edit.Value)
+    rect := {x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)}
     if (rect.w <= 0 || rect.h <= 0) {
         MsgBox "Set both Region1 and Region2 positions first."
         return
     }
     disconnectOcrResultText.Text := "Reading..."
-    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h, "ocr_result_disconnect.txt")
+    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h)
     if (text = "") {
         disconnectOcrResultText.Text := "(no text recognized)"
         LogMsg("Disconnect detection OCR test: (no text recognized)")
@@ -1702,6 +2045,9 @@ GetMapProfilePlacements(name) {
 ; interpolated steps to (endX,endY) over ~durMs, then releases. Used by both the per-map camera
 ; centering (Advanced Settings) and the standalone "Drag" step type.
 DragRightClick(startX, startY, endX, endY, durMs) {
+    global DryRun
+    if DryRun
+        return   ; Dry Run: skip the actual drag (the caller already logs what it would do)
     MouseMove startX, startY, 0
     Sleep 50
     Click startX, startY, "Right", 1, "D"
@@ -1720,9 +2066,31 @@ DragRightClick(startX, startY, endX, endY, durMs) {
 
 ZoomOutTicks(ticks) {
     if (ticks > 0) {
-        Click "WheelDown " ticks
-        LogMsg("Zoomed out (" ticks " wheel ticks) for map setup.")
+        ActWheelDown(ticks)
+        LogMsg("  Zoomed out (" ticks " ticks).")
     }
+}
+
+; ============================================================
+; PHYSICAL INPUT (honors Dry Run)
+; ============================================================
+; All actual clicking/typing/scrolling the running macro does goes through these, so "Dry Run"
+; (test mode) can suppress the physical action in one place while everything else - logging, OCR,
+; branching, waits - still runs exactly as normal.
+ActClick(x, y) {
+    global DryRun
+    if !DryRun
+        Click x, y
+}
+ActSend(keys) {
+    global DryRun
+    if !DryRun
+        Send keys
+}
+ActWheelDown(ticks) {
+    global DryRun
+    if !DryRun
+        Click "WheelDown " ticks
 }
 
 ; ============================================================
@@ -1893,7 +2261,7 @@ IsLogicStepType(t) {
 UpdateStepEditorLabels(*) {
     global stepTypeDdl, stepXLabel, stepYLabel, stepXEdit, stepYEdit, stepPosBtn, stepLabelLbl, OptionSectionControls
     global dragEndXLabel, dragEndXEdit, dragEndYLabel, dragEndYEdit, dragEndPosBtn, dragMsLabel, dragMsEdit
-    global stepOcrTestBtn, stepOcrResultText, stepOnTrueLbl, stepOnTrueDdl, stepOnFalseLbl, stepOnFalseDdl
+    global stepOcrTestBtn, stepShowRegionBtn, stepOcrResultText, stepOnTrueLbl, stepOnTrueDdl, stepOnFalseLbl, stepOnFalseDdl
     global stepFallbackChk, stepFallbackMaxEdit, stepFallbackScreenLbl, stepFallbackScreenDdl
     global stepAdvancedChk, stepAdvancedConfigBtn
     t := stepTypeDdl.Text
@@ -1915,8 +2283,8 @@ UpdateStepEditorLabels(*) {
     dragEndXLabel.Text := isLogic ? "Region2 X:" : "End X:"
     dragEndYLabel.Text := isLogic ? "Region2 Y:" : "End Y:"
 
-    ; Logic-only: test the region/expected-text currently entered.
-    for ctrl in [stepOcrTestBtn, stepOcrResultText]
+    ; Logic-only: test the region/expected-text currently entered, and preview the region on screen.
+    for ctrl in [stepOcrTestBtn, stepShowRegionBtn, stepOcrResultText]
         ctrl.Visible := isLogic
 
     ; Every step type can jump to another screen when it finishes. Logic steps get two branches
@@ -2064,8 +2432,10 @@ F8:: {
     if (CaptureTarget != "active")
         return
     MouseGetPos &mx, &my
-    CaptureXCtrl.Value := mx
-    CaptureYCtrl.Value := my
+    ; Store the captured point as a percentage of the opening, not a raw screen pixel (see the
+    ; window-relative coordinates section) - so it follows the window if the opening moves/resizes.
+    CaptureXCtrl.Value := PctXFromAbs(mx)
+    CaptureYCtrl.Value := PctYFromAbs(my)
     CaptureTarget := ""
     SetTimer UpdateMarkerPos, 0
     size := GetMarkerSize()
@@ -2138,6 +2508,7 @@ CreateOverlay() {
     global OverlayGuis, OverlayVisible, LogGui, LogEdit, LogLines, StatsGui
     global StatsCycleText, StatsMapText, StatsScreenText, StatsStepText
     global StatsStepRepeatText, StatsStartRepeatText, StatsVictoryText, StatsDefeatText
+    global StatsLastVals
     global ScreenCountGui, ScreenCountEdit
     if OverlayVisible
         return
@@ -2262,9 +2633,10 @@ CreateOverlay() {
         StatsStartRepeatText := row2Texts[2]
         StatsVictoryText := row2Texts[3]
         StatsDefeatText := row2Texts[4]
+        StatsLastVals := Map()   ; fresh controls (all showing "-") - clear the change-cache so the
 
         StatsGui.Show("x" statsX " y" statsY " w" statsW " h" statsH " NoActivate")
-        RenderStatsPanel()
+        RenderStatsPanel()       ; ...first render populates every row
     } else {
         StatsGui := ""
         StatsCycleText := ""
@@ -2409,9 +2781,11 @@ ReactivateGameWindow() {
 CheckDisconnectTick() {
     global Running, disconnectEnabledChk, disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit
     global disconnectTextEdit, disconnectReconnectXEdit, disconnectReconnectYEdit, disconnectIntervalEdit
-    global DisconnectCheckBusy, DisconnectLastCheckTick, DisconnectRestartPending
+    global DisconnectCheckBusy, DisconnectLastCheckTick, DisconnectRestartPending, OcrBusy
 
-    if (!Running || DisconnectCheckBusy || !disconnectEnabledChk.Value)
+    ; Skip if a main-thread OCR request is in flight - both share the one OCR server's request/
+    ; response files, so we let the current scan finish and try again on the next tick instead.
+    if (!Running || DisconnectCheckBusy || OcrBusy || !disconnectEnabledChk.Value)
         return
 
     intervalMs := Max(1000, SafeInt(disconnectIntervalEdit.Value, 5) * 1000)
@@ -2420,23 +2794,23 @@ CheckDisconnectTick() {
     DisconnectLastCheckTick := A_TickCount
 
     expected := disconnectTextEdit.Value
-    rect := {x: Min(SafeInt(disconnectX1Edit.Value), SafeInt(disconnectX2Edit.Value)),
-        y: Min(SafeInt(disconnectY1Edit.Value), SafeInt(disconnectY2Edit.Value)),
-        w: Abs(SafeInt(disconnectX2Edit.Value) - SafeInt(disconnectX1Edit.Value)),
-        h: Abs(SafeInt(disconnectY2Edit.Value) - SafeInt(disconnectY1Edit.Value))}
+    a := AbsXY(disconnectX1Edit.Value, disconnectY1Edit.Value)
+    b := AbsXY(disconnectX2Edit.Value, disconnectY2Edit.Value)
+    rect := {x: Min(a.x, b.x), y: Min(a.y, b.y), w: Abs(b.x - a.x), h: Abs(b.y - a.y)}
     if (expected = "" || rect.w <= 0 || rect.h <= 0)
         return
 
     DisconnectCheckBusy := true
-    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h, "ocr_result_disconnect.txt")
+    text := RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h)
     if (text = "" || !(InStr(text, expected) || TextContainsPartialMatch(text, expected, 6))) {
         DisconnectCheckBusy := false
         return
     }
 
     ReactivateGameWindow()
-    LogMsg("Disconnect detected ('" text "') - clicking Reconnect and restarting the macro from the beginning.")
-    Click SafeInt(disconnectReconnectXEdit.Value), SafeInt(disconnectReconnectYEdit.Value)
+    LogMsg("Disconnect detected -> clicking Reconnect and restarting from the beginning.")
+    rc := AbsXY(disconnectReconnectXEdit.Value, disconnectReconnectYEdit.Value)
+    ActClick(rc.x, rc.y)
     Running := false
     DisconnectRestartPending := true
     DisconnectCheckBusy := false
@@ -2472,7 +2846,7 @@ ForceGameWindow() {
     LockedProcess := proc
     SetTimer EnforceWindowLock, 500
 
-    LogMsg("Game window positioned and locked (" proc "), " hole.w "x" hole.h " at (" hole.x ", " hole.y ").")
+    LogMsg("Game window positioned and locked (" proc ").")
     return true
 }
 
@@ -2520,6 +2894,24 @@ F10::StartMacro()
 ; ============================================================
 ; LOGGING
 ; ============================================================
+; Formats a number with exactly 2 decimal places, so every duration in the log reads consistently
+; (0.5 -> "0.50", 3 -> "3.00").
+Fmt2(n) {
+    return Format("{:.2f}", n + 0)
+}
+
+; Collapses OCR-recognized text to a single short line for the log - runs of whitespace/newlines
+; become one space, it's trimmed, and long results are cut with an ellipsis - so a multi-line or
+; long scan result stays one tidy line instead of flooding the panel.
+OcrPreview(text, maxLen := 45) {
+    s := Trim(RegExReplace(text, "\s+", " "))
+    if (s = "")
+        return "(nothing recognized)"
+    if (StrLen(s) > maxLen)
+        s := SubStr(s, 1, maxLen) "..."
+    return s
+}
+
 ; Clears the in-memory/on-screen log (not the log FILE, which stays a full history across runs) -
 ; called whenever a fresh run starts (macro or Placement Mode) so the panel only shows this run.
 ClearLog() {
@@ -2529,9 +2921,9 @@ ClearLog() {
 }
 
 LogMsg(text) {
-    global LogFile, statusText, LogLines
+    global LogFile, statusText, LogLines, DryRun
     timestamp := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-    line := timestamp " - " text
+    line := timestamp " - " (DryRun ? "[DRY] " : "") text
     try FileAppend line "`n", LogFile
     try statusText.Text := text
 
@@ -2548,9 +2940,9 @@ LogMsg(text) {
 ; to the log file. Used for live-ticking status (e.g. a countdown while waiting) so it doesn't
 ; spam the log with one line per tick - only the final LogMsg() call after the wait is permanent.
 LogMsgReplace(text) {
-    global statusText, LogLines
+    global statusText, LogLines, DryRun
     timestamp := FormatTime(, "yyyy-MM-dd HH:mm:ss")
-    line := timestamp " - " text
+    line := timestamp " - " (DryRun ? "[DRY] " : "") text
     try statusText.Text := text
 
     if (LogLines.Length = 0)
@@ -2572,6 +2964,29 @@ RenderLogPanel() {
         LogEdit.Value := display
         ; scroll to bottom (WM_VSCROLL / SB_BOTTOM)
         PostMessage 0x0115, 7, 0, , "ahk_id " LogEdit.Hwnd
+    }
+}
+
+; Waits `seconds`, showing a live countdown in the log, and returns as soon as that time elapses OR
+; the macro is stopped. The countdown text refreshes only ~4x/second (250ms) rather than the old
+; every-10ms loop - updating the log panel 100x/second just to tick a countdown re-rendered the
+; whole panel constantly and was a real source of visible lag during waits. Stop latency stays low
+; because the actual Sleep is capped at 100ms per slice.
+WaitSecondsInterruptible(seconds, msgPrefix) {
+    global Running
+    if (seconds <= 0)
+        return
+    endTick := A_TickCount + Round(seconds * 1000)
+    nextDisplayTick := 0
+    while Running {
+        remainingMs := endTick - A_TickCount
+        if (remainingMs <= 0)
+            break
+        if (A_TickCount >= nextDisplayTick) {
+            LogMsgReplace(msgPrefix Fmt2(remainingMs / 1000) "s...")
+            nextDisplayTick := A_TickCount + 250
+        }
+        Sleep (remainingMs < 100 ? remainingMs : 100)
     }
 }
 
@@ -2619,19 +3034,60 @@ RenderStatsPanel() {
     global StepRepeatCount, StartRepeatCount, VictoryCount, DefeatCount
     if (StatsCycleText = "")
         return
-    try StatsCycleText.Text := ScreenRepeatCount
-    try StatsMapText.Text := (LastDetectedMap != "" ? LastDetectedMap : "(none)")
-    try StatsScreenText.Text := (RunningScreenName != "" ? RunningScreenName : "-")
-    try StatsStepText.Text := (RunningStepDescription != "" ? RunningStepDescription : "-")
-    try StatsStepRepeatText.Text := StepRepeatCount
-    try StatsStartRepeatText.Text := StartRepeatCount
-    try StatsVictoryText.Text := VictoryCount
-    try StatsDefeatText.Text := DefeatCount
+    SetStatText(StatsCycleText, "cycle", ScreenRepeatCount)
+    SetStatText(StatsMapText, "map", LastDetectedMap != "" ? LastDetectedMap : "(none)")
+    SetStatText(StatsScreenText, "screen", RunningScreenName != "" ? RunningScreenName : "-")
+    SetStatText(StatsStepText, "step", RunningStepDescription != "" ? RunningStepDescription : "-")
+    SetStatText(StatsStepRepeatText, "steprep", StepRepeatCount)
+    SetStatText(StatsStartRepeatText, "startrep", StartRepeatCount)
+    SetStatText(StatsVictoryText, "victory", VictoryCount)
+    SetStatText(StatsDefeatText, "defeat", DefeatCount)
+}
+
+; Writes `val` to a stats control only if it differs from what was last written there - each stats
+; row is refreshed on every step, but most rows only change occasionally, so skipping no-op updates
+; avoids pointless WM_SETTEXT/repaint work. StatsLastVals is cleared whenever the panel is rebuilt.
+SetStatText(ctrl, key, val) {
+    global StatsLastVals
+    s := String(val)
+    if (StatsLastVals.Has(key) && StatsLastVals[key] == s)
+        return
+    StatsLastVals[key] := s
+    try ctrl.Text := s
 }
 
 ; ============================================================
 ; SAVE CONFIGURATION
 ; ============================================================
+; Snapshots the current config.ini into a rotating set of timestamped backups (config_backups\)
+; before it gets overwritten. config.ini is a single binary file holding EVERY preset, map profile
+; and setting, so one bad/interrupted save could otherwise wipe all of it - a cheap copy first is
+; insurance. Keeps the most recent `keep` snapshots and prunes older ones. Best-effort: any failure
+; here is swallowed so it can never block an actual save.
+BackupConfig() {
+    global ConfigFile
+    try {
+        if !FileExist(ConfigFile)
+            return
+        backupDir := A_ScriptDir "\config_backups"
+        if !DirExist(backupDir)
+            DirCreate backupDir
+        FileCopy ConfigFile, backupDir "\config_" FormatTime(, "yyyyMMdd_HHmmss") ".ini", 1
+
+        keep := 10
+        names := ""
+        Loop Files backupDir "\config_*.ini"
+            names .= A_LoopFileName "`n"
+        names := Trim(names, "`n")
+        if (names = "")
+            return
+        ; The yyyyMMdd_HHmmss stamp makes plain name order match chronological order (oldest first).
+        arr := StrSplit(Sort(names), "`n")
+        while (arr.Length > keep)
+            try FileDelete backupDir "\" arr.RemoveAt(1)
+    }
+}
+
 SaveConfig(*) {
     global ConfigFile
     global roundWaitEdit, clickDelayEdit, placeTowerDelayEdit, maxRoundsEdit
@@ -2643,6 +3099,8 @@ SaveConfig(*) {
     global afterPlaceClickChk, afterPlaceXEdit, afterPlaceYEdit
     global disconnectEnabledChk, disconnectX1Edit, disconnectY1Edit, disconnectX2Edit, disconnectY2Edit
     global disconnectTextEdit, disconnectReconnectXEdit, disconnectReconnectYEdit, disconnectIntervalEdit
+
+    BackupConfig()   ; snapshot the last-good config before overwriting it
 
     IniWrite roundWaitEdit.Value, ConfigFile, "General", "RoundWaitSeconds"
     IniWrite clickDelayEdit.Value, ConfigFile, "General", "ClickDelayMs"
@@ -3600,6 +4058,78 @@ NewPresetClick(*) {
     LogMsg("Preset '" name "' created.")
 }
 
+; Exports the currently selected preset (its whole [Preset_<name>] section - screens, steps,
+; options, back button, default map) to a standalone .ini file under a neutral [Preset] header, so
+; it can be backed up or shared. Coordinates are window-relative percentages, so the preset stays
+; usable on another screen/resolution. Map profiles are NOT bundled (they're shared across presets).
+ExportPresetClick(*) {
+    global CurrentPresetName, ConfigFile
+    if (CurrentPresetName = "") {
+        MsgBox "No preset selected to export."
+        return
+    }
+    SavePresetToIni(CurrentPresetName)   ; flush any in-editor changes so the export is current
+    file := FileSelect("S16", CurrentPresetName ".ini", "Export Preset", "Preset files (*.ini)")
+    if (file = "")
+        return
+    if !RegExMatch(file, "\.ini$")
+        file .= ".ini"
+    try FileDelete file
+    content := IniRead(ConfigFile, "Preset_" CurrentPresetName, , "")
+    IniWrite CurrentPresetName, file, "PresetExport", "SourceName"
+    for line in StrSplit(content, "`n", "`r") {
+        eq := InStr(line, "=")
+        if eq
+            IniWrite SubStr(line, eq + 1), file, "Preset", SubStr(line, 1, eq - 1)
+    }
+    LogMsg("Preset '" CurrentPresetName "' exported.")
+    MsgBox "Exported preset '" CurrentPresetName "' to:`n" file
+}
+
+; Imports a preset from an .ini file created by Export, as a NEW preset (prompts for a name,
+; refusing to overwrite an existing one). Fixes up nothing else - referenced map profiles must
+; already exist locally (otherwise the preset's Default Map falls back to '(none)').
+ImportPresetFileClick(*) {
+    global ConfigFile, PresetNames, presetListBox, CurrentPresetName
+    file := FileSelect(3, , "Import Preset", "Preset files (*.ini)")
+    if (file = "")
+        return
+    content := IniRead(file, "Preset", , "")
+    if (content = "") {
+        MsgBox "That file doesn't look like an exported preset (no [Preset] section found)."
+        return
+    }
+    defaultName := RegExReplace(RegExReplace(file, ".*[\\/]", ""), "\.ini$", "")
+    ib := InputBox("Name for the imported preset:", "Import Preset", "w320 h130", defaultName)
+    if (ib.Result != "OK" || Trim(ib.Value) = "")
+        return
+    name := Trim(ib.Value)
+    for n in PresetNames {
+        if (n = name) {
+            MsgBox "A preset with this name already exists - pick a different name."
+            return
+        }
+    }
+    if (CurrentPresetName != "")
+        SavePresetToIni(CurrentPresetName)
+    section := "Preset_" name
+    for line in StrSplit(content, "`n", "`r") {
+        eq := InStr(line, "=")
+        if eq
+            IniWrite SubStr(line, eq + 1), ConfigFile, section, SubStr(line, 1, eq - 1)
+    }
+    PresetNames.Push(name)
+    presetListBox.Add([name])
+    presetListBox.Choose(PresetNames.Length)
+    CurrentPresetName := name
+    LoadPreset(name)
+    IniWrite JoinList(PresetNames), ConfigFile, "Presets", "List"
+    IniWrite CurrentPresetName, ConfigFile, "Presets", "Active"
+    try editingLabel.Text := "Editing: " CurrentPresetName
+    LogMsg("Preset '" name "' imported.")
+    MsgBox "Imported as preset '" name "'."
+}
+
 RenamePresetClick(*) {
     global CurrentPresetName, presetListBox, PresetNames, ConfigFile
     ib := InputBox("Rename preset '" CurrentPresetName "' to:", "Rename Preset", , CurrentPresetName)
@@ -3809,12 +4339,20 @@ BuildAllScreensFromIni(name) {
 ; F10/Start-button run.
 StartMacro(startScreen := "", startStep := 0) {
     global Running, CurrentPresetName, PresetScreens, MapAdvStepsDoneThisCycle, RunningPresetName
-    global DisconnectRestartPending, DisconnectLastCheckTick
+    global DisconnectRestartPending, DisconnectLastCheckTick, DryRun, dryRunChk
     if Running {
         LogMsg("Already running.")
         return
     }
+    ; Latch Dry Run for the whole run from the checkbox (so toggling it mid-run has no effect).
+    DryRun := dryRunChk.Value ? true : false
     ClearLog()
+    if DryRun
+        LogMsg("DRY RUN - actions are logged but NOT performed (no clicks/keys/drags).")
+
+    ; Warm up the OCR helper now so the first detection step doesn't pay its one-time startup
+    ; mid-run. Non-fatal if it can't start - detection falls back to the one-shot path.
+    EnsureOcrServer()
 
     ; Loops back to the top when Disconnect Detection (General tab) fired during the previous
     ; pass - restarting the current preset from its normal start point, same as pressing F10
@@ -3859,11 +4397,11 @@ StartMacro(startScreen := "", startStep := 0) {
         Running := true
         DisconnectLastCheckTick := A_TickCount
         if isAutoRestart
-            LogMsg("Auto-reconnect: macro restarted from the beginning using preset '" CurrentPresetName "'.")
+            LogMsg("Auto-reconnect: macro restarted (preset '" CurrentPresetName "').")
         else if startScreenIdx
-            LogMsg("Macro started using preset '" CurrentPresetName "', beginning at screen '" curStartScreen "' step " curStartStep ".")
+            LogMsg("Macro started (preset '" CurrentPresetName "', from screen '" curStartScreen "' step " curStartStep ").")
         else
-            LogMsg("Macro started using preset '" CurrentPresetName "'.")
+            LogMsg("Macro started (preset '" CurrentPresetName "').")
         MainLoop(startScreenIdx, startScreenIdx ? Max(1, curStartStep) : 1)
 
         if !DisconnectRestartPending
@@ -3950,10 +4488,10 @@ MainLoop(startScreenIdx := 0, startStepIdx := 1) {
                 }
             }
             if !nextIdx {
-                LogMsg("WARNING: jump target screen '" jumpTarget "' not found - falling through instead.")
+                LogMsg("WARNING: screen '" jumpTarget "' not found - continuing to the next screen instead.")
                 nextIdx := (screenIdx = PresetScreens.Length) ? trueStartIdx : screenIdx + 1
             } else {
-                LogMsg("Screen '" scr.Name "' -> jumping to '" jumpTarget "'.")
+                LogMsg("Jump: '" scr.Name "' -> '" jumpTarget "'.")
             }
         } else {
             nextIdx := (screenIdx = PresetScreens.Length) ? trueStartIdx : screenIdx + 1
@@ -3969,31 +4507,29 @@ MainLoop(startScreenIdx := 0, startStepIdx := 1) {
             ; a fresh "Detect Map" step (if this cycle has one) finds something again.
             LastDetectedMap := ""
             RenderStatsPanel()
-            LogMsg("--- Screen repetition " cycleCount " complete - back at Start (lifetime: " StartRepeatCount ") ---")
+            LogMsg("========== Cycle " cycleCount " complete (total starts: " StartRepeatCount ") ==========")
 
             extraWait := SafeNum(roundWaitEdit.Value)
             if (extraWait > 0) {
-                waited := 0
-                while (waited < extraWait && Running) {
-                    remaining := Round(Max(0, extraWait - waited), 2)
-                    LogMsgReplace("Waiting " Format("{:.2f}", remaining) "s before next cycle...")
-                    Sleep 10
-                    waited += 0.01
-                }
+                WaitSecondsInterruptible(extraWait, "Waiting before next cycle: ")
                 LogMsg("Cycle wait complete.")
             }
 
-            SaveConfig()
+            ; NOTE: the full config is deliberately NOT re-saved every cycle - it doesn't change
+            ; during a run, and per-option "used today" counters already persist themselves the
+            ; moment they change (see IncrementOptionUsed). Re-writing the entire config (every
+            ; screen, step and map profile) each cycle was pure disk churn and caused lag on
+            ; fast-cycling presets. Config is saved at macro start, on manual Save, and on exit.
 
             maxR := SafeInt(maxRoundsEdit.Value)
             if (maxR > 0 && cycleCount >= maxR) {
-                LogMsg("Max cycles (" maxR ") reached. Stopping.")
+                LogMsg("Max cycles reached (" maxR ") - stopping.")
                 Running := false
                 break
             }
         }
     }
-    LogMsg("Macro stopped. Ready to restart with F10.")
+    LogMsg("Macro stopped. Press F10 to start again.")
 }
 
 ; "Once per cycle" steps skip themselves once done, until the next "Detect Map" step runs (i.e. a
@@ -4036,7 +4572,7 @@ ResolveMapName() {
         defaultMap := Cfg("Preset_" CurrentPresetName, "DefaultMap", "(none)")
         if (defaultMap != "" && defaultMap != "(none)") {
             mapName := defaultMap
-            LogMsg("No map detected via 'Detect Map' - using configured Default Map: " mapName)
+            LogMsg("No map detected - using Default Map: " mapName ".")
         }
     }
     return mapName
@@ -4048,23 +4584,22 @@ ResolveMapName() {
 ; map's own custom camera/zoom steps if it has them enabled, otherwise the shared [General] ones.
 RunMapAdvStepsForMap(mapName, clickDelay) {
     global Running, MapAdvStepsDoneThisCycle
-    if MapAdvStepsDoneThisCycle {
-        LogMsg("Camera setup: already done this cycle - skipping.")
-        return
-    }
+    if MapAdvStepsDoneThisCycle
+        return   ; already ran the camera/zoom actions for this cycle
     mapSection := "MapProfile_" mapName
     useCustom := SafeInt(Cfg(mapSection, "CustomCamera", "0"))
     camSection := useCustom ? mapSection : "General"
     advSteps := GetMapAdvSteps(camSection)
-    LogMsg("Camera setup for '" mapName "': using " (useCustom ? "its own custom" : "the shared [General]") " actions (" advSteps.Length " configured).")
     if (advSteps.Length = 0)
-        LogMsg("WARNING: no Drag/Zoom Out actions configured " (useCustom ? "for '" mapName "'" : "in the shared default") " - nothing to run. Add some via Map Placement > Advanced Settings.")
+        return   ; no camera/zoom actions configured for this map - nothing to do
+    LogMsg("Camera setup for '" mapName "' (" advSteps.Length " action(s))...")
     for advStep in advSteps {
         if !Running
             return
         if (advStep.Type = "Drag") {
-            DragRightClick(SafeInt(advStep.X), SafeInt(advStep.Y), SafeInt(advStep.EndX), SafeInt(advStep.EndY), SafeInt(advStep.DragMs))
-            LogMsg("Map action: dragged (" advStep.X ", " advStep.Y ") -> (" advStep.EndX ", " advStep.EndY ") over " advStep.DragMs "ms.")
+            ds := AbsXY(advStep.X, advStep.Y), de := AbsXY(advStep.EndX, advStep.EndY)
+            DragRightClick(ds.x, ds.y, de.x, de.y, SafeInt(advStep.DragMs))
+            LogMsg("  Camera dragged (" advStep.DragMs " ms).")
         } else if (advStep.Type = "Zoom Out") {
             ZoomOutTicks(SafeInt(advStep.X))
         }
@@ -4192,21 +4727,23 @@ RunSteps(steps, startAt := 1) {
                         maxUses := SafeInt(opt.MaxEdit.Value, 0)
                         usedToday := GetOptionUsedToday(usageSection, entry.Idx)
                         if (maxUses > 0 && usedToday >= maxUses) {
-                            LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") daily limit reached (" usedToday "/" maxUses ") - skipping.")
+                            LogMsg("Option " entry.Idx " '" opt.NameEdit.Value "': daily limit reached (" usedToday "/" maxUses ") - skipping.")
                             continue
                         }
-                        Click SafeInt(opt.XEdit.Value), SafeInt(opt.YEdit.Value)
+                        oc := AbsXY(opt.XEdit.Value, opt.YEdit.Value)
+                        ActClick(oc.x, oc.y)
                         Sleep clickDelay
-                        LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") clicked, checking availability...")
+                        LogMsg("Option " entry.Idx " '" opt.NameEdit.Value "': selected, checking availability...")
                         if (opt.DetText != "") {
-                            detRect := {x: Min(SafeInt(opt.DetX), SafeInt(opt.DetEndX)), y: Min(SafeInt(opt.DetY), SafeInt(opt.DetEndY)),
-                                w: Abs(SafeInt(opt.DetEndX) - SafeInt(opt.DetX)), h: Abs(SafeInt(opt.DetEndY) - SafeInt(opt.DetY))}
+                            da := AbsXY(opt.DetX, opt.DetY), db := AbsXY(opt.DetEndX, opt.DetEndY)
+                            detRect := {x: Min(da.x, db.x), y: Min(da.y, db.y), w: Abs(db.x - da.x), h: Abs(db.y - da.y)}
                             found := IsTextDetectedInRegion(detRect, opt.DetText)
                             available := opt.DetInvert ? !found : found
                             ReactivateGameWindow()
                             if !available {
-                                LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") not available - going back.")
-                                Click SafeInt(backXEdit.Value), SafeInt(backYEdit.Value)
+                                LogMsg("Option " entry.Idx " '" opt.NameEdit.Value "': not available -> going back.")
+                                bc := AbsXY(backXEdit.Value, backYEdit.Value)
+                                ActClick(bc.x, bc.y)
                                 Sleep clickDelay
                                 continue
                             }
@@ -4214,31 +4751,32 @@ RunSteps(steps, startAt := 1) {
                         picked := true
                         newUsed := IncrementOptionUsed(CurrentPresetName, entry.Idx)
                         try UsageUsedEdits[entry.Idx].Value := newUsed
-                        LogMsg("Option " entry.Idx " (" opt.NameEdit.Value ") available - playing. (" newUsed "/" (maxUses > 0 ? maxUses : "unlimited") " today)")
+                        LogMsg("Option " entry.Idx " '" opt.NameEdit.Value "': available -> playing (" newUsed "/" (maxUses > 0 ? maxUses : "unlimited") " today).")
                         break
                     }
                     if picked
                         break
                     if stopOnExhausted {
-                        LogMsg("No option available (daily limits reached) - stopping the macro.")
+                        LogMsg("No option available (daily limits reached) -> stopping the macro.")
                         Running := false
                         break
                     }
                     if hasFallback {
-                        LogMsg("No option available - switching to Fallback Screen '" fbScreen "'.")
+                        LogMsg("No option available -> fallback screen '" fbScreen "'.")
                         stepJumpTarget := fbScreen
                         break
                     }
-                    LogMsg("No option available, waiting 5s...")
+                    LogMsg("No option available - rechecking in 5.00s...")
                     Sleep 5000
                 }
                 if !Running
                     return ""
 
             case "Button Click", "Press Start Button", "Restart Stage Button":
-                Click SafeInt(step.X), SafeInt(step.Y)
+                bp := AbsXY(step.X, step.Y)
+                ActClick(bp.x, bp.y)
                 Sleep clickDelay
-                LogMsg("Clicked '" step.Label "' at (" step.X ", " step.Y ")")
+                LogMsg("Clicked " (step.Label != "" ? "'" step.Label "'" : step.Type) ".")
 
             case "Detect Map":
                 ; Reached the map detection screen again - a new round is starting, so any
@@ -4256,9 +4794,9 @@ RunSteps(steps, startAt := 1) {
                 ReactivateGameWindow()
                 mapDetected := (LastDetectedMap != "")
                 if !mapDetected
-                    LogMsg("WARNING: no map detected (OCR text did not match any map profile).")
+                    LogMsg("Map detection: no map matched (will use Default Map if one is set).")
                 else
-                    LogMsg("Map detected: " LastDetectedMap)
+                    LogMsg("Map detected: " LastDetectedMap ".")
                 RenderStatsPanel()
                 stepJumpTarget := LogicJumpTarget(step, mapDetected)
 
@@ -4267,10 +4805,9 @@ RunSteps(steps, startAt := 1) {
                 ; per cycle - put this as the first step of a screen (e.g. "Ingame") if you need
                 ; the camera positioned/zoomed out BEFORE anything else happens on that screen,
                 ; rather than waiting for a "Place Towers" step to trigger it implicitly.
-                LogMsg("Camera Setup step running (last detected map: '" LastDetectedMap "')...")
                 mapName := ResolveMapName()
                 if (mapName = "") {
-                    LogMsg("WARNING: no map detected and no Default Map configured. Skipping camera setup.")
+                    LogMsg("Camera setup skipped: no map detected and no Default Map set.")
                 } else {
                     ReactivateGameWindow()
                     RunMapAdvStepsForMap(mapName, clickDelay)
@@ -4279,7 +4816,7 @@ RunSteps(steps, startAt := 1) {
             case "Place Towers":
                 mapName := ResolveMapName()
                 if (mapName = "") {
-                    LogMsg("WARNING: no map detected and no Default Map configured. Skipping tower placement.")
+                    LogMsg("Tower placement skipped: no map detected and no Default Map set.")
                 } else {
                     ReactivateGameWindow()
                     ; Map actions (Drag/Zoom Out) come from [General] (shared) unless this map has
@@ -4289,20 +4826,23 @@ RunSteps(steps, startAt := 1) {
                     RunMapAdvStepsForMap(mapName, clickDelay)
                     placements := GetMapProfilePlacements(mapName)
 
-                    LogMsg("Placing towers for map: " mapName)
+                    LogMsg("Placing " placements.Length " tower(s) on '" mapName "'...")
+                    placedNum := 0
                     for row in placements {
                         if !Running
                             return ""
-                        Send row.Slot
+                        placedNum += 1
+                        ActSend(row.Slot)
                         Sleep placeTowerDelay
                         ; Same click method as "Button Click" / "Press Start Button" / "Restart Stage Button".
-                        Click SafeInt(row.X), SafeInt(row.Y)
+                        tp := AbsXY(row.X, row.Y)
+                        ActClick(tp.x, tp.y)
                         Sleep placeTowerDelay
-                        LogMsg("Slot " row.Slot " placed at (" row.X ", " row.Y ") [" mapName "]")
+                        LogMsg("  Tower " placedNum "/" placements.Length " placed (slot " row.Slot ").")
                         if afterPlaceClickChk.Value {
-                            Click SafeInt(afterPlaceXEdit.Value), SafeInt(afterPlaceYEdit.Value)
+                            ap := AbsXY(afterPlaceXEdit.Value, afterPlaceYEdit.Value)
+                            ActClick(ap.x, ap.y)
                             Sleep placeTowerDelay
-                            LogMsg("After-place click at (" afterPlaceXEdit.Value ", " afterPlaceYEdit.Value ")")
                         }
                     }
                 }
@@ -4314,7 +4854,7 @@ RunSteps(steps, startAt := 1) {
                     ; across all outcomes first, then a forgiving fuzzy pass - same two-pass order
                     ; DetectMapProfileInRegion uses, so two outcomes sharing a short substring can't
                     ; get confused with each other). First match wins.
-                    LogMsg("Checking advanced detection outcomes for '" step.Label "'...")
+                    LogMsg("Detection '" (step.Label != "" ? step.Label : "advanced") "': scanning...")
                     rect := RectFromStep(step)
                     text := (rect.w > 0 && rect.h > 0) ? RunOcrOnRegion(rect.x, rect.y, rect.w, rect.h) : ""
                     ReactivateGameWindow()
@@ -4338,25 +4878,24 @@ RunSteps(steps, startAt := 1) {
                     }
                     TrackVictoryDefeat(text)
                     if (matched != "") {
-                        LogMsg("Advanced Detection: matched outcome '" matched.Name "' (recognized: '" text "').")
                         if (matched.Screen = "(Stop Macro)") {
-                            LogMsg("Advanced Detection: 'Stop Macro' outcome matched - stopping the macro.")
+                            LogMsg("  -> outcome '" matched.Name "' matched -> stopping the macro.")
                             Running := false
                         } else if (matched.Screen != "" && matched.Screen != "(continue)") {
+                            LogMsg("  -> outcome '" matched.Name "' matched -> screen '" matched.Screen "'.")
                             stepJumpTarget := matched.Screen
+                        } else {
+                            LogMsg("  -> outcome '" matched.Name "' matched -> continue.")
                         }
                     } else {
-                        LogMsg("Advanced Detection: no outcome matched (recognized: '" (text != "" ? text : "(no text recognized)") "').")
+                        LogMsg("  -> no outcome matched (saw: " OcrPreview(text) ").")
                     }
                 } else {
-                    what := (step.Type = "Round End Detection") ? "round end" : (step.Type = "Ingame Detection") ? "ingame state" : "'" step.Label "'"
-                    LogMsg("Checking for " what "...")
+                    what := (step.Type = "Round End Detection") ? "round end" : (step.Type = "Ingame Detection") ? "ingame" : (step.Label != "" ? "'" step.Label "'" : "detection")
+                    LogMsg("Checking " what "...")
                     detectResult := IsTextDetectedInRegion(RectFromStep(step), step.Label, &recognizedText)
                     ReactivateGameWindow()
-                    if detectResult
-                        LogMsg(step.Type ": text matched.")
-                    else
-                        LogMsg(step.Type ": text not matched.")
+                    LogMsg("  -> " (detectResult ? "detected" : "not detected") ".")
                     ; Victory/Defeat tracking looks at what the OCR actually saw on screen, not at
                     ; this step's own configured expected text - so it still works even when a
                     ; single step (like a combined "Victory Defeat" round-end check) can't itself
@@ -4366,19 +4905,17 @@ RunSteps(steps, startAt := 1) {
                 }
 
             case "Drag":
-                dStartX := SafeInt(step.X)
-                dStartY := SafeInt(step.Y)
-                dEndX := SafeInt(step.EndX)
-                dEndY := SafeInt(step.EndY)
+                ds := AbsXY(step.X, step.Y)
+                de := AbsXY(step.EndX, step.EndY)
                 dDurMs := SafeInt(step.DragMs)
-                DragRightClick(dStartX, dStartY, dEndX, dEndY, dDurMs)
-                LogMsg("Dragged '" step.Label "': (" dStartX ", " dStartY ") -> (" dEndX ", " dEndY ") over " dDurMs "ms.")
+                DragRightClick(ds.x, ds.y, de.x, de.y, dDurMs)
+                LogMsg("Dragged " (step.Label != "" ? "'" step.Label "' " : "") "(" dDurMs " ms).")
 
             case "Zoom Out":
                 ticks := SafeInt(step.X)
                 if (ticks > 0) {
-                    Click "WheelDown " ticks
-                    LogMsg("Zoomed out (" ticks " wheel ticks).")
+                    ActWheelDown(ticks)
+                    LogMsg("Zoomed out (" ticks " ticks).")
                 }
 
             case "Wait":
@@ -4398,14 +4935,8 @@ RunSteps(steps, startAt := 1) {
 
         extraWait := SafeNum(step.Seconds)
         if (extraWait > 0) {
-            waited := 0
-            while (waited < extraWait && Running) {
-                remaining := Round(Max(0, extraWait - waited), 2)
-                LogMsgReplace("Waiting " Format("{:.2f}", remaining) "s after '" step.Type "'...")
-                Sleep 10
-                waited += 0.01
-            }
-            LogMsg("Waited " extraWait "s after '" step.Type "'.")
+            WaitSecondsInterruptible(extraWait, "Waiting ")
+            LogMsg("Waited " Fmt2(extraWait) "s.")
         }
 
         ; Logic steps with "Fallback after N attempts" enabled: count consecutive passes that
@@ -4418,11 +4949,11 @@ RunSteps(steps, startAt := 1) {
                 if (step.FallbackAttemptCount >= maxAttempts) {
                     step.FallbackAttemptCount := 0
                     if (step.FallbackScreen = "(Stop Macro)") {
-                        LogMsg("Fallback: '" step.Type "' (" step.Label ") reached " maxAttempts " attempt(s) without success - stopping the macro.")
+                        LogMsg("Fallback: no success after " maxAttempts " attempt(s) -> stopping the macro.")
                         Running := false
                         stepJumpTarget := ""
                     } else if (step.FallbackScreen != "" && step.FallbackScreen != "(none)") {
-                        LogMsg("Fallback: '" step.Type "' (" step.Label ") reached " maxAttempts " attempt(s) without success - switching to screen '" step.FallbackScreen "'.")
+                        LogMsg("Fallback: no success after " maxAttempts " attempt(s) -> screen '" step.FallbackScreen "'.")
                         stepJumpTarget := step.FallbackScreen
                     }
                     ; else: enabled but no Fallback Screen chosen - nothing configured to switch to,

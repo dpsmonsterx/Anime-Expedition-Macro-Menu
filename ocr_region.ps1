@@ -10,10 +10,25 @@ Add-Type -AssemblyName System.Drawing
 $bitmap = New-Object System.Drawing.Bitmap $Width, $Height
 $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
 $graphics.CopyFromScreen($X, $Y, 0, 0, (New-Object System.Drawing.Size $Width, $Height))
-
-$tempFile = [System.IO.Path]::GetTempFileName() + ".png"
-$bitmap.Save($tempFile, [System.Drawing.Imaging.ImageFormat]::Png)
 $graphics.Dispose()
+
+# Upscale smaller regions 2x before OCR - Windows OCR reads small game text much more reliably at
+# a larger size (mirrors the persistent ocr_server.ps1). Coordinates are unaffected.
+$tempFile = [System.IO.Path]::GetTempFileName() + ".png"
+$scale = 1
+if ($Height -lt 300 -and $Width -lt 900) { $scale = 2 }
+if ($scale -ne 1) {
+    $scaled = New-Object System.Drawing.Bitmap ($Width * $scale), ($Height * $scale)
+    $sg = [System.Drawing.Graphics]::FromImage($scaled)
+    $sg.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+    $sg.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+    $sg.DrawImage($bitmap, 0, 0, ($Width * $scale), ($Height * $scale))
+    $sg.Dispose()
+    $scaled.Save($tempFile, [System.Drawing.Imaging.ImageFormat]::Png)
+    $scaled.Dispose()
+} else {
+    $bitmap.Save($tempFile, [System.Drawing.Imaging.ImageFormat]::Png)
+}
 $bitmap.Dispose()
 
 Add-Type -AssemblyName System.Runtime.WindowsRuntime

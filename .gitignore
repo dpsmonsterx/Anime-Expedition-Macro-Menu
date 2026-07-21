@@ -1,0 +1,11 @@
+# OCR helper protocol / scratch files (regenerated at runtime by ocr_server.ps1)
+ocr_req.txt
+ocr_req.txt.tmp
+ocr_resp.txt
+ocr_resp.txt.tmp
+ocr_ready.txt
+ocr_stop.txt
+ocr_capture.png
+
+# Rotating config.ini backups (local safety net, not source)
+config_backups/
